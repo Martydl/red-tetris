@@ -1,5 +1,4 @@
-// import seedrandom from "seedrandom";
-import Rand from "rand-seed";
+import seedrandom from "seedrandom";
 import { Piece } from "../Types";
 import { piecesList } from "../Consts";
 import { useEffect, useRef, useState } from "react";
@@ -12,6 +11,10 @@ import {
   moveUp,
 } from "./pieceMoves";
 import { useInterval } from "../hooks/useInterval";
+import { initMatrix } from "./Utils";
+import { useDispatch, useSelector } from "react-redux";
+import { RootReducerState } from "../reducers/RootReducer";
+import { gameSlice } from "../reducers/GameReducer";
 
 function createPiece(nb: number): Piece {
   const piece: Piece = {
@@ -53,40 +56,35 @@ function Matrix(props: { matrix: number[][] }) {
   return <div className="board">{print}</div>;
 }
 
-function createMatrix(): number[][] {
-  var matrix: number[][] = new Array(20);
-  for (let y = 0; y < 20; y++) {
-    matrix[y] = new Array(10).fill(0);
-  }
-  return matrix;
-}
-
 function initQueue(rngNumber: any): Piece[] {
   let queue: Piece[] = [];
-  queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 7));
-  queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 7));
-  queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 7));
+  queue.push(createPiece(Math.round(rngNumber.current() * 100) % 7));
+  queue.push(createPiece(Math.round(rngNumber.current() * 100) % 7));
+  queue.push(createPiece(Math.round(rngNumber.current() * 100) % 7));
   return queue;
 }
 
-function checkLine(matrix: number[][]): number[][] {
-  for (let y = 0; y < matrix.length; y++) {
-    if (!matrix[y].includes(0)) {
-      matrix.splice(y, 1);
-      matrix.unshift(new Array(10).fill(0));
-    }
-  }
-  return matrix;
-}
+// function checkLine(matrix: number[][]): number[][] {
+//   for (let y = 0; y < matrix.length; y++) {
+//     if (!matrix[y].includes(0)) {
+//       matrix.splice(y, 1);
+//       matrix.unshift(new Array(10).fill(0));
+//     }
+//   }
+//   return matrix;
+// }
 
 export default function Game() {
-  const seed = "dildo3";
-  const rngNumber = useRef<any>(new Rand(seed)); // structure que les joueurs vont lancer pour avoir les pieces suivantes
-  const [piece, setPiece] = useState<Piece>(
-    createPiece(Math.round(rngNumber.current.next() * 100) % 7)
+  const dispatch = useDispatch();
+  const matrix = useSelector(
+    (state: RootReducerState) => state.game.gameMatrix
   );
-  const [matrix, setMatrix] = useState<number[][]>(createMatrix());
-  const [matrixPrint, setMatrixPrint] = useState<number[][]>(createMatrix());
+  const seed = "dildo3";
+  const rngNumber = useRef<any>(seedrandom(seed)); // structure que les joueurs vont lancer pour avoir les pieces suivantes
+  const [piece, setPiece] = useState<Piece>(
+    createPiece(Math.round(rngNumber.current() * 100) % 7)
+  );
+  const [matrixPrint, setMatrixPrint] = useState<number[][]>(initMatrix());
   const [delay, setDelay] = useState(1000);
   const [queue, setQueue] = useState<Piece[]>(initQueue(rngNumber));
   // const seed = Math.random(); //seed a envoyer au joueur depuis le serveur
@@ -117,7 +115,9 @@ export default function Game() {
     if (tmpPiece) {
       setPiece(tmpPiece);
     } else {
-      setMatrix(addPieceToMatrix(matrix, piece));
+      dispatch(
+        gameSlice.actions.setGameMatrix(addPieceToMatrix(matrix, piece))
+      );
     }
   }, delay);
 
@@ -134,7 +134,7 @@ export default function Game() {
   }, [piece]);
 
   useEffect(() => {
-    checkLine(matrix);
+    dispatch(gameSlice.actions.checkMatrixLines());
 
     if (checkCollisions(matrix, piecesList[queue[0].name][0], 3, 0)) {
       setPiece(queue[0]);
@@ -144,7 +144,7 @@ export default function Game() {
     let tmp_queue = queue;
     tmp_queue.splice(0, 1);
     console.log(tmp_queue);
-    tmp_queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 7));
+    tmp_queue.push(createPiece(Math.round(rngNumber.current() * 100) % 7));
     setQueue(tmp_queue);
   }, [matrix]);
 
