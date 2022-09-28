@@ -16,7 +16,7 @@
 }
 
 div#\30 {
-  background-color: grey;
+  background-color: lightgray;
 }
 div#\31 {
   background-color: #b37486;
@@ -38,6 +38,35 @@ div#\36 {
 }
 div#\37 {
   background-color: #e6bd57;
+}
+
+div#\31 1 {
+  background-color: #b37486;
+  border: dashed 1px;
+}
+div#\31 2 {
+  background-color: #e7a29c;
+  border: dashed 1px;
+}
+div#\31 3 {
+  background-color: #7c98a6;
+  border: dashed 1px;
+}
+div#\31 4 {
+  background-color: #d67d53;
+  border: dashed 1px;
+}
+div#\42 {
+  background-color: #5b9877;
+  border: dashed 1px;
+}
+div#\43 {
+  background-color: #534d6b;
+  border: dashed 1px;
+}
+div#\44 {
+  background-color: #e6bd57;
+  border: dashed 1px;
 }
 
 #root {

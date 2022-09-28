@@ -115,7 +115,7 @@ export function moveBottom(matrix: number[][], piece: Piece): Piece {
   while (
     checkCollisions(
       matrix,
-      piecesList[piece.name][piece.rotation],
+      piecesList[piece.name % 7][piece.rotation],
       piece.x,
       piece.y + 1
     )
