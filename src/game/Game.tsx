@@ -63,9 +63,9 @@ function createMatrix(): number[][] {
 
 function initQueue(rngNumber: any): Piece[] {
   let queue: Piece[] = [];
-  queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 6));
-  queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 6));
-  queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 6));
+  queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 7));
+  queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 7));
+  queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 7));
   return queue;
 }
 
@@ -83,7 +83,7 @@ export default function Game() {
   const seed = "dildo3";
   const rngNumber = useRef<any>(new Rand(seed)); // structure que les joueurs vont lancer pour avoir les pieces suivantes
   const [piece, setPiece] = useState<Piece>(
-    createPiece(Math.round(rngNumber.current.next() * 100) % 6)
+    createPiece(Math.round(rngNumber.current.next() * 100) % 7)
   );
   const [matrix, setMatrix] = useState<number[][]>(createMatrix());
   const [matrixPrint, setMatrixPrint] = useState<number[][]>(createMatrix());
@@ -144,7 +144,7 @@ export default function Game() {
     let tmp_queue = queue;
     tmp_queue.splice(0, 1);
     console.log(tmp_queue);
-    tmp_queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 6));
+    tmp_queue.push(createPiece(Math.round(rngNumber.current.next() * 100) % 7));
     setQueue(tmp_queue);
   }, [matrix]);
 

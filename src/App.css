@@ -10,62 +10,63 @@
 }
 
 .block {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   border: solid 1px;
+  border-color: white;
 }
 
 div#\30 {
-  background-color: lightgray;
+  background-color: whitesmoke;
 }
 div#\31 {
-  background-color: #b37486;
+  background-color: #afe9f9;
 }
 div#\32 {
-  background-color: #e7a29c;
+  background-color: #8cc0fc;
 }
 div#\33 {
-  background-color: #7c98a6;
+  background-color: #ff971a;
 }
 div#\34 {
-  background-color: #d67d53;
+  background-color: #fbd206;
 }
 div#\35 {
-  background-color: #5b9877;
+  background-color: #4dc656;
 }
 div#\36 {
-  background-color: #534d6b;
+  background-color: #cc89d6;
 }
 div#\37 {
-  background-color: #e6bd57;
+  background-color: #fd7a8c;
 }
 
+div#\38 {
+  background-color: #c2f0fc;
+  border: dashed 1px;
+}
+div#\39 {
+  background-color: #c9e2ff;
+  border: dashed 1px;
+}
+div#\31 0 {
+  background-color: #f7cb92;
+  border: dashed 1px;
+}
 div#\31 1 {
-  background-color: #b37486;
+  background-color: #fff1ab;
   border: dashed 1px;
 }
 div#\31 2 {
-  background-color: #e7a29c;
+  background-color: #b7ebbb;
   border: dashed 1px;
 }
 div#\31 3 {
-  background-color: #7c98a6;
+  background-color: #e7c0ed;
   border: dashed 1px;
 }
 div#\31 4 {
-  background-color: #d67d53;
-  border: dashed 1px;
-}
-div#\42 {
-  background-color: #5b9877;
-  border: dashed 1px;
-}
-div#\43 {
-  background-color: #534d6b;
-  border: dashed 1px;
-}
-div#\44 {
-  background-color: #e6bd57;
+  background-color: #fabec6;
   border: dashed 1px;
 }
 
