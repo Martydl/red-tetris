@@ -1,3 +1,44 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.row {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.block {
+  width: 20px;
+  height: 20px;
+}
+
+div#\30 {
+  background-color: grey;
+}
+div#\31 {
+  background-color: aqua;
+}
+div#\32 {
+  background-color: blue;
+}
+div#\33 {
+  background-color: orange;
+}
+div#\34 {
+  background-color: yellow;
+}
+div#\35 {
+  background-color: green;
+}
+div#\36 {
+  background-color: purple;
+}
+div#\37 {
+  background-color: red;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;

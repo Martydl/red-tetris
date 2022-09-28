@@ -39,9 +39,15 @@ function addPieceToMatrix(matrix: number[][], piece: Piece): number[][] {
 
 function Matrix(props: { matrix: number[][] }) {
   const print = props.matrix.map((row, i) => {
-    return <div key={i}> {row} </div>;
+    return (
+      <div key={i} className="row">
+        {row.map((block, y) => {
+          return <div key={y} className="block" id={block.toString()} />;
+        })}
+      </div>
+    );
   });
-  return <div>{print}</div>;
+  return <div className="board">{print}</div>;
 }
 
 function createMatrix(): number[][] {
