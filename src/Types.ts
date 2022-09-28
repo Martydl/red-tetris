@@ -6,6 +6,8 @@ export interface Position {
 }
 
 export interface Piece {
-  grid: PieceGrid;
-  pos: Position;
+  name: number;
+  rotation: number;
+  x: number;
+  y: number;
 }
