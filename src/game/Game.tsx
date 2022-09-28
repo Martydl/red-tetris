@@ -141,6 +141,8 @@ export default function Game() {
     console.log(queue);
   }, [queue]);
 
+//   document.getElementsByClassName('Board').focus();
+
   return (
     <div className="Board" tabIndex={0} onKeyDown={handleKeyDown}>
       <h1>Red-Tetris</h1>
