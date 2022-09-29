@@ -47,7 +47,7 @@ const checkMatrixLines = (state: GameState) => {
   }
   state.completedLine += nbCompletLine;
   state.level = Math.floor(state.completedLine / 10);
-  state.score += getPoints(state, nbCompletLine);
+  state.score += getPoints(state.level, nbCompletLine);
   if (state.delay != 1) {
     state.delay = 1001 - state.level * 100;
   }
@@ -70,7 +70,7 @@ const updateGameMatrix = (
     console.log("Game Over");
   } //
   checkMatrixLines(state);
-  state.printMatrix = updatePrintMatrix(state);
+  state.printMatrix = updatePrintMatrix(state.gameMatrix, state.currentPiece);
 };
 
 const setCurrentPieceCoords = (
@@ -78,7 +78,7 @@ const setCurrentPieceCoords = (
   action: PayloadAction<Coords>
 ) => {
   state.currentPiece.pos = action.payload;
-  state.printMatrix = updatePrintMatrix(state);
+  state.printMatrix = updatePrintMatrix(state.gameMatrix, state.currentPiece);
 };
 
 const setCurrentPieceRotation = (
@@ -86,7 +86,7 @@ const setCurrentPieceRotation = (
   action: PayloadAction<number>
 ) => {
   state.currentPiece.rotation = action.payload;
-  state.printMatrix = updatePrintMatrix(state);
+  state.printMatrix = updatePrintMatrix(state.gameMatrix, state.currentPiece);
 };
 
 const setDelay = (state: GameState, action: PayloadAction<number>) => {

@@ -46,25 +46,28 @@ export function addPieceToMatrix(matrix: number[][], piece: Piece): number[][] {
   return matrixToPrint;
 }
 
-export const updatePrintMatrix = (state: GameState): number[][] => {
-  let tmpMatrix = addPieceToMatrix(state.gameMatrix, {
-    ...state.currentPiece,
-    name: state.currentPiece.name + 7,
-    pos: moveBottom(state.gameMatrix, state.currentPiece),
+export const updatePrintMatrix = (
+  gameMatrix: number[][],
+  currentPiece: Piece
+): number[][] => {
+  let tmpMatrix = addPieceToMatrix(gameMatrix, {
+    ...currentPiece,
+    name: currentPiece.name + 7,
+    pos: moveBottom(gameMatrix, currentPiece),
   });
-  return addPieceToMatrix(tmpMatrix, state.currentPiece);
+  return addPieceToMatrix(tmpMatrix, currentPiece);
 };
 
-export const getPoints = (state: GameState, nbCompletLine: number) => {
+export const getPoints = (level: number, nbCompletLine: number) => {
   switch (nbCompletLine) {
     case 1:
-      return 40 * (state.level + 1);
+      return 40 * (level + 1);
     case 2:
-      return 100 * (state.level + 1);
+      return 100 * (level + 1);
     case 3:
-      return 300 * (state.level + 1);
+      return 300 * (level + 1);
     case 4:
-      return 1200 * (state.level + 1);
+      return 1200 * (level + 1);
     default:
       return 0;
   }
