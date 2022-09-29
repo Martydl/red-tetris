@@ -4,7 +4,7 @@
   justify-content: space-evenly;
   border: solid 2px;
   border-radius: 1%;
-  background-color: whitesmoke;
+  background-color: white;
 }
 
 .row {
@@ -20,6 +20,10 @@
   border-radius: 15%;
 }
 
+div#\30 {
+  background-color: whitesmoke;
+  border-radius: 0px;
+}
 div#\31 {
   background-color: #afe9f9;
 }
