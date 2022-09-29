@@ -71,3 +71,18 @@ export const getPoints = (level: number, nbCompletLine: number) => {
       return 0;
   }
 };
+
+export const genShadow = (gameBoard: number[][]) => {
+  var genShadow = new Array(10).fill(20);
+  for (let x = 0; x < 10; x++) {
+    for (let y = 0; y < 20; y++) {
+      if (gameBoard[y][x] == 0) {
+        genShadow[x]--;
+      } else {
+        break;
+      }
+    }
+  }
+  console.log(genShadow);
+  return genShadow;
+};

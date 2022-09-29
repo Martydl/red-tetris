@@ -30,7 +30,6 @@ function getShadow(shadow: number[]): number[][] {
       realOne[y][x] = y < 20 - shadow[x] ? 0 : 9;
     }
   }
-  console.log(realOne);
   return realOne;
 }
 
@@ -47,6 +46,7 @@ export default function Game() {
   const score = useSelector((state: RootReducerState) => state.game.score);
   const level = useSelector((state: RootReducerState) => state.game.level);
   const queue = useSelector((state: RootReducerState) => state.game.queue);
+  const shadow = useSelector((state: RootReducerState) => state.game.shadow);
 
   function handleKeyDown(event: React.KeyboardEvent) {
     switch (event.code) {
@@ -101,7 +101,7 @@ export default function Game() {
         <PrintQueue queue={queue} />
         <Score score={score} level={level} />
       </div>
-      <PrintMatrix matrix={getShadow([0, 1, 4, 3, 6, 7, 5, 4, 3, 18])} />
+      <PrintMatrix matrix={getShadow(shadow)} />
     </div>
   );
 }

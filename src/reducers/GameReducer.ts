@@ -8,6 +8,7 @@ import {
   initMatrix,
   initQueue,
   updatePrintBoard,
+  genShadow,
 } from "../game/Utils";
 import { Coords, Piece } from "../Types";
 
@@ -20,6 +21,7 @@ export interface GameState {
   completedLine: number;
   level: number;
   score: number;
+  shadow: number[];
 }
 
 const randomGen: seedrandom.PRNG = seedrandom();
@@ -33,6 +35,7 @@ const initialState: GameState = {
   completedLine: 0,
   level: 0,
   score: 0,
+  shadow: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 };
 
 const checkBoardLines = (state: GameState) => {
@@ -72,6 +75,7 @@ const updateGameBoard = (
   state.gameBoard = action.payload;
   checkBoardLines(state);
   nextPiece(state);
+  state.shadow = genShadow(state.gameBoard);
   state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
 };
 
