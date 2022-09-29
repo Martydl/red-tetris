@@ -4,24 +4,22 @@
   justify-content: space-evenly;
   border: solid 2px;
   border-radius: 1%;
+  background-color: whitesmoke;
 }
 
 .row {
   display: flex;
-  justify-content: center;
 }
 
 .block {
   width: 25px;
   height: 25px;
+  margin: 1px;
   border: solid 1px;
-  border-color: white;
+  border-color: whitesmoke;
   border-radius: 15%;
 }
 
-div#\30 {
-  background-color: whitesmoke;
-}
 div#\31 {
   background-color: #afe9f9;
 }
@@ -46,31 +44,28 @@ div#\37 {
 
 div#\38 {
   background-color: #c2f0fc;
-  border: dashed 1px;
 }
 div#\39 {
   background-color: #c9e2ff;
-  border: dashed 1px;
 }
 div#\31 0 {
   background-color: #f7cb92;
-  border: dashed 1px;
 }
 div#\31 1 {
   background-color: #fff1ab;
-  border: dashed 1px;
 }
 div#\31 2 {
   background-color: #b7ebbb;
-  border: dashed 1px;
 }
 div#\31 3 {
   background-color: #e7c0ed;
-  border: dashed 1px;
 }
 div#\31 4 {
   background-color: #fabec6;
-  border: dashed 1px;
+}
+
+div#\38, div#\39, div#\31 0, div#\31 1, div#\31 2, div#\31 3, div#\31 4 {
+  border: dotted 1px;
 }
 
 #root {
