@@ -2,9 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useInterval } from "../hooks/useInterval";
 import { RootReducerState } from "../reducers/RootReducer";
 import { gameSlice } from "../reducers/GameReducer";
-import { addPieceToMatrix } from "./Utils";
-import { piecesList } from "../Consts";
-
+import { addPieceToBoard } from "./Utils";
 import {
   moveBottom,
   moveLeft,
@@ -12,7 +10,8 @@ import {
   moveSecond,
   moveUp,
 } from "./pieceMoves";
-import { Piece } from "../Types";
+import { PrintMatrix } from "../components/PrintMatrix";
+import { PrintQueue } from "../components/PrintQueue";
 
 function Score(props: { score: number; level: number }) {
   return (
@@ -23,37 +22,11 @@ function Score(props: { score: number; level: number }) {
   );
 }
 
-function Queue(props: { queue: Piece[] }) {
-  const print = props.queue.map((piece, i) => {
-    return (
-      <div key={i} className="futurePiece">
-        <Matrix matrix={piecesList[piece.name][0]} />
-      </div>
-    );
-  });
-  return <div className="board1">{print}</div>;
-}
-
-function Matrix(props: { matrix: number[][] }) {
-  const print = props.matrix.map((row, i) => {
-    return (
-      <div key={i} className="row">
-        {row.map((block, y) => {
-          return <div key={y} className="block" id={block.toString()} />;
-        })}
-      </div>
-    );
-  });
-  return <div className="gameBoard">{print}</div>;
-}
-
 export default function Game() {
   const dispatch = useDispatch();
-  const matrix = useSelector(
-    (state: RootReducerState) => state.game.gameMatrix
-  );
+  const matrix = useSelector((state: RootReducerState) => state.game.gameBoard);
   const matrixPrint = useSelector(
-    (state: RootReducerState) => state.game.printMatrix
+    (state: RootReducerState) => state.game.printBoard
   );
   const piece = useSelector(
     (state: RootReducerState) => state.game.currentPiece
@@ -105,15 +78,15 @@ export default function Game() {
     tmpPiece
       ? dispatch(gameSlice.actions.setCurrentPieceCoords(tmpPiece))
       : dispatch(
-          gameSlice.actions.updateGameMatrix(addPieceToMatrix(matrix, piece))
+          gameSlice.actions.updateGameBoard(addPieceToBoard(matrix, piece))
         );
   }, delay);
 
   return (
     <div className="game" tabIndex={0} onKeyDown={handleKeyDown}>
-      <Matrix matrix={matrixPrint} />
+      <PrintMatrix matrix={matrixPrint} />
       <div className="gameInfo">
-        <Queue queue={queue} />
+        <PrintQueue queue={queue} />
         <Score score={score} level={level} />
       </div>
     </div>

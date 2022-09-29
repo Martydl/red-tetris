@@ -3,18 +3,17 @@ import seedrandom from "seedrandom";
 import { piecesList } from "../Consts";
 import { checkCollisions, moveBottom } from "../game/pieceMoves";
 import {
-  addPieceToMatrix,
   initPiece,
   getPoints,
   initMatrix,
   initQueue,
-  updatePrintMatrix,
+  updatePrintBoard,
 } from "../game/Utils";
 import { Coords, Piece } from "../Types";
 
 export interface GameState {
-  gameMatrix: number[][];
-  printMatrix: number[][];
+  gameBoard: number[][];
+  printBoard: number[][];
   currentPiece: Piece;
   queue: Piece[];
   delay: number;
@@ -26,8 +25,8 @@ export interface GameState {
 const randomGen: seedrandom.PRNG = seedrandom();
 
 const initialState: GameState = {
-  gameMatrix: initMatrix(),
-  printMatrix: initMatrix(),
+  gameBoard: initMatrix(),
+  printBoard: initMatrix(),
   currentPiece: initPiece(Math.round(randomGen() * 100) % 7),
   queue: initQueue(randomGen),
   delay: 1000,
@@ -36,12 +35,12 @@ const initialState: GameState = {
   score: 0,
 };
 
-const checkMatrixLines = (state: GameState) => {
+const checkBoardLines = (state: GameState) => {
   let nbCompletLine: number = 0;
-  for (let y = 0; y < state.gameMatrix.length; y++) {
-    if (!state.gameMatrix[y].includes(0)) {
-      state.gameMatrix.splice(y, 1);
-      state.gameMatrix.unshift(new Array(10).fill(0));
+  for (let y = 0; y < state.gameBoard.length; y++) {
+    if (!state.gameBoard[y].includes(0)) {
+      state.gameBoard.splice(y, 1);
+      state.gameBoard.unshift(new Array(10).fill(0));
       nbCompletLine++;
     }
   }
@@ -56,7 +55,7 @@ const checkMatrixLines = (state: GameState) => {
 
 const nextPiece = (state: GameState) => {
   if (
-    checkCollisions(state.gameMatrix, piecesList[state.queue[0].name][0], 3, 0)
+    checkCollisions(state.gameBoard, piecesList[state.queue[0].name][0], 3, 0)
   ) {
     state.currentPiece = state.queue[0];
     state.queue.shift();
@@ -66,14 +65,14 @@ const nextPiece = (state: GameState) => {
   }
 };
 
-const updateGameMatrix = (
+const updateGameBoard = (
   state: GameState,
   action: PayloadAction<number[][]>
 ): void => {
-  state.gameMatrix = action.payload;
-  checkMatrixLines(state);
+  state.gameBoard = action.payload;
+  checkBoardLines(state);
   nextPiece(state);
-  state.printMatrix = updatePrintMatrix(state.gameMatrix, state.currentPiece);
+  state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
 };
 
 const setCurrentPieceCoords = (
@@ -81,7 +80,7 @@ const setCurrentPieceCoords = (
   action: PayloadAction<Coords>
 ) => {
   state.currentPiece.pos = action.payload;
-  state.printMatrix = updatePrintMatrix(state.gameMatrix, state.currentPiece);
+  state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
 };
 
 const setCurrentPieceRotation = (
@@ -89,7 +88,7 @@ const setCurrentPieceRotation = (
   action: PayloadAction<number>
 ) => {
   state.currentPiece.rotation = action.payload;
-  state.printMatrix = updatePrintMatrix(state.gameMatrix, state.currentPiece);
+  state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
 };
 
 const setDelay = (state: GameState, action: PayloadAction<number>) => {
@@ -100,8 +99,8 @@ export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    updateGameMatrix,
-    checkMatrixLines,
+    updateGameBoard,
+    checkBoardLines,
     setCurrentPieceCoords,
     setCurrentPieceRotation,
     setDelay,

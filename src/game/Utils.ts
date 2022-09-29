@@ -28,7 +28,7 @@ export function initQueue(randomGen: seedrandom.PRNG): Piece[] {
   return queue;
 }
 
-export function addPieceToMatrix(matrix: number[][], piece: Piece): number[][] {
+export function addPieceToBoard(matrix: number[][], piece: Piece): number[][] {
   let matrixToPrint = JSON.parse(JSON.stringify(matrix));
   for (let j = 0; j < piecesList[piece.name % 7][piece.rotation].length; j++) {
     for (
@@ -45,16 +45,16 @@ export function addPieceToMatrix(matrix: number[][], piece: Piece): number[][] {
   return matrixToPrint;
 }
 
-export const updatePrintMatrix = (
+export const updatePrintBoard = (
   gameMatrix: number[][],
   currentPiece: Piece
 ): number[][] => {
-  let tmpMatrix = addPieceToMatrix(gameMatrix, {
+  let tmpMatrix = addPieceToBoard(gameMatrix, {
     ...currentPiece,
     name: currentPiece.name + 7,
     pos: moveBottom(gameMatrix, currentPiece),
   });
-  return addPieceToMatrix(tmpMatrix, currentPiece);
+  return addPieceToBoard(tmpMatrix, currentPiece);
 };
 
 export const getPoints = (level: number, nbCompletLine: number) => {
