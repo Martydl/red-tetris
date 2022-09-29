@@ -10,5 +10,5 @@ export function PrintQueue(props: { queue: Piece[] }) {
       </div>
     );
   });
-  return <div className="board1">{print}</div>;
+  return <div className="piecesList">{print}</div>;
 }

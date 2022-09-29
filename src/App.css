@@ -1,18 +1,33 @@
-.game {
-	display: flex;
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
 }
-/* 
+
+.game {
+  display: flex;
+}
+
+.game:focus-visible {
+  outline: 0px;
+}
+
 .futurePiece {
-	color: #4dc656;
-} */
+  margin-bottom: 5px;
+}
 
 .gameBoard {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   border: solid 2px;
-  border-radius: 1%;
+  border-radius: 4px;
   background-color: white;
+  margin: 0 5px 0 5px;
+}
+
+.futurePiece > .gameBoard {
+  margin: 0;
 }
 
 .row {
@@ -24,12 +39,12 @@
   height: 25px;
   margin: 1px;
   border: solid 1px;
-  border-color: whitesmoke;
+  border-color: white;
   border-radius: 15%;
 }
 
 div#\30 {
-  background-color: whitesmoke;
+  background-color: white;
   border-radius: 0px;
 }
 div#\31 {
@@ -76,13 +91,17 @@ div#\31 4 {
   background-color: #fabec6;
 }
 
-div#\38, div#\39, div#\31 0, div#\31 1, div#\31 2, div#\31 3, div#\31 4 {
+div#\38,
+div#\39,
+div#\31 0,
+div#\31 1,
+div#\31 2,
+div#\31 3,
+div#\31 4 {
   border: dotted 1px;
 }
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.game:focus div#\30,
+.game:focus .block {
+  background-color: whitesmoke;
 }

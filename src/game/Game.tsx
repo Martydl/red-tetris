@@ -22,6 +22,18 @@ function Score(props: { score: number; level: number }) {
   );
 }
 
+function getShadow(shadow: number[]): number[][] {
+  var realOne: number[][] = new Array(20);
+  for (let y = 0; y < 20; y++) {
+    realOne[y] = new Array(10);
+    for (let x = 0; x < 10; x++) {
+      realOne[y][x] = y < 20 - shadow[x] ? 0 : 9;
+    }
+  }
+  console.log(realOne);
+  return realOne;
+}
+
 export default function Game() {
   const dispatch = useDispatch();
   const matrix = useSelector((state: RootReducerState) => state.game.gameBoard);
@@ -89,6 +101,7 @@ export default function Game() {
         <PrintQueue queue={queue} />
         <Score score={score} level={level} />
       </div>
+      <PrintMatrix matrix={getShadow([0, 1, 4, 3, 6, 7, 5, 4, 3, 18])} />
     </div>
   );
 }
