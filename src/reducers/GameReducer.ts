@@ -4,7 +4,7 @@ import { piecesList } from "../Consts";
 import { checkCollisions, moveBottom } from "../game/pieceMoves";
 import {
   addPieceToMatrix,
-  createPiece,
+  initPiece,
   getPoints,
   initMatrix,
   initQueue,
@@ -28,7 +28,7 @@ const randomGen: seedrandom.PRNG = seedrandom("dildo");
 const initialState: GameState = {
   gameMatrix: initMatrix(),
   printMatrix: initMatrix(),
-  currentPiece: createPiece(Math.round(randomGen() * 100) % 7),
+  currentPiece: initPiece(Math.round(randomGen() * 100) % 7),
   queue: initQueue(randomGen),
   delay: 1000,
   completedLine: 0,
@@ -54,22 +54,25 @@ const checkMatrixLines = (state: GameState) => {
   console.log(state.completedLine, state.level, state.score);
 };
 
-const updateGameMatrix = (
-  state: GameState,
-  action: PayloadAction<number[][]>
-): void => {
-  state.gameMatrix = action.payload;
-  // sortir dans fonction new piece
+const nextPiece = (state: GameState) => {
   if (
     checkCollisions(state.gameMatrix, piecesList[state.queue[0].name][0], 3, 0)
   ) {
     state.currentPiece = state.queue[0];
     state.queue.shift();
-    state.queue.push(createPiece(Math.round(randomGen() * 100) % 7));
+    state.queue.push(initPiece(Math.round(randomGen() * 100) % 7));
   } else {
     console.log("Game Over");
-  } //
+  }
+};
+
+const updateGameMatrix = (
+  state: GameState,
+  action: PayloadAction<number[][]>
+): void => {
+  state.gameMatrix = action.payload;
   checkMatrixLines(state);
+  nextPiece(state);
   state.printMatrix = updatePrintMatrix(state.gameMatrix, state.currentPiece);
 };
 

@@ -1,6 +1,5 @@
 import seedrandom from "seedrandom";
 import { piecesList } from "../Consts";
-import { GameState } from "../reducers/GameReducer";
 import { Piece } from "../Types";
 import { moveBottom } from "./pieceMoves";
 
@@ -12,7 +11,7 @@ export function initMatrix(): number[][] {
   return matrix;
 }
 
-export function createPiece(nb: number): Piece {
+export function initPiece(nb: number): Piece {
   const piece: Piece = {
     name: nb,
     rotation: 0,
@@ -23,9 +22,9 @@ export function createPiece(nb: number): Piece {
 
 export function initQueue(randomGen: seedrandom.PRNG): Piece[] {
   let queue: Piece[] = [];
-  queue.push(createPiece(Math.round(randomGen() * 100) % 7));
-  queue.push(createPiece(Math.round(randomGen() * 100) % 7));
-  queue.push(createPiece(Math.round(randomGen() * 100) % 7));
+  queue.push(initPiece(Math.round(randomGen() * 100) % 7));
+  queue.push(initPiece(Math.round(randomGen() * 100) % 7));
+  queue.push(initPiece(Math.round(randomGen() * 100) % 7));
   return queue;
 }
 
