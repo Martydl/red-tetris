@@ -1,4 +1,12 @@
-.board {
+.game {
+	display: flex;
+}
+/* 
+.futurePiece {
+	color: #4dc656;
+} */
+
+.gameBoard {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

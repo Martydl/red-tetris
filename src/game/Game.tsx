@@ -3,6 +3,8 @@ import { useInterval } from "../hooks/useInterval";
 import { RootReducerState } from "../reducers/RootReducer";
 import { gameSlice } from "../reducers/GameReducer";
 import { addPieceToMatrix } from "./Utils";
+import { piecesList } from "../Consts";
+
 import {
   moveBottom,
   moveLeft,
@@ -15,13 +17,22 @@ import { Piece } from "../Types";
 function Score(props: { score: number; level: number }) {
   return (
     <div>
-      {props.score}
-      {props.level}
+      <div className="score">score: {props.score}</div>
+      <div className="level">level: {props.level}</div>
     </div>
   );
 }
 
-function Queue(props: { queue: Piece[] }) {}
+function Queue(props: { queue: Piece[] }) {
+  const print = props.queue.map((piece, i) => {
+    return (
+      <div key={i} className="futurePiece">
+        <Matrix matrix={piecesList[piece.name][0]} />
+      </div>
+    );
+  });
+  return <div className="board1">{print}</div>;
+}
 
 function Matrix(props: { matrix: number[][] }) {
   const print = props.matrix.map((row, i) => {
@@ -33,7 +44,7 @@ function Matrix(props: { matrix: number[][] }) {
       </div>
     );
   });
-  return <div className="board">{print}</div>;
+  return <div className="gameBoard">{print}</div>;
 }
 
 export default function Game() {
@@ -50,6 +61,7 @@ export default function Game() {
   const delay = useSelector((state: RootReducerState) => state.game.delay);
   const score = useSelector((state: RootReducerState) => state.game.score);
   const level = useSelector((state: RootReducerState) => state.game.level);
+  const queue = useSelector((state: RootReducerState) => state.game.queue);
 
   function handleKeyDown(event: React.KeyboardEvent) {
     switch (event.code) {
@@ -98,10 +110,12 @@ export default function Game() {
   }, delay);
 
   return (
-    <div className="Board" tabIndex={0} onKeyDown={handleKeyDown}>
-      <h1>Red-Tetris</h1>
+    <div className="game" tabIndex={0} onKeyDown={handleKeyDown}>
       <Matrix matrix={matrixPrint} />
-      <Score score={score} level={level} />
+      <div className="gameInfo">
+        <Queue queue={queue} />
+        <Score score={score} level={level} />
+      </div>
     </div>
   );
 }

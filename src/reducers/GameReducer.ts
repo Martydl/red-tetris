@@ -23,7 +23,7 @@ export interface GameState {
   score: number;
 }
 
-const randomGen: seedrandom.PRNG = seedrandom("dildo");
+const randomGen: seedrandom.PRNG = seedrandom();
 
 const initialState: GameState = {
   gameMatrix: initMatrix(),
