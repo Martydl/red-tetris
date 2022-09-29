@@ -1,4 +1,8 @@
+import seedrandom from "seedrandom";
+import { piecesList } from "../Consts";
+import { GameState } from "../reducers/GameReducer";
 import { Piece } from "../Types";
+import { moveBottom } from "./pieceMoves";
 
 export function initMatrix(): number[][] {
   var matrix: number[][] = new Array(20);
@@ -12,8 +16,56 @@ export function createPiece(nb: number): Piece {
   const piece: Piece = {
     name: nb,
     rotation: 0,
-    x: 3,
-    y: 0,
+    pos: { x: 3, y: 0 },
   };
   return piece;
 }
+
+export function initQueue(randomGen: seedrandom.PRNG): Piece[] {
+  let queue: Piece[] = [];
+  queue.push(createPiece(Math.round(randomGen() * 100) % 7));
+  queue.push(createPiece(Math.round(randomGen() * 100) % 7));
+  queue.push(createPiece(Math.round(randomGen() * 100) % 7));
+  return queue;
+}
+
+export function addPieceToMatrix(matrix: number[][], piece: Piece): number[][] {
+  let matrixToPrint = JSON.parse(JSON.stringify(matrix));
+  for (let j = 0; j < piecesList[piece.name % 7][piece.rotation].length; j++) {
+    for (
+      let i = 0;
+      i < piecesList[piece.name % 7][piece.rotation][j].length;
+      i++
+    ) {
+      if (piecesList[piece.name % 7][piece.rotation][j][i] === 0) {
+        continue;
+      }
+      matrixToPrint[piece.pos.y + j][piece.pos.x + i] = piece.name + 1;
+    }
+  }
+  return matrixToPrint;
+}
+
+export const updatePrintMatrix = (state: GameState): number[][] => {
+  let tmpMatrix = addPieceToMatrix(state.gameMatrix, {
+    ...state.currentPiece,
+    name: state.currentPiece.name + 7,
+    pos: moveBottom(state.gameMatrix, state.currentPiece),
+  });
+  return addPieceToMatrix(tmpMatrix, state.currentPiece);
+};
+
+export const getPoints = (state: GameState, nbCompletLine: number) => {
+  switch (nbCompletLine) {
+    case 1:
+      return 40 * (state.level + 1);
+    case 2:
+      return 100 * (state.level + 1);
+    case 3:
+      return 300 * (state.level + 1);
+    case 4:
+      return 1200 * (state.level + 1);
+    default:
+      return 0;
+  }
+};

@@ -1,5 +1,5 @@
 import { piecesList } from "../Consts";
-import { Piece } from "../Types";
+import { Coords, Piece } from "../Types";
 
 // check if piece can be place with couple x/y in matrix. [true: can]/[false: can't] be place
 export function checkCollisions(
@@ -31,18 +31,19 @@ export function moveSecond(
   matrix: number[][],
   piece: Piece,
   setDelayCbk: (delay: number) => void
-): Piece | undefined {
+): Coords | undefined {
   setDelayCbk(1000);
+  let pos: Coords = { ...piece.pos };
   if (
     checkCollisions(
       matrix,
       piecesList[piece.name][piece.rotation],
-      piece.x,
-      piece.y + 1
+      pos.x,
+      pos.y + 1
     )
   ) {
-    piece.y++;
-    return { ...piece };
+    pos.y++;
+    return pos;
   } else {
     // save piece in matrix and create new piece
     console.log("Ah ok, t'es comme ca toi, petit chenapan");
@@ -51,78 +52,83 @@ export function moveSecond(
 }
 
 // called everytime KeyLeft is pressed
-export function moveLeft(matrix: number[][], piece: Piece): Piece | undefined {
+export function moveLeft(matrix: number[][], piece: Piece): Coords | undefined {
+  let pos = { ...piece.pos };
   if (
     checkCollisions(
       matrix,
       piecesList[piece.name][piece.rotation],
-      piece.x - 1,
-      piece.y
+      pos.x - 1,
+      pos.y
     )
   ) {
-    piece.x--;
-    return { ...piece };
+    pos.x--;
+    return pos;
   } else {
-    // Don't do shit. If he's dumb enough to try this. he wouldn't win. GO KILL HIM
+    // Doesn't do shit. If he's dumb enough to try this. he wouldn't win. GO KILL HIM
     console.log("Ah ok, t'es comme ca toi, petit chenapan");
     return undefined;
   }
 }
 
 // called everytime KeyRight is pressed
-export function moveRight(matrix: number[][], piece: Piece): Piece | undefined {
+export function moveRight(
+  matrix: number[][],
+  piece: Piece
+): Coords | undefined {
+  let pos = { ...piece.pos };
   if (
     checkCollisions(
       matrix,
       piecesList[piece.name][piece.rotation],
-      piece.x + 1,
-      piece.y
+      pos.x + 1,
+      pos.y
     )
   ) {
-    piece.x++;
-    return { ...piece };
+    pos.x++;
+    return pos;
     // printMatrix(matrix, piece);
   } else {
-    // Don't do shit. If he's dumb enough to try this. he wouldn't win. GO KILL HIM
+    // Doesn't do shit. If he's dumb enough to try this. he wouldn't win. GO KILL HIM
     console.log("Ah ok, t'es comme ca toi, petit chenapan");
     return undefined;
   }
 }
 
 // called everytime KeyUp is pressed
-export function moveUp(matrix: number[][], piece: Piece): Piece | undefined {
+export function moveUp(matrix: number[][], piece: Piece): number | undefined {
   let nextRotation = (piece.rotation + 1) % 4;
   if (
     checkCollisions(
       matrix,
       piecesList[piece.name][nextRotation],
-      piece.x,
-      piece.y
+      piece.pos.x,
+      piece.pos.y
     )
   ) {
-    piece.rotation = nextRotation;
-    return { ...piece };
+    return nextRotation;
     // printMatrix(matrix, piece);
   } else {
-    // Don't do shit. If he's dumb enough to try this. he wouldn't win. GO KILL HIM
+    // Doesn't do shit. If he's dumb enough to try this. he wouldn't win. GO KILL HIM
     console.log("Ah ok, t'es comme ca toi, petit chenapan");
     return undefined;
   }
 }
 
 // called everytime KeyEsp is pressed
-export function moveBottom(matrix: number[][], piece: Piece): Piece {
+export function moveBottom(matrix: number[][], piece: Piece): Coords {
+  let pos: Coords = { ...piece.pos };
   while (
     checkCollisions(
       matrix,
       piecesList[piece.name % 7][piece.rotation],
-      piece.x,
-      piece.y + 1
+      pos.x,
+      pos.y + 1
     )
   ) {
-    piece.y++;
+    pos.y++;
   }
-  return { ...piece };
+  return pos;
   // save piece in matrix and create new piece
   // printMatrix(matrix, piece);
 }

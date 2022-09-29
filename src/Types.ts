@@ -5,9 +5,13 @@ export interface Position {
   y: number;
 }
 
+export interface Coords {
+  x: number;
+  y: number;
+}
+
 export interface Piece {
   name: number;
   rotation: number;
-  x: number;
-  y: number;
+  pos: Coords;
 }
