@@ -18,7 +18,7 @@ function Score(props: { score: number; level: number; defaultDelay: number }) {
     <div>
       <div className="score">score: {props.score}</div>
       <div className="level">level: {props.level}</div>
-      <div className="level">speed: {props.defaultDelay}</div>
+      <div className="speed">speed: {props.defaultDelay}</div>
     </div>
   );
 }
@@ -36,7 +36,6 @@ function getShadow(shadow: number[]): number[][] {
 
 export default function Game() {
   const dispatch = useDispatch();
-  const matrix = useSelector((state: RootReducerState) => state.game.gameBoard);
   const matrixPrint = useSelector(
     (state: RootReducerState) => state.game.printBoard
   );
@@ -49,6 +48,7 @@ export default function Game() {
   const defaultDelay = useSelector(
     (state: RootReducerState) => state.game.defaultDelay
   );
+  const matrix = useSelector((state: RootReducerState) => state.game.gameBoard);
   const score = useSelector((state: RootReducerState) => state.game.score);
   const level = useSelector((state: RootReducerState) => state.game.level);
   const queue = useSelector((state: RootReducerState) => state.game.queue);
@@ -80,6 +80,10 @@ export default function Game() {
             moveUp(matrix, piece) ?? piece.rotation
           )
         );
+        break;
+      case "KeyS":
+        console.log("Pourquoi on ne veut pas me swap avec ma soeur :'| snif");
+        dispatch(gameSlice.actions.swapPiece());
         break;
       case "Space":
         dispatch(

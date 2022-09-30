@@ -6,7 +6,10 @@ export function PrintQueue(props: { queue: Piece[] }) {
   const print = props.queue.map((piece, i) => {
     return (
       <div key={i} className="futurePiece">
-        <PrintMatrix matrix={piecesList[piece.name][0]} class="gameBoard" />
+        <PrintMatrix
+          matrix={piecesList[piece.name][piece.rotation]}
+          class="gameBoard"
+        />
       </div>
     );
   });

@@ -52,8 +52,8 @@ const checkBoardLines = (state: GameState) => {
       nbCompletLine++;
     }
   }
+  state.completedLine += nbCompletLine;
   state.score += getPoints(state.level, nbCompletLine);
-  state.completedLine += nbCompletLine * 10;
   state.level = Math.floor(state.completedLine / 10);
   if (state.level <= 9 && state.level != oldLevel && state.currentDelay > 1) {
     state.defaultDelay -= 50 * state.acceleration ** state.level;
@@ -106,6 +106,28 @@ const setDelay = (state: GameState, action: PayloadAction<number>) => {
   state.currentDelay = action.payload;
 };
 
+const swapPiece = (state: GameState) => {
+  if (
+    checkCollisions(
+      state.gameBoard,
+      piecesList[state.queue[0].name][state.queue[0].rotation],
+      state.currentPiece.pos.x,
+      state.currentPiece.pos.y
+    )
+  ) {
+    [state.currentPiece.name, state.queue[0].name] = [
+      state.queue[0].name,
+      state.currentPiece.name,
+    ];
+    [state.currentPiece.rotation, state.queue[0].rotation] = [
+      state.queue[0].rotation,
+      state.currentPiece.rotation,
+    ];
+    console.log(state.queue[0].rotation);
+  }
+  state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
+};
+
 export const gameSlice = createSlice({
   name: "game",
   initialState,
@@ -115,6 +137,7 @@ export const gameSlice = createSlice({
     setCurrentPieceCoords,
     setCurrentPieceRotation,
     setDelay,
+    swapPiece,
   },
 });
 
