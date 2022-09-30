@@ -83,6 +83,5 @@ export const genShadow = (gameBoard: number[][]) => {
       }
     }
   }
-  console.log(genShadow);
   return genShadow;
 };

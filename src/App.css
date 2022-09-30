@@ -16,10 +16,11 @@
   margin-bottom: 5px;
 }
 
-.gameBoard {
+.gameBoard,
+.shadowBoard {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  height: max-content;
   border: solid 2px;
   border-radius: 4px;
   background-color: white;
@@ -34,9 +35,18 @@
   display: flex;
 }
 
-.block {
+.gameBoard .block {
   width: 25px;
   height: 25px;
+  margin: 1px;
+  border: solid 1px;
+  border-color: white;
+  border-radius: 15%;
+}
+
+.shadowBoard .block {
+  width: 10px;
+  height: 10px;
   margin: 1px;
   border: solid 1px;
   border-color: white;
@@ -91,13 +101,18 @@ div#\31 4 {
   background-color: #fabec6;
 }
 
+div#\31 5 {
+  background-color: lightgray;
+}
+
 div#\38,
 div#\39,
 div#\31 0,
 div#\31 1,
 div#\31 2,
 div#\31 3,
-div#\31 4 {
+div#\31 4,
+div#\31 5 {
   border: dotted 1px;
 }
 

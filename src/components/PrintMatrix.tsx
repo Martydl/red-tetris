@@ -1,4 +1,4 @@
-export function PrintMatrix(props: { matrix: number[][] }) {
+export function PrintMatrix(props: { matrix: number[][]; class: string }) {
   const print = props.matrix.map((row, i) => {
     return (
       <div key={i} className="row">
@@ -8,5 +8,5 @@ export function PrintMatrix(props: { matrix: number[][] }) {
       </div>
     );
   });
-  return <div className="gameBoard">{print}</div>;
+  return <div className={props.class}>{print}</div>;
 }

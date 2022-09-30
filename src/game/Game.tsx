@@ -13,11 +13,12 @@ import {
 import { PrintMatrix } from "../components/PrintMatrix";
 import { PrintQueue } from "../components/PrintQueue";
 
-function Score(props: { score: number; level: number }) {
+function Score(props: { score: number; level: number; defaultDelay: number }) {
   return (
     <div>
       <div className="score">score: {props.score}</div>
       <div className="level">level: {props.level}</div>
+      <div className="level">speed: {props.defaultDelay}</div>
     </div>
   );
 }
@@ -27,7 +28,7 @@ function getShadow(shadow: number[]): number[][] {
   for (let y = 0; y < 20; y++) {
     realOne[y] = new Array(10);
     for (let x = 0; x < 10; x++) {
-      realOne[y][x] = y < 20 - shadow[x] ? 0 : 9;
+      realOne[y][x] = y < 20 - shadow[x] ? 0 : 15;
     }
   }
   return realOne;
@@ -42,7 +43,12 @@ export default function Game() {
   const piece = useSelector(
     (state: RootReducerState) => state.game.currentPiece
   );
-  const delay = useSelector((state: RootReducerState) => state.game.delay);
+  const delay = useSelector(
+    (state: RootReducerState) => state.game.currentDelay
+  );
+  const defaultDelay = useSelector(
+    (state: RootReducerState) => state.game.defaultDelay
+  );
   const score = useSelector((state: RootReducerState) => state.game.score);
   const level = useSelector((state: RootReducerState) => state.game.level);
   const queue = useSelector((state: RootReducerState) => state.game.queue);
@@ -84,7 +90,7 @@ export default function Game() {
   }
 
   useInterval(() => {
-    let tmpPiece = moveSecond(matrix, piece, (e) =>
+    let tmpPiece = moveSecond(matrix, piece, defaultDelay, (e) =>
       dispatch(gameSlice.actions.setDelay(e))
     );
     tmpPiece
@@ -96,12 +102,12 @@ export default function Game() {
 
   return (
     <div className="game" tabIndex={0} onKeyDown={handleKeyDown}>
-      <PrintMatrix matrix={matrixPrint} />
+      <PrintMatrix matrix={matrixPrint} class="gameBoard" />
       <div className="gameInfo">
         <PrintQueue queue={queue} />
-        <Score score={score} level={level} />
+        <Score score={score} level={level} defaultDelay={defaultDelay} />
       </div>
-      <PrintMatrix matrix={getShadow(shadow)} />
+      <PrintMatrix matrix={getShadow(shadow)} class="shadowBoard" />
     </div>
   );
 }

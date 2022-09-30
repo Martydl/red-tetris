@@ -30,9 +30,10 @@ export function checkCollisions(
 export function moveSecond(
   matrix: number[][],
   piece: Piece,
+  defaultDelay: number,
   setDelayCbk: (delay: number) => void
 ): Coords | undefined {
-  setDelayCbk(1000);
+  setDelayCbk(defaultDelay);
   let pos: Coords = { ...piece.pos };
   if (
     checkCollisions(
