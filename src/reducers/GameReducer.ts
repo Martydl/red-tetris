@@ -37,7 +37,7 @@ const initialState: GameState = {
   defaultDelay: 1000,
   acceleration: 1.15,
   completedLine: 0,
-  level: 7,
+  level: 0,
   score: 0,
   shadow: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 };
@@ -52,12 +52,10 @@ const checkBoardLines = (state: GameState) => {
     }
   }
   state.completedLine += nbCompletLine;
-  state.level = Math.floor(state.completedLine / 10);
-  state.score += getPoints(state.level, nbCompletLine);
   if (
     state.level > 0 &&
     state.level <= 9 &&
-    nbCompletLine > 0 &&
+    state.level != Math.floor(state.completedLine / 10) &&
     state.currentDelay > 1
   ) {
     console.log(
@@ -66,8 +64,10 @@ const checkBoardLines = (state: GameState) => {
       "defaultDelay:",
       state.defaultDelay
     );
-    state.defaultDelay -= 50 * state.acceleration ** (state.level - 1);
+    state.defaultDelay -= 50 * state.acceleration ** state.level;
   }
+  state.level = Math.floor(state.completedLine / 10);
+  state.score += getPoints(state.level, nbCompletLine);
 };
 
 const nextPiece = (state: GameState) => {
