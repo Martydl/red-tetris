@@ -53,6 +53,7 @@ export default function Game() {
   const level = useSelector((state: RootReducerState) => state.game.level);
   const queue = useSelector((state: RootReducerState) => state.game.queue);
   const shadow = useSelector((state: RootReducerState) => state.game.shadow);
+  const opponents: number[][] = [shadow, shadow];
 
   function handleKeyDown(event: React.KeyboardEvent) {
     switch (event.code) {
@@ -107,7 +108,11 @@ export default function Game() {
         <PrintQueue queue={queue} />
         <Score score={score} level={level} defaultDelay={defaultDelay} />
       </div>
-      <PrintMatrix matrix={getShadow(shadow)} class="shadowBoard" />
+      <div className="shadows">
+        {opponents.map((shadow, i) => {
+          return <PrintMatrix matrix={getShadow(shadow)} class="shadowBoard" />;
+        })}
+      </div>
     </div>
   );
 }
