@@ -52,9 +52,9 @@ const checkBoardLines = (state: GameState) => {
       nbCompletLine++;
     }
   }
-  state.completedLine += nbCompletLine;
-  state.level = Math.floor(state.completedLine / 10);
   state.score += getPoints(state.level, nbCompletLine);
+  state.completedLine += nbCompletLine * 10;
+  state.level = Math.floor(state.completedLine / 10);
   if (state.level <= 9 && state.level != oldLevel && state.currentDelay > 1) {
     state.defaultDelay -= 50 * state.acceleration ** state.level;
     if (state.defaultDelay < 100) {
