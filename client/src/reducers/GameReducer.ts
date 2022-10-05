@@ -42,16 +42,27 @@ const initialState: GameState = {
   shadow: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 };
 
+//tmp set malusRow at -1. Can be changed if needed
+const getMalusRow = (state: GameState, numberLine: number) => {
+  if (numberLine > 0) {
+    for(let i=0; i < numberLine; i++) {
+      state.gameBoard.shift();
+      state.gameBoard.push(new Array(10).fill(-1));
+    }
+  }
+}
+
 const checkBoardLines = (state: GameState) => {
   let nbCompletLine: number = 0;
   let oldLevel = state.level;
   for (let y = 0; y < state.gameBoard.length; y++) {
-    if (!state.gameBoard[y].includes(0)) {
+    if (!state.gameBoard[y].includes(0) && !state.gameBoard[y].includes(-1)) {
       state.gameBoard.splice(y, 1);
       state.gameBoard.unshift(new Array(10).fill(0));
       nbCompletLine++;
     }
   }
+  getMalusRow(state, nbCompletLine); // May put this function at an other place
   state.completedLine += nbCompletLine;
   state.score += getPoints(state.level, nbCompletLine);
   state.level = Math.floor(state.completedLine / 10);
