@@ -1,0 +1,22 @@
+{
+  "name": "red-tetris",
+  "version": "1.0.0",
+  "description": "42 project: multiplayer web-based Tetris",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"vite server\" \"vite build client --watch\"",
+    "cli-dev": "vite client",
+    "cli-build": "vite build client",
+    "srv-dev": "vite server",
+    "srv-build": "vite build server",
+    "build": "npm run srv-build && npm run cli-build",
+    "run-build": "node dist/server/app.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^7.4.0",
+    "vite": "^3.1.4"
+  },
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useInterval } from "../hooks/useInterval";
+import { useInterval } from "usehooks-ts";
 import { RootReducerState } from "../reducers/RootReducer";
 import { gameSlice } from "../reducers/GameReducer";
 import { addPieceToBoard } from "./Utils";
