@@ -4,11 +4,11 @@
   "description": "42 project: multiplayer web-based Tetris",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"vite server\" \"vite build client --watch\"",
+    "dev": "concurrently \"vite server\" \"vite build client --watch --outDir ../server/client --emptyOutDir\"",
     "cli-dev": "vite client",
-    "cli-build": "vite build client",
+    "cli-build": "vite build client --emptyOutDir",
     "srv-dev": "vite server",
-    "srv-build": "vite build server",
+    "srv-build": "vite build server --emptyOutDir",
     "build": "npm run srv-build && npm run cli-build",
     "run-build": "node dist/server/app.mjs"
   },
