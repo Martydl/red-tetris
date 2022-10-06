@@ -1,10 +1,11 @@
-import { useState } from "react";
 import "./App.css";
 import Game from "./game/Game";
+import socketIo from "socket.io-client";
+
+const socket = socketIo();
+console.log(socket);
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return <Game />;
 }
 
