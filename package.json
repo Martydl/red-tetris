@@ -1,20 +1,20 @@
 {
   "name": "red-tetris",
+  "private": true,
   "version": "1.0.0",
   "description": "42 project: multiplayer web-based Tetris",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"vite server\" \"vite build client --watch --outDir ../server/client --emptyOutDir\"",
-    "cli-dev": "vite client",
-    "cli-build": "vite build client --emptyOutDir",
-    "srv-dev": "vite server",
-    "srv-build": "vite build server --emptyOutDir",
+    "dev": "concurrently \"npm run srv-dev\" \"npm --prefix client run build-dev\"",
+    "cli-dev": "npm --prefix client run dev",
+    "cli-build": "npm --prefix client run build",
+    "srv-dev": "npm --prefix server run dev",
+    "srv-build": "npm --prefix server run build",
     "build": "npm run srv-build && npm run cli-build",
-    "run-build": "node dist/server/app.mjs"
+    "start": "cd dist && node app.js"
   },
   "devDependencies": {
-    "concurrently": "^7.4.0",
-    "vite": "^3.1.4"
+    "concurrently": "^7.4.0"
   },
   "dependencies": {
     "express": "^4.18.1"

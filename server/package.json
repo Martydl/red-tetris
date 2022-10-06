@@ -1,15 +1,11 @@
 {
-  "name": "express-typescript",
+  "name": "red-tetris-server",
+  "private": "true",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "build": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "express": "^4.18.1"
   },
