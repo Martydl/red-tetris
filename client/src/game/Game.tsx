@@ -54,8 +54,10 @@ export default function Game() {
   const queue = useSelector((state: RootReducerState) => state.game.queue);
   const shadow = useSelector((state: RootReducerState) => state.game.shadow);
   const opponents: number[][] = [shadow, shadow];
+  const gameOver = useSelector((state: RootReducerState) => state.game.gameOver);
 
   function handleKeyDown(event: React.KeyboardEvent) {
+    // console.log('keycode: ', event.code);
     switch (event.code) {
       case "ArrowLeft":
         dispatch(
@@ -85,6 +87,10 @@ export default function Game() {
         console.log("Pourquoi on ne veut pas me swap avec ma soeur :'| snif");
         dispatch(gameSlice.actions.swapPiece());
         break;
+      case "NumpadAdd":
+        console.log("Plus 1 malus, tu vas faire quoi ?");
+        dispatch(gameSlice.actions.getMalusRow(1));
+        break;
       case "Space":
         dispatch(
           gameSlice.actions.setCurrentPieceCoords(moveBottom(matrix, piece))
@@ -95,18 +101,34 @@ export default function Game() {
   }
 
   useInterval(() => {
-    let tmpPiece = moveSecond(matrix, piece, defaultDelay, (e) =>
-      dispatch(gameSlice.actions.setDelay(e))
-    );
-    tmpPiece
-      ? dispatch(gameSlice.actions.setCurrentPieceCoords(tmpPiece))
-      : dispatch(
-          gameSlice.actions.updateGameBoard(addPieceToBoard(matrix, piece))
-        );
+    if (!gameOver) {
+      let tmpPiece = moveSecond(matrix, piece, defaultDelay, (e) =>
+        dispatch(gameSlice.actions.setDelay(e))
+      );
+      tmpPiece
+        ? dispatch(gameSlice.actions.setCurrentPieceCoords(tmpPiece))
+        : dispatch(
+            gameSlice.actions.updateGameBoard(addPieceToBoard(matrix, piece))
+          );
+    }
+    else {
+      console.log("T'as deja perdu ?!",gameOver)
+    }
   }, delay);
 
   return (
     <div className="game" tabIndex={0} onKeyDown={handleKeyDown}>
+      <div>
+        <p>
+          command:<br/>
+          · ← / → move piece<br/>
+          · ↓ falling piece<br/>
+          · ↑ rotate clockwise<br/>
+          · "Space" place piece<br/>
+          · "S" swap piece with next piece<br/>
+          · "+" add malus
+        </p>
+      </div>
       <PrintMatrix matrix={matrixPrint} class="gameBoard" />
       <div className="gameInfo">
         <PrintQueue queue={queue} />

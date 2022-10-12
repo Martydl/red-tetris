@@ -9,6 +9,7 @@ import {
   initQueue,
   updatePrintBoard,
   genShadow,
+  addPieceToBoard,
 } from "../game/Utils";
 import { Coords, Piece } from "../Types";
 
@@ -24,6 +25,7 @@ export interface GameState {
   level: number;
   score: number;
   shadow: number[];
+  gameOver: boolean;
 }
 
 const randomGen: seedrandom.PRNG = seedrandom();
@@ -40,15 +42,23 @@ const initialState: GameState = {
   level: 0,
   score: 0,
   shadow: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  gameOver: false,
 };
 
 //tmp set malusRow at -1. Can be changed if needed
-const getMalusRow = (state: GameState, numberLine: number) => {
-  if (numberLine > 0) {
-    for(let i=0; i < numberLine; i++) {
+const getMalusRow = (state: GameState, action: PayloadAction<number>) => {
+  if (JSON.stringify(state.gameBoard[0]) === "[0,0,0,0,0,0,0,0,0,0]") {
+    for(let i=0; i < action.payload; i++) {
+      if (!checkCollisions(state.gameBoard, piecesList[state.currentPiece.name%7][state.currentPiece.rotation], state.currentPiece.pos.x, state.currentPiece.pos.y+1)) {
+        state.currentPiece.pos.y--;
+        gameSlice.actions.updateGameBoard(addPieceToBoard(state.gameBoard, state.currentPiece));
+      }
       state.gameBoard.shift();
       state.gameBoard.push(new Array(10).fill(-1));
     }
+  }
+  else {
+    state.gameOver = true;
   }
 }
 
@@ -62,7 +72,7 @@ const checkBoardLines = (state: GameState) => {
       nbCompletLine++;
     }
   }
-  getMalusRow(state, nbCompletLine); // May put this function at an other place
+  // getMalusRow(state, nbCompletLine); // May put this function at an other place
   state.completedLine += nbCompletLine;
   state.score += getPoints(state.level, nbCompletLine);
   state.level = Math.floor(state.completedLine / 10);
@@ -82,7 +92,8 @@ const nextPiece = (state: GameState) => {
     state.queue.shift();
     state.queue.push(initPiece(Math.round(randomGen() * 100) % 7));
   } else {
-    console.log("Game Over");
+    state.gameOver = true;
+    console.log("Game Over:", state.gameOver);
   }
 };
 
@@ -143,6 +154,7 @@ export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
+    getMalusRow,
     updateGameBoard,
     checkBoardLines,
     setCurrentPieceCoords,
