@@ -2,39 +2,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useInterval } from "usehooks-ts";
 import { RootReducerState } from "../reducers/RootReducer";
 import { gameSlice } from "../reducers/GameReducer";
-import { addPieceToBoard, getMalusRow, updatePrintBoard } from "./Utils";
+import { addPieceToBoard, getMalusRow, getShadow } from "./Utils";
 import {
   moveBottom,
   moveLeft,
   moveRight,
   moveSecond,
   moveUp,
-} from "./pieceMoves";
+} from "./PieceMoves";
 import { PrintMatrix } from "../components/PrintMatrix";
 import { PrintQueue } from "../components/PrintQueue";
+import { PrintScore } from "../components/PrintScore";
 
-function Score(props: { score: number; level: number; defaultDelay: number }) {
-  return (
-    <div>
-      <div className="score">score: {props.score}</div>
-      <div className="level">level: {props.level}</div>
-      <div className="speed">speed: {props.defaultDelay}</div>
-    </div>
-  );
-}
-
-function getShadow(shadow: number[]): number[][] {
-  var realOne: number[][] = new Array(20);
-  for (let y = 0; y < 20; y++) {
-    realOne[y] = new Array(10);
-    for (let x = 0; x < 10; x++) {
-      realOne[y][x] = y < 20 - shadow[x] ? 0 : 15;
-    }
-  }
-  return realOne;
-}
-
-export default function Game() {
+export default function GameOn() {
   const dispatch = useDispatch();
   const matrixPrint = useSelector(
     (state: RootReducerState) => state.game.printBoard
@@ -54,10 +34,9 @@ export default function Game() {
   const queue = useSelector((state: RootReducerState) => state.game.queue);
   const shadow = useSelector((state: RootReducerState) => state.game.shadow);
   const opponents: number[][] = [shadow, shadow];
-  const gameOver = useSelector((state: RootReducerState) => state.game.gameOver);
+  const gameOn = useSelector((state: RootReducerState) => state.game.gameOn);
 
   function handleKeyDown(event: React.KeyboardEvent) {
-    // console.log('keycode: ', event.code);
     switch (event.code) {
       case "ArrowLeft":
         dispatch(
@@ -88,13 +67,7 @@ export default function Game() {
         dispatch(gameSlice.actions.swapPiece());
         break;
       case "NumpadAdd":
-        if (JSON.stringify(matrix[0]) === "[0,0,0,0,0,0,0,0,0,0]") {
-          console.log("Plus 1 malus, tu vas faire quoi ?");
-          dispatch(gameSlice.actions.setGameBoardMatrix(getMalusRow([...matrix], piece)));
-        }
-        else {
-          console.log("Pas assez de place pour mettre un malus, déso, t'es deja au fond du trou");
-        }
+        dispatch(gameSlice.actions.setGameBoardMatrix(getMalusRow([...matrix], piece)));
         break;
       case "Space":
         dispatch(
@@ -106,7 +79,7 @@ export default function Game() {
   }
 
   useInterval(() => {
-    if (!gameOver) {
+    if (gameOn) {
       let tmpPiece = moveSecond(matrix, piece, defaultDelay, (e) =>
         dispatch(gameSlice.actions.setDelay(e))
       );
@@ -117,7 +90,7 @@ export default function Game() {
           );
     }
     else {
-      console.log("T'as deja perdu ?!",gameOver)
+      console.log("T'as deja perdu ?!",gameOn)
     }
   }, delay);
 
@@ -137,7 +110,7 @@ export default function Game() {
       <PrintMatrix matrix={matrixPrint} class="gameBoard" />
       <div className="gameInfo">
         <PrintQueue queue={queue} />
-        <Score score={score} level={level} defaultDelay={defaultDelay} />
+        <PrintScore score={score} level={level} defaultDelay={defaultDelay} />
       </div>
       <div className="shadows">
         {opponents.map((shadow, i) => {

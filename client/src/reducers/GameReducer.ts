@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import seedrandom from "seedrandom";
 import { piecesList } from "../Consts";
-import { checkCollisions } from "../game/pieceMoves";
+import { checkCollisions } from "../game/PieceMoves";
 import {
   initPiece,
   getPoints,
@@ -25,7 +25,7 @@ export interface GameState {
   level: number;
   score: number;
   shadow: number[];
-  gameOver: boolean;
+  gameOn: boolean;
 }
 
 const randomGen: seedrandom.PRNG = seedrandom();
@@ -42,7 +42,7 @@ const initialState: GameState = {
   level: 0,
   score: 0,
   shadow: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  gameOver: false,
+  gameOn: true,
 };
 
 const checkBoardLines = (state: GameState) => {
@@ -74,8 +74,8 @@ const nextPiece = (state: GameState) => {
     state.queue.shift();
     state.queue.push(initPiece(Math.round(randomGen() * 100) % 7));
   } else {
-    state.gameOver = true;
-    console.log("Game Over:", state.gameOver);
+    state.gameOn = false;
+    console.log("Game Over:", !state.gameOn);
   }
 };
 
@@ -136,22 +136,29 @@ const setGameBoardMatrix = (
   state: GameState,
   action: PayloadAction<number[][]>
 ): void => {
-  state.gameBoard = action.payload;
-  if (
-    !checkCollisions(
-      state.gameBoard,
-      piecesList[state.currentPiece.name][state.currentPiece.rotation],
-      state.currentPiece.pos.x,
-      state.currentPiece.pos.y
-    )
-  ) {
-    state.currentPiece.pos.y--;
-    state.gameBoard = addPieceToBoard(state.gameBoard, state.currentPiece);
-    nextPiece(state);
+  if (JSON.stringify(state.gameBoard[0]) === "[0,0,0,0,0,0,0,0,0,0]") {
+    state.gameBoard = action.payload;
+    if (
+      !checkCollisions(
+        state.gameBoard,
+        piecesList[state.currentPiece.name][state.currentPiece.rotation],
+        state.currentPiece.pos.x,
+        state.currentPiece.pos.y
+      )
+    ) {
+      state.currentPiece.pos.y--;
+      state.gameBoard = addPieceToBoard(state.gameBoard, state.currentPiece);
+      nextPiece(state);
+    }
+    checkBoardLines(state);
+    state.shadow = genShadow(state.gameBoard);
+    state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
+    console.log("Plus 1 malus, tu vas faire quoi ?");
   }
-  checkBoardLines(state);
-  state.shadow = genShadow(state.gameBoard);
-  state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
+  else {
+    state.gameOn = false;
+    console.log("Pas assez de place pour mettre un malus, déso, t'es deja au fond du trou");
+  }
 }
 
 export const gameSlice = createSlice({

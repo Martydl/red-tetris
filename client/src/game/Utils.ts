@@ -1,7 +1,7 @@
 import seedrandom from "seedrandom";
 import { piecesList } from "../Consts";
 import { Piece } from "../Types";
-import { moveBottom } from "./pieceMoves";
+import { moveBottom } from "./PieceMoves";
 
 export function initMatrix(): number[][] {
   var matrix: number[][] = new Array(20);
@@ -90,4 +90,15 @@ export const getMalusRow = (matrix: number[][], currentPiece:Piece):number[][] =
   matrix.shift();
   matrix.push(new Array(10).fill(-1));
   return matrix;
+}
+
+export const getShadow = (shadow: number[]): number[][] => {
+  var realOne: number[][] = new Array(20);
+  for (let y = 0; y < 20; y++) {
+    realOne[y] = new Array(10);
+    for (let x = 0; x < 10; x++) {
+      realOne[y][x] = y < 20 - shadow[x] ? 0 : 15;
+    }
+  }
+  return realOne;
 }

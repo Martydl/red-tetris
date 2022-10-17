@@ -53,6 +53,25 @@
   border-radius: 15%;
 }
 
+.gameOver {
+  position: absolute;
+  width: 294px;
+  height: 584px;
+  margin: 0 25px 5px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  backdrop-filter: blur(1px);
+}
+
+.gameOver > p {
+  background-color: white;
+  border: solid 2px;
+  border-radius: 5%;
+  padding: 3px
+}
+
 div#\30 {
   background-color: white;
   border-radius: 0px;
