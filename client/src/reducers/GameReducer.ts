@@ -146,6 +146,8 @@ const setGameBoardMatrix = (
     )
   ) {
     state.currentPiece.pos.y--;
+    state.gameBoard = addPieceToBoard(state.gameBoard, state.currentPiece);
+    nextPiece(state);
   }
   checkBoardLines(state);
   state.shadow = genShadow(state.gameBoard);

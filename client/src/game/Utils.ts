@@ -1,7 +1,7 @@
 import seedrandom from "seedrandom";
 import { piecesList } from "../Consts";
 import { Piece } from "../Types";
-import { moveBottom, checkCollisions } from "./pieceMoves";
+import { moveBottom } from "./pieceMoves";
 
 export function initMatrix(): number[][] {
   var matrix: number[][] = new Array(20);
