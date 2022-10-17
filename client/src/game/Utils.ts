@@ -1,7 +1,7 @@
 import seedrandom from "seedrandom";
 import { piecesList } from "../Consts";
 import { Piece } from "../Types";
-import { moveBottom } from "./pieceMoves";
+import { moveBottom, checkCollisions } from "./pieceMoves";
 
 export function initMatrix(): number[][] {
   var matrix: number[][] = new Array(20);
@@ -85,3 +85,9 @@ export const genShadow = (gameBoard: number[][]) => {
   }
   return genShadow;
 };
+
+export const getMalusRow = (matrix: number[][], currentPiece:Piece):number[][] => {
+  matrix.shift();
+  matrix.push(new Array(10).fill(-1));
+  return matrix;
+}

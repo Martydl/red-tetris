@@ -45,23 +45,6 @@ const initialState: GameState = {
   gameOver: false,
 };
 
-//tmp set malusRow at -1. Can be changed if needed
-const getMalusRow = (state: GameState, action: PayloadAction<number>) => {
-  if (JSON.stringify(state.gameBoard[0]) === "[0,0,0,0,0,0,0,0,0,0]") {
-    for(let i=0; i < action.payload; i++) {
-      if (!checkCollisions(state.gameBoard, piecesList[state.currentPiece.name%7][state.currentPiece.rotation], state.currentPiece.pos.x, state.currentPiece.pos.y+1)) {
-        state.currentPiece.pos.y--;
-        gameSlice.actions.updateGameBoard(addPieceToBoard(state.gameBoard, state.currentPiece));
-      }
-      state.gameBoard.shift();
-      state.gameBoard.push(new Array(10).fill(-1));
-    }
-  }
-  else {
-    state.gameOver = true;
-  }
-}
-
 const checkBoardLines = (state: GameState) => {
   let nbCompletLine: number = 0;
   let oldLevel = state.level;
@@ -72,7 +55,6 @@ const checkBoardLines = (state: GameState) => {
       nbCompletLine++;
     }
   }
-  // getMalusRow(state, nbCompletLine); // May put this function at an other place
   state.completedLine += nbCompletLine;
   state.score += getPoints(state.level, nbCompletLine);
   state.level = Math.floor(state.completedLine / 10);
@@ -150,17 +132,37 @@ const swapPiece = (state: GameState) => {
   state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
 };
 
+const setGameBoardMatrix = (
+  state: GameState,
+  action: PayloadAction<number[][]>
+): void => {
+  state.gameBoard = action.payload;
+  if (
+    !checkCollisions(
+      state.gameBoard,
+      piecesList[state.currentPiece.name][state.currentPiece.rotation],
+      state.currentPiece.pos.x,
+      state.currentPiece.pos.y
+    )
+  ) {
+    state.currentPiece.pos.y--;
+  }
+  checkBoardLines(state);
+  state.shadow = genShadow(state.gameBoard);
+  state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
+}
+
 export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    getMalusRow,
     updateGameBoard,
     checkBoardLines,
     setCurrentPieceCoords,
     setCurrentPieceRotation,
     setDelay,
     swapPiece,
+    setGameBoardMatrix,
   },
 });
 

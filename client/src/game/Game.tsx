@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useInterval } from "usehooks-ts";
 import { RootReducerState } from "../reducers/RootReducer";
 import { gameSlice } from "../reducers/GameReducer";
-import { addPieceToBoard } from "./Utils";
+import { addPieceToBoard, getMalusRow, updatePrintBoard } from "./Utils";
 import {
   moveBottom,
   moveLeft,
@@ -88,8 +88,13 @@ export default function Game() {
         dispatch(gameSlice.actions.swapPiece());
         break;
       case "NumpadAdd":
-        console.log("Plus 1 malus, tu vas faire quoi ?");
-        dispatch(gameSlice.actions.getMalusRow(1));
+        if (JSON.stringify(matrix[0]) === "[0,0,0,0,0,0,0,0,0,0]") {
+          console.log("Plus 1 malus, tu vas faire quoi ?");
+          dispatch(gameSlice.actions.setGameBoardMatrix(getMalusRow([...matrix], piece)));
+        }
+        else {
+          console.log("Pas assez de place pour mettre un malus, déso, t'es deja au fond du trou");
+        }
         break;
       case "Space":
         dispatch(
