@@ -4,6 +4,7 @@ import { PrintEndScreen } from "../components/PrintEndScreen";
 import { PrintMatrix } from "../components/PrintMatrix";
 import { PrintQueue } from "../components/PrintQueue";
 import { PrintScore } from "../components/PrintScore";
+import { PrintCommand } from "../components/PrintCommand";
 import { getShadow } from "./Utils";
 
 export default function GameOn() {
@@ -21,17 +22,7 @@ export default function GameOn() {
 
   return (
     <div className="game">
-      <div>
-        <p>
-          command:<br/>
-          · ← / → move piece<br/>
-          · ↓ falling piece<br/>
-          · ↑ rotate clockwise<br/>
-          · "Space" place piece<br/>
-          · "S" swap piece with next piece<br/>
-          · "+" add malus
-        </p>
-      </div>
+      <PrintCommand />
       <div>
         <PrintEndScreen score={score} />
         <PrintMatrix matrix={matrixPrint} class="gameBoard" />

@@ -13,6 +13,7 @@ import {
 import { PrintMatrix } from "../components/PrintMatrix";
 import { PrintQueue } from "../components/PrintQueue";
 import { PrintScore } from "../components/PrintScore";
+import { PrintCommand } from "../components/PrintCommand";
 
 export default function GameOn() {
   const dispatch = useDispatch();
@@ -97,22 +98,7 @@ export default function GameOn() {
 
   return (
     <div className="game" tabIndex={0} onKeyDown={handleKeyDown}>
-      <div>
-        <p>
-          command:
-          <br />
-          · ← / → move piece
-          <br />
-          · ↓ falling piece
-          <br />
-          · ↑ rotate clockwise
-          <br />
-          · "Space" place piece
-          <br />
-          · "S" swap piece with next piece
-          <br />· "+" add malus
-        </p>
-      </div>
+      <PrintCommand />
       <PrintMatrix matrix={matrixPrint} class="gameBoard" />
       <div className="gameInfo">
         <PrintQueue queue={queue} />

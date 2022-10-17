@@ -9,4 +9,3 @@ export function PrintEndScreen(props: { score: number }) {
       </div>
     );
   }
-  
