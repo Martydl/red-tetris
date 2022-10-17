@@ -67,7 +67,9 @@ export default function GameOn() {
         dispatch(gameSlice.actions.swapPiece());
         break;
       case "NumpadAdd":
-        dispatch(gameSlice.actions.setGameBoardMatrix(getMalusRow([...matrix], piece)));
+        dispatch(
+          gameSlice.actions.setGameBoardMatrix(getMalusRow([...matrix], piece))
+        );
         break;
       case "Space":
         dispatch(
@@ -88,9 +90,8 @@ export default function GameOn() {
         : dispatch(
             gameSlice.actions.updateGameBoard(addPieceToBoard(matrix, piece))
           );
-    }
-    else {
-      console.log("T'as deja perdu ?!",gameOn)
+    } else {
+      console.log("T'as deja perdu ?!", gameOn);
     }
   }, delay);
 
@@ -98,13 +99,18 @@ export default function GameOn() {
     <div className="game" tabIndex={0} onKeyDown={handleKeyDown}>
       <div>
         <p>
-          command:<br/>
-          · ← / → move piece<br/>
-          · ↓ falling piece<br/>
-          · ↑ rotate clockwise<br/>
-          · "Space" place piece<br/>
-          · "S" swap piece with next piece<br/>
-          · "+" add malus
+          command:
+          <br />
+          · ← / → move piece
+          <br />
+          · ↓ falling piece
+          <br />
+          · ↑ rotate clockwise
+          <br />
+          · "Space" place piece
+          <br />
+          · "S" swap piece with next piece
+          <br />· "+" add malus
         </p>
       </div>
       <PrintMatrix matrix={matrixPrint} class="gameBoard" />

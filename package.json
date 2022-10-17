@@ -4,10 +4,12 @@
   "version": "1.0.0",
   "description": "42 project: multiplayer web-based Tetris",
   "scripts": {
+    "postinstall": "cd client && npm install && cd ../server && npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"npm run srv-dev\" \"npm --prefix client run build-dev\"",
+    "dev": "concurrently \"npm --prefix client run build-srv-watch\" \"npm run srv-dev\"",
     "cli-dev": "npm --prefix client run dev",
     "cli-build": "npm --prefix client run build",
+    "cli-build-srv": "npm --prefix client run build-srv",
     "srv-dev": "npm --prefix server run dev",
     "srv-build": "npm --prefix server run build",
     "build": "npm run srv-build && npm run cli-build",
