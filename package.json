@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "cd client && npm install && cd ../server && npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"npm run srv-dev\" \"npm --prefix client run build-srv-watch\"",
+    "dev": "concurrently \"npm --prefix client run build-srv-watch\" \"npm run srv-dev\"",
     "cli-dev": "npm --prefix client run dev",
     "cli-build": "npm --prefix client run build",
     "cli-build-srv": "npm --prefix client run build-srv",
@@ -16,7 +16,10 @@
     "start": "cd dist && node app.js"
   },
   "devDependencies": {
-    "concurrently": "^7.4.0"
+    "@vitest/coverage-c8": "^0.24.3",
+    "@vitest/ui": "^0.24.3",
+    "concurrently": "^7.4.0",
+    "vitest": "^0.24.3"
   },
   "dependencies": {
     "express": "^4.18.1",
