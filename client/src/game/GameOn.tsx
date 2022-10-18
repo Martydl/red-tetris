@@ -105,9 +105,13 @@ export default function GameOn() {
         <PrintScore score={score} level={level} defaultDelay={defaultDelay} />
       </div>
       <div className="shadows">
-        {opponents.map((shadow, i) => {
-          return <PrintMatrix matrix={getShadow(shadow)} class="shadowBoard" />;
-        })}
+        {opponents.map((shadow, index) => (
+          <PrintMatrix
+            key={index}
+            matrix={getShadow(shadow)}
+            class="shadowBoard"
+          />
+        ))}
       </div>
     </div>
   );

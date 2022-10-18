@@ -1,12 +1,23 @@
+function ListBlock(props: { block: number }): JSX.Element {
+  return <div className="block" id={props.block.toString()} />;
+}
+
+function ListRow(props: { row: number[] }): JSX.Element {
+  return (
+    <div className="row">
+      {props.row.map((block, index) => (
+        <ListBlock key={index} block={block} />
+      ))}
+    </div>
+  );
+}
+
 export function PrintMatrix(props: { matrix: number[][]; class: string }) {
-  const print = props.matrix.map((row, i) => {
-    return (
-      <div key={i} className="row">
-        {row.map((block, y) => {
-          return <div key={y} className="block" id={block.toString()} />;
-        })}
-      </div>
-    );
-  });
-  return <div className={props.class}>{print}</div>;
+  return (
+    <div className={props.class}>
+      {props.matrix.map((row, index) => (
+        <ListRow key={index} row={row} />
+      ))}
+    </div>
+  );
 }

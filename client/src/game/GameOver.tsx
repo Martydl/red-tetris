@@ -5,11 +5,14 @@ import { PrintMatrix } from "../components/PrintMatrix";
 import { PrintQueue } from "../components/PrintQueue";
 import { PrintScore } from "../components/PrintScore";
 import { PrintCommand } from "../components/PrintCommand";
-import { getShadow } from "./Utils";
+import { addPieceToBoard, getShadow } from "./Utils";
 
-export default function GameOn() {
-  const matrixPrint = useSelector(
-    (state: RootReducerState) => state.game.printBoard
+export default function GameOver() {
+  const gameBoard = useSelector(
+    (state: RootReducerState) => state.game.gameBoard
+  );
+  const currentPiece = useSelector(
+    (state: RootReducerState) => state.game.currentPiece
   );
   const defaultDelay = useSelector(
     (state: RootReducerState) => state.game.defaultDelay
@@ -25,16 +28,23 @@ export default function GameOn() {
       <PrintCommand />
       <div>
         <PrintEndScreen score={score} />
-        <PrintMatrix matrix={matrixPrint} class="gameBoard" />
+        <PrintMatrix
+          matrix={addPieceToBoard(gameBoard, currentPiece)}
+          class="gameBoard"
+        />
       </div>
       <div className="gameInfo">
         <PrintQueue queue={queue} />
         <PrintScore score={score} level={level} defaultDelay={defaultDelay} />
       </div>
       <div className="shadows">
-        {opponents.map((shadow, i) => {
-          return <PrintMatrix matrix={getShadow(shadow)} class="shadowBoard" />;
-        })}
+        {opponents.map((shadow, index) => (
+          <PrintMatrix
+            key={index}
+            matrix={getShadow(shadow)}
+            class="shadowBoard"
+          />
+        ))}
       </div>
     </div>
   );
