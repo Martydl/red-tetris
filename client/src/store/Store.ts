@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import socketMiddleware from "./socketMiddleware";
+import socketMiddleware from "./SocketMiddleware";
 import rootReducer from "./RootReducer";
 
 export const store = configureStore({

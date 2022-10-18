@@ -14,22 +14,16 @@ const socketMiddleware: Middleware = (store) => {
 
       socket.on("connect", () => {
         store.dispatch(socketSlice.actions.connectionEstablished());
-        // socket.emit(ChatEvent.RequestAllMessages);
       });
 
-      socket.on("swapped", (txt_var: string) => {
-        console.log("txt_var");
+      socket.on("swap", (txt_var: string) => {
+        console.log("From server: ", txt_var);
       });
     }
 
     if (gameSlice.actions.swapPiece.match(action) && isConnectionEstablished) {
-      console.log("ici");
-      socket.emit("hello", "world");
+      socket.emit("swap", "swap pressed");
     }
-
-    // if (socketSlice.actions.submitMessage.match(action) && isConnectionEstablished) {
-    //   socket.emit(ChatEvent.SendMessage, action.payload.content);
-    // }
 
     next(action);
   };

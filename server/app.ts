@@ -14,22 +14,15 @@ httpServer.listen(3000, () => {
 
 app.use(express.static("client"));
 app.get("/", (req: Request, res: Response) => {
-  // res.send("Express + TypeScript Server Red-Tetris");
   res.sendFile("client/index.html", { root: "." });
 });
 
 io.on("connection", (socket) => {
   console.log("new client: ", socket.id);
-  socket.emit("test", "bite");
-});
+  socket.emit("test", "test_txt");
 
-io.on("swap", () => {
-  console.log("ici");
-  // socket.emit("swapped", "swap");
+  socket.on("swap", (arg) => {
+    console.log("From client: ", arg); // world
+    socket.emit("swap", "swap detected");
+  });
 });
-
-io.on("hello", (arg) => {
-  console.log(arg); // world
-});
-
-// export const viteNodeApp = app;
