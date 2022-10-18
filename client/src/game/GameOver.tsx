@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { RootReducerState } from "../reducers/RootReducer";
+import { RootReducerState } from "../store/RootReducer";
 import { PrintEndScreen } from "../components/PrintEndScreen";
 import { PrintMatrix } from "../components/PrintMatrix";
 import { PrintQueue } from "../components/PrintQueue";

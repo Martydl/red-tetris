@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useInterval } from "usehooks-ts";
-import { RootReducerState } from "../reducers/RootReducer";
-import { gameSlice } from "../reducers/GameReducer";
+import { RootReducerState } from "../store/RootReducer";
+import { gameSlice } from "../store/GameReducer";
 import { addPieceToBoard, getMalusRow, getShadow } from "./Utils";
 import {
   moveBottom,
@@ -64,7 +64,7 @@ export default function GameOn() {
         );
         break;
       case "KeyS":
-        console.log("Pourquoi on ne veut pas me swap avec ma soeur :'| snif");
+        // console.log("Pourquoi on ne veut pas me swap avec ma soeur :'| snif");
         dispatch(gameSlice.actions.swapPiece());
         break;
       case "NumpadAdd":

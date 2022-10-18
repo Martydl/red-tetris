@@ -19,8 +19,17 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 io.on("connection", (socket) => {
-  console.log(socket.id);
-  console.log("coucou");
+  console.log("new client: ", socket.id);
+  socket.emit("test", "bite");
+});
+
+io.on("swap", () => {
+  console.log("ici");
+  // socket.emit("swapped", "swap");
+});
+
+io.on("hello", (arg) => {
+  console.log(arg); // world
 });
 
 // export const viteNodeApp = app;

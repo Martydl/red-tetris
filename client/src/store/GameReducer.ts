@@ -127,7 +127,7 @@ const swapPiece = (state: GameState) => {
       state.queue[0].rotation,
       state.currentPiece.rotation,
     ];
-    console.log(state.queue[0].rotation);
+    // console.log(state.queue[0].rotation);
   }
   state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
 };
@@ -154,12 +154,13 @@ const setGameBoardMatrix = (
     state.shadow = genShadow(state.gameBoard);
     state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
     console.log("Plus 1 malus, tu vas faire quoi ?");
-  }
-  else {
+  } else {
     state.gameOn = false;
-    console.log("Pas assez de place pour mettre un malus, déso, t'es deja au fond du trou");
+    console.log(
+      "Pas assez de place pour mettre un malus, déso, t'es deja au fond du trou"
+    );
   }
-}
+};
 
 export const gameSlice = createSlice({
   name: "game",

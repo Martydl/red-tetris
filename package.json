@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "cd client && npm install && cd ../server && npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"npm --prefix client run build-srv-watch\" \"npm run srv-dev\"",
+    "dev": "concurrently \"npm run srv-dev\" \"npm --prefix client run build-srv-watch\"",
     "cli-dev": "npm --prefix client run dev",
     "cli-build": "npm --prefix client run build",
     "cli-build-srv": "npm --prefix client run build-srv",
