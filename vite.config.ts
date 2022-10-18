@@ -8,7 +8,7 @@ export default defineConfig({
   test: {
     coverage: {
       all: true,
-      reporter: ["text"],
+      reporter: ["text", "html"],
     },
   },
 });

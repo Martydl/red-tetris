@@ -46,7 +46,6 @@ export function moveSecond(
     pos.y++;
     return pos;
   } else {
-    // save piece in matrix and create new piece
     console.log("Ah ok, t'es comme ca toi, petit chenapan");
     return undefined;
   }
@@ -66,7 +65,6 @@ export function moveLeft(matrix: number[][], piece: Piece): Coords | undefined {
     pos.x--;
     return pos;
   } else {
-    // Doesn't do shit. If he's dumb enough to try this. he wouldn't win. GO KILL HIM
     console.log("Ah ok, t'es comme ca toi, petit chenapan");
     return undefined;
   }
@@ -88,9 +86,7 @@ export function moveRight(
   ) {
     pos.x++;
     return pos;
-    // printMatrix(matrix, piece);
   } else {
-    // Doesn't do shit. If he's dumb enough to try this. he wouldn't win. GO KILL HIM
     console.log("Ah ok, t'es comme ca toi, petit chenapan");
     return undefined;
   }
@@ -108,9 +104,7 @@ export function moveUp(matrix: number[][], piece: Piece): number | undefined {
     )
   ) {
     return nextRotation;
-    // printMatrix(matrix, piece);
   } else {
-    // Doesn't do shit. If he's dumb enough to try this. he wouldn't win. GO KILL HIM
     console.log("Ah ok, t'es comme ca toi, petit chenapan");
     return undefined;
   }
@@ -130,6 +124,4 @@ export function moveBottom(matrix: number[][], piece: Piece): Coords {
     pos.y++;
   }
   return pos;
-  // save piece in matrix and create new piece
-  // printMatrix(matrix, piece);
 }

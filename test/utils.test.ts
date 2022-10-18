@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import * as utils from "../client/src/game/Utils";
 
 describe("Function in Utils.ts", () => {
-  let matrix: number[][] = [
+  let matrix = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -70,7 +70,11 @@ describe("Function in Utils.ts", () => {
   });
 
   it("getPoints", () => {
+    expect(utils.getPoints(3, 1)).toEqual(160);
+    expect(utils.getPoints(5, 2)).toEqual(600);
     expect(utils.getPoints(7, 3)).toEqual(2400);
+    expect(utils.getPoints(9, 4)).toEqual(12000);
+    expect(utils.getPoints(7, 0)).toEqual(0);
   });
 
   it("getMalusRow", () => {
