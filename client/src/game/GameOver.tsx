@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { RootReducerState } from "../store/RootReducer";
 import { PrintEndScreen } from "../components/PrintEndScreen";
-import { PrintMatrix } from "../components/PrintMatrix";
+import { PrintBoard } from "../components/PrintBoard";
 import { PrintQueue } from "../components/PrintQueue";
 import { PrintScore } from "../components/PrintScore";
 import { PrintCommand } from "../components/PrintCommand";
-import { addPieceToBoard, getShadow } from "./Utils";
+import { addPieceToBoard, genFullShadow } from "./Utils";
 
 export default function GameOver() {
   const gameBoard = useSelector(
@@ -28,8 +28,8 @@ export default function GameOver() {
       <PrintCommand />
       <div>
         <PrintEndScreen score={score} />
-        <PrintMatrix
-          matrix={addPieceToBoard(gameBoard, currentPiece)}
+        <PrintBoard
+          board={addPieceToBoard(gameBoard, currentPiece)}
           class="gameBoard"
         />
       </div>
@@ -39,9 +39,9 @@ export default function GameOver() {
       </div>
       <div className="shadows">
         {opponents.map((shadow, index) => (
-          <PrintMatrix
+          <PrintBoard
             key={index}
-            matrix={getShadow(shadow)}
+            board={genFullShadow(shadow)}
             class="shadowBoard"
           />
         ))}

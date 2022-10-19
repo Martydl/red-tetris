@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { piecesList } from "../client/src/Consts";
 import * as utils from "../client/src/game/Utils";
 import { Piece } from "../client/src/Types";
 import seedrandom from "seedrandom";
@@ -51,8 +52,8 @@ describe("Function in Utils.ts", () => {
   ];
   let shadow = [0, 5, 5, 10, 15, 15, 10, 5, 5, 0];
 
-  it("initMatrix", () => {
-    expect(utils.initMatrix()).toEqual(matrix);
+  it("initBoard", () => {
+    expect(utils.initBoard()).toEqual(matrix);
   });
 
   it("initPiece", () => {
@@ -122,14 +123,18 @@ describe("Function in Utils.ts", () => {
     expect(utils.genShadow(matrixShadow)).toEqual(shadow);
   });
 
-  it("getMalusRow", () => {
-    let matrixTest: number[][] = JSON.parse(JSON.stringify(matrix));
-    matrixTest.shift();
-    matrixTest.push([-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
-    expect(utils.getMalusRow(matrix, piece)).toEqual(matrixTest);
+  it("genFullShadow", () => {
+    expect(utils.genFullShadow(shadow)).toEqual(matrixShadow);
   });
 
-  it("getShadow", () => {
-    expect(utils.getShadow(shadow)).toEqual(matrixShadow);
+  it("checkCollisions", () => {
+    expect(
+      utils.checkCollisions(
+        matrix,
+        piecesList[piece.name][piece.rotation],
+        3,
+        0
+      )
+    ).toEqual(true);
   });
 });

@@ -1,22 +1,11 @@
 import { describe, expect, it } from "vitest";
 import * as pieceMoves from "../client/src/game/PieceMoves";
-import { initMatrix, initPiece } from "../client/src/game/Utils";
+import { initBoard, initPiece } from "../client/src/game/Utils";
 import { piecesList } from "../client/src/Consts";
 
 describe("Function in Utils.ts", () => {
-  let matrix = initMatrix();
+  let matrix = initBoard();
   let piece = initPiece(0);
-
-  it("checkCollisions", () => {
-    expect(
-      pieceMoves.checkCollisions(
-        matrix,
-        piecesList[piece.name][piece.rotation],
-        3,
-        0
-      )
-    ).toEqual(true);
-  });
 
   // it("moveSecond", () => {
   //   expect(pieceMoves.moveSecond(matrix, piece, 1000, setDelay())).toEqual();

@@ -1,30 +1,6 @@
 import { piecesList } from "../Consts";
 import { Coords, Piece } from "../Types";
-
-// check if piece can be place with couple x/y in matrix. [true: can]/[false: can't] be place
-export function checkCollisions(
-  matrix: number[][],
-  piece: number[][],
-  x: number,
-  y: number
-): boolean {
-  for (let j = 0; j < piece.length; j++) {
-    for (let i = 0; i < piece[j].length; i++) {
-      if (piece[j][i] === 0) {
-        continue;
-      } else if (
-        y + j >= 20 ||
-        x + i >= 10 ||
-        y + j < 0 ||
-        x + i < 0 ||
-        matrix[y + j][x + i] !== 0
-      ) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
+import { checkCollisions } from "./Utils";
 
 // called every seconds
 export function moveSecond(

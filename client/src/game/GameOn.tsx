@@ -1,8 +1,10 @@
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useInterval } from "usehooks-ts";
+import { useBlockLines } from "../hooks/useBlockLines";
 import { RootReducerState } from "../store/RootReducer";
 import { gameSlice } from "../store/GameReducer";
-import { addPieceToBoard, getMalusRow, getShadow } from "./Utils";
+import seedrandom from "seedrandom";
 import {
   moveBottom,
   moveLeft,
@@ -10,47 +12,81 @@ import {
   moveSecond,
   moveUp,
 } from "./PieceMoves";
-import { PrintMatrix } from "../components/PrintMatrix";
+import {
+  addPieceToBoard,
+  checkGameBoard,
+  createPiece,
+  genShadow,
+  genFullShadow,
+  updatePrintBoard,
+  checkCollisions,
+} from "./Utils";
+import { PrintBoard } from "../components/PrintBoard";
 import { PrintQueue } from "../components/PrintQueue";
 import { PrintScore } from "../components/PrintScore";
 import { PrintCommand } from "../components/PrintCommand";
-import { socket } from "../App";
+import { Piece } from "../Types";
+import { piecesList } from "../Consts";
 
 export default function GameOn() {
   const dispatch = useDispatch();
-  const matrixPrint = useSelector(
+  const gameOn = useSelector((state: RootReducerState) => state.game.gameOn);
+  const gameBoard = useSelector(
+    (state: RootReducerState) => state.game.gameBoard
+  );
+  const printBoard = useSelector(
     (state: RootReducerState) => state.game.printBoard
   );
-  const piece = useSelector(
+  const currentPiece = useSelector(
     (state: RootReducerState) => state.game.currentPiece
   );
-  const delay = useSelector(
+  const queue = useSelector((state: RootReducerState) => state.game.queue);
+  const shadow = useSelector((state: RootReducerState) => state.game.shadow);
+  const level = useSelector((state: RootReducerState) => state.game.level);
+  const score = useSelector((state: RootReducerState) => state.game.score);
+  const currentDelay = useSelector(
     (state: RootReducerState) => state.game.currentDelay
   );
   const defaultDelay = useSelector(
     (state: RootReducerState) => state.game.defaultDelay
   );
-  const matrix = useSelector((state: RootReducerState) => state.game.gameBoard);
-  const score = useSelector((state: RootReducerState) => state.game.score);
-  const level = useSelector((state: RootReducerState) => state.game.level);
-  const queue = useSelector((state: RootReducerState) => state.game.queue);
-  const shadow = useSelector((state: RootReducerState) => state.game.shadow);
   const opponents: number[][] = [shadow, shadow];
-  const gameOn = useSelector((state: RootReducerState) => state.game.gameOn);
+  const randomGen = useRef<seedrandom.PRNG>(seedrandom("dildo"));
+
+  function updateGameBoard(gameBoard: number[][], piece: Piece): void {
+    let completedLines = 0;
+    let newBoard = addPieceToBoard(gameBoard, piece);
+    let newPiece = createPiece(randomGen.current);
+    [newBoard, completedLines] = checkGameBoard(newBoard);
+    dispatch(gameSlice.actions.setGameBoard(newBoard));
+    dispatch(gameSlice.actions.setShadow(genShadow(newBoard)));
+    if (completedLines > 0)
+      dispatch(gameSlice.actions.setCompletedLines(completedLines));
+    if (checkCollisions(newBoard, piecesList[queue[0].name][0], 3, 0)) {
+      dispatch(gameSlice.actions.setCurrentPiece(queue[0]));
+      dispatch(
+        gameSlice.actions.setPrintBoard(updatePrintBoard(newBoard, queue[0]))
+      );
+      dispatch(gameSlice.actions.updateQueue(newPiece));
+    } else {
+      dispatch(gameSlice.actions.gameOver());
+      console.log("Game Over");
+    }
+  }
 
   function handleKeyDown(event: React.KeyboardEvent) {
     switch (event.code) {
       case "ArrowLeft":
         dispatch(
           gameSlice.actions.setCurrentPieceCoords(
-            moveLeft(matrix, piece) ?? piece.pos
+            moveLeft(gameBoard, currentPiece) ?? currentPiece.pos
           )
         );
         break;
       case "ArrowRight":
         dispatch(
           gameSlice.actions.setCurrentPieceCoords(
-            moveRight(matrix, piece) ?? piece.pos
+            moveRight(gameBoard, currentPiece) ?? currentPiece.pos
           )
         );
         break;
@@ -60,58 +96,57 @@ export default function GameOn() {
       case "ArrowUp":
         dispatch(
           gameSlice.actions.setCurrentPieceRotation(
-            moveUp(matrix, piece) ?? piece.rotation
+            moveUp(gameBoard, currentPiece) ?? currentPiece.rotation
           )
         );
         break;
+      case "Space":
+        dispatch(
+          gameSlice.actions.setCurrentPieceCoords(
+            moveBottom(gameBoard, currentPiece)
+          )
+        );
+        dispatch(gameSlice.actions.setDelay(1));
+        break;
       case "KeyS":
-        // console.log("Pourquoi on ne veut pas me swap avec ma soeur :'| snif");
         dispatch(gameSlice.actions.swapPiece());
         break;
       case "NumpadAdd":
-        dispatch(
-          gameSlice.actions.setGameBoardMatrix(getMalusRow([...matrix], piece))
-        );
-        break;
-      case "Space":
-        socket.emit("swap", "swap detected");
-
-        dispatch(
-          gameSlice.actions.setCurrentPieceCoords(moveBottom(matrix, piece))
-        );
-        dispatch(gameSlice.actions.setDelay(1));
+        dispatch(gameSlice.actions.addLinesToBlock(1));
         break;
     }
   }
 
+  useBlockLines(updateGameBoard);
+
   useInterval(() => {
     if (gameOn) {
-      let tmpPiece = moveSecond(matrix, piece, defaultDelay, (e) =>
+      let tmpPiece = moveSecond(gameBoard, currentPiece, defaultDelay, (e) =>
         dispatch(gameSlice.actions.setDelay(e))
       );
       tmpPiece
         ? dispatch(gameSlice.actions.setCurrentPieceCoords(tmpPiece))
-        : dispatch(
-            gameSlice.actions.updateGameBoard(addPieceToBoard(matrix, piece))
-          );
+        : updateGameBoard(gameBoard, currentPiece);
     } else {
       console.log("T'as deja perdu ?!", gameOn);
     }
-  }, delay);
+  }, currentDelay);
+
+  useEffect(() => {}, []);
 
   return (
     <div className="game" tabIndex={0} onKeyDown={handleKeyDown}>
       <PrintCommand />
-      <PrintMatrix matrix={matrixPrint} class="gameBoard" />
+      <PrintBoard board={printBoard} class="gameBoard" />
       <div className="gameInfo">
         <PrintQueue queue={queue} />
         <PrintScore score={score} level={level} defaultDelay={defaultDelay} />
       </div>
       <div className="shadows">
         {opponents.map((shadow, index) => (
-          <PrintMatrix
+          <PrintBoard
             key={index}
-            matrix={getShadow(shadow)}
+            board={genFullShadow(shadow)}
             class="shadowBoard"
           />
         ))}
