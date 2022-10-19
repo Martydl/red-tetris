@@ -20,11 +20,24 @@ export function initPiece(nb: number): Piece {
   return piece;
 }
 
+export function createPiece(randomGen: seedrandom.PRNG): Piece {
+  const nb = Math.round(randomGen() * 100) % 7;
+  const piece: Piece = {
+    name: nb,
+    rotation: 0,
+    pos: { x: 3, y: 0 },
+  };
+  return piece;
+}
+
 export function initQueue(randomGen: seedrandom.PRNG): Piece[] {
   let queue: Piece[] = [];
-  queue.push(initPiece(Math.round(randomGen() * 100) % 7));
-  queue.push(initPiece(Math.round(randomGen() * 100) % 7));
-  queue.push(initPiece(Math.round(randomGen() * 100) % 7));
+  // queue.push(initPiece(Math.round(randomGen() * 100) % 7));
+  // queue.push(initPiece(Math.round(randomGen() * 100) % 7));
+  // queue.push(initPiece(Math.round(randomGen() * 100) % 7));
+  queue.push(initPiece(2));
+  queue.push(initPiece(3));
+  queue.push(initPiece(4));
   return queue;
 }
 
@@ -57,6 +70,18 @@ export const updatePrintBoard = (
   return addPieceToBoard(tmpMatrix, currentPiece);
 };
 
+export function checkGameBoard(gameBoard: number[][]): [number[][], number] {
+  let completedLines: number = 0;
+  for (let y = 0; y < gameBoard.length; y++) {
+    if (!gameBoard[y].includes(0) && !gameBoard[y].includes(-1)) {
+      gameBoard.splice(y, 1);
+      gameBoard.unshift(new Array(10).fill(0));
+      completedLines++;
+    }
+  }
+  return [gameBoard, completedLines];
+}
+
 export const getPoints = (level: number, nbCompletLine: number) => {
   switch (nbCompletLine) {
     case 1:
@@ -72,25 +97,28 @@ export const getPoints = (level: number, nbCompletLine: number) => {
   }
 };
 
-export const genShadow = (gameBoard: number[][]) => {
-  var genShadow = new Array(10).fill(20);
+export const genShadow = (gameBoard: number[][]): number[] => {
+  var shadow: number[] = new Array(10).fill(20);
   for (let x = 0; x < 10; x++) {
     for (let y = 0; y < 20; y++) {
       if (gameBoard[y][x] == 0) {
-        genShadow[x]--;
+        shadow[x]--;
       } else {
         break;
       }
     }
   }
-  return genShadow;
+  return shadow;
 };
 
-export const getMalusRow = (matrix: number[][], currentPiece:Piece):number[][] => {
+export const getMalusRow = (
+  matrix: number[][],
+  currentPiece: Piece
+): number[][] => {
   matrix.shift();
   matrix.push(new Array(10).fill(-1));
   return matrix;
-}
+};
 
 export const getShadow = (shadow: number[]): number[][] => {
   var realOne: number[][] = new Array(20);
@@ -101,4 +129,4 @@ export const getShadow = (shadow: number[]): number[][] => {
     }
   }
   return realOne;
-}
+};
