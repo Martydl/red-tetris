@@ -7,8 +7,12 @@ import { RootReducerState } from "./store/RootReducer";
 import { socketSlice } from "./store/SocketReducer";
 import { useEffect } from "react";
 
-// const socket = socketIo();
-// console.log(socket);
+export const socket = socketIo();
+console.log(socket);
+
+socket.on("test", (arg) => {
+  console.log("From server: ", arg);
+});
 
 function App() {
   const dispatch = useDispatch();

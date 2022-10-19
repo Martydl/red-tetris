@@ -1,12 +1,10 @@
 import seedrandom from "seedrandom";
 
 class Piece {
-  tmp: string;
-  randomGen: seedrandom.PRNG;
+  seed: number;
 
-  constructor(tmp: string) {
-    this.tmp = tmp;
-    this.randomGen = seedrandom();
+  constructor() {
+    this.seed = Math.random();
   }
 }
 

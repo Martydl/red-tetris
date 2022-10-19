@@ -1,16 +1,24 @@
 class Player {
+  id: string;
   name: string;
   room: string;
-  leader: boolean;
   alive: boolean;
   shadow: number[];
 
-  constructor(name: string, room: string) {
-    this.name = name;
-    this.room = room;
-    this.leader = false;
+  constructor(id: string) {
+    this.id = id;
+    this.name = id;
+    this.room = "";
     this.alive = true;
     this.shadow = new Array(10).fill(0);
+  }
+
+  setName(name: string) {
+    this.name = name;
+  }
+
+  setRoom(room: string) {
+    this.room = room;
   }
 
   newShadow(shadow: number[]) {

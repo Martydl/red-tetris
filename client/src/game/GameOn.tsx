@@ -14,6 +14,7 @@ import { PrintMatrix } from "../components/PrintMatrix";
 import { PrintQueue } from "../components/PrintQueue";
 import { PrintScore } from "../components/PrintScore";
 import { PrintCommand } from "../components/PrintCommand";
+import { socket } from "../App";
 
 export default function GameOn() {
   const dispatch = useDispatch();
@@ -73,6 +74,8 @@ export default function GameOn() {
         );
         break;
       case "Space":
+        socket.emit("swap", "swap detected");
+
         dispatch(
           gameSlice.actions.setCurrentPieceCoords(moveBottom(matrix, piece))
         );
