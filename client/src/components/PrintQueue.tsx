@@ -1,12 +1,12 @@
-import { PrintMatrix } from "./PrintMatrix";
+import { PrintBoard } from "./PrintBoard";
 import { Piece } from "../Types";
 import { piecesList } from "../Consts";
 
 function ListPiece(props: { name: number; rotation: number }): JSX.Element {
   return (
     <div className="futurePiece">
-      <PrintMatrix
-        matrix={piecesList[props.name][props.rotation]}
+      <PrintBoard
+        board={piecesList[props.name][props.rotation]}
         class="gameBoard"
       />
     </div>

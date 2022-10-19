@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { piecesList } from "../client/src/Consts";
 import * as utils from "../client/src/game/Utils";
 
 describe("Function in Utils.ts", () => {
@@ -26,8 +27,8 @@ describe("Function in Utils.ts", () => {
   ];
   let piece = utils.initPiece(0);
 
-  it("initMatrix", () => {
-    expect(utils.initMatrix()).toEqual(matrix);
+  it("initBoard", () => {
+    expect(utils.initBoard()).toEqual(matrix);
   });
 
   it("initPiece", () => {
@@ -77,14 +78,7 @@ describe("Function in Utils.ts", () => {
     expect(utils.getPoints(7, 0)).toEqual(0);
   });
 
-  it("getMalusRow", () => {
-    let matrixTest: number[][] = JSON.parse(JSON.stringify(matrix));
-    matrixTest.shift();
-    matrixTest.push([-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
-    expect(utils.getMalusRow(matrix, piece)).toEqual(matrixTest);
-  });
-
-  it("getShadow", () => {
+  it("genFullShadow", () => {
     let matrixTest: number[][] = [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -107,8 +101,19 @@ describe("Function in Utils.ts", () => {
       [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
       [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
     ];
-    expect(utils.getShadow([0, 5, 5, 10, 15, 15, 10, 5, 5, 0])).toEqual(
+    expect(utils.genFullShadow([0, 5, 5, 10, 15, 15, 10, 5, 5, 0])).toEqual(
       matrixTest
     );
+  });
+
+  it("checkCollisions", () => {
+    expect(
+      utils.checkCollisions(
+        matrix,
+        piecesList[piece.name][piece.rotation],
+        3,
+        0
+      )
+    ).toEqual(true);
   });
 });

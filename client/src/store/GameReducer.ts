@@ -1,39 +1,38 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import seedrandom from "seedrandom";
-import { piecesList } from "../Consts";
-import { checkCollisions } from "../game/PieceMoves";
 import {
   initPiece,
   getPoints,
-  initMatrix,
+  initBoard,
   initQueue,
   updatePrintBoard,
-  genShadow,
-  addPieceToBoard,
+  checkCollisions,
 } from "../game/Utils";
+import { piecesList } from "../Consts";
 import { Coords, Piece } from "../Types";
+import seedrandom from "seedrandom";
 
 export interface GameState {
+  gameOn: boolean;
   gameBoard: number[][];
   printBoard: number[][];
   currentPiece: Piece;
   queue: Piece[];
-  currentDelay: number;
-  defaultDelay: number;
-  acceleration: number;
+  shadow: number[];
   completedLine: number;
   level: number;
   score: number;
-  shadow: number[];
-  gameOn: boolean;
+  currentDelay: number;
+  defaultDelay: number;
+  acceleration: number;
+  linesToBlock: number;
 }
 
 const randomGen: seedrandom.PRNG = seedrandom();
 
 const initialState: GameState = {
   gameOn: true,
-  gameBoard: initMatrix(),
-  printBoard: initMatrix(),
+  gameBoard: initBoard(),
+  printBoard: initBoard(),
   // currentPiece: initPiece(Math.round(randomGen() * 100) % 7),
   currentPiece: initPiece(1),
   queue: initQueue(randomGen),
@@ -44,6 +43,7 @@ const initialState: GameState = {
   currentDelay: 1000,
   defaultDelay: 1000,
   acceleration: 1.15,
+  linesToBlock: 0,
 };
 
 const gameOver = (state: GameState) => {
@@ -117,21 +117,16 @@ const setCompletedLines = (
   }
 };
 
-const setDelay = (state: GameState, action: PayloadAction<number>) => {
-  state.currentDelay = action.payload;
+const addLinesToBlock = (state: GameState, action: PayloadAction<number>) => {
+  state.linesToBlock += action.payload;
 };
 
-const nextPiece = (state: GameState) => {
-  if (
-    checkCollisions(state.gameBoard, piecesList[state.queue[0].name][0], 3, 0)
-  ) {
-    state.currentPiece = state.queue[0];
-    state.queue.shift();
-    state.queue.push(initPiece(Math.round(randomGen() * 100) % 7));
-  } else {
-    state.gameOn = false;
-    console.log("Game Over:", !state.gameOn);
-  }
+const subLinesToBlock = (state: GameState, action: PayloadAction<number>) => {
+  state.linesToBlock -= action.payload;
+};
+
+const setDelay = (state: GameState, action: PayloadAction<number>) => {
+  state.currentDelay = action.payload;
 };
 
 const swapPiece = (state: GameState) => {
@@ -155,68 +150,6 @@ const swapPiece = (state: GameState) => {
   state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
 };
 
-const checkBoardLines = (state: GameState) => {
-  let nbCompletLine: number = 0;
-  let oldLevel = state.level;
-  for (let y = 0; y < state.gameBoard.length; y++) {
-    if (!state.gameBoard[y].includes(0) && !state.gameBoard[y].includes(-1)) {
-      state.gameBoard.splice(y, 1);
-      state.gameBoard.unshift(new Array(10).fill(0));
-      nbCompletLine++;
-    }
-  }
-  state.completedLine += nbCompletLine;
-  state.score += getPoints(state.level, nbCompletLine);
-  state.level = Math.floor(state.completedLine / 10);
-  if (state.level <= 9 && state.level != oldLevel && state.currentDelay > 1) {
-    state.defaultDelay -= 50 * state.acceleration ** state.level;
-    if (state.defaultDelay < 100) {
-      state.defaultDelay = 100;
-    }
-  }
-};
-
-// const updateGameBoard = (
-//   state: GameState,
-//   action: PayloadAction<number[][]>
-// ): void => {
-//   state.gameBoard = action.payload;
-//   checkBoardLines(state);
-//   nextPiece(state);
-//   state.shadow = genShadow(state.gameBoard);
-//   state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
-// };
-
-const setGameBoardMatrix = (
-  state: GameState,
-  action: PayloadAction<number[][]>
-): void => {
-  if (JSON.stringify(state.gameBoard[0]) === "[0,0,0,0,0,0,0,0,0,0]") {
-    state.gameBoard = action.payload;
-    if (
-      !checkCollisions(
-        state.gameBoard,
-        piecesList[state.currentPiece.name][state.currentPiece.rotation],
-        state.currentPiece.pos.x,
-        state.currentPiece.pos.y
-      )
-    ) {
-      state.currentPiece.pos.y--;
-      state.gameBoard = addPieceToBoard(state.gameBoard, state.currentPiece);
-      nextPiece(state);
-    }
-    checkBoardLines(state);
-    state.shadow = genShadow(state.gameBoard);
-    state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
-    console.log("Plus 1 malus, tu vas faire quoi ?");
-  } else {
-    state.gameOn = false;
-    console.log(
-      "Pas assez de place pour mettre un malus, déso, t'es deja au fond du trou"
-    );
-  }
-};
-
 export const gameSlice = createSlice({
   name: "game",
   initialState,
@@ -231,10 +164,10 @@ export const gameSlice = createSlice({
     updateQueue,
     setShadow,
     setCompletedLines,
+    addLinesToBlock,
+    subLinesToBlock,
     setDelay,
     swapPiece,
-    checkBoardLines,
-    setGameBoardMatrix,
   },
 });
 

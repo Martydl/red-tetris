@@ -1,56 +1,56 @@
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useInterval } from "usehooks-ts";
+import { useBlockLines } from "../hooks/useBlockLines";
 import { RootReducerState } from "../store/RootReducer";
 import { gameSlice } from "../store/GameReducer";
+import seedrandom from "seedrandom";
 import {
-  addPieceToBoard,
-  checkGameBoard,
-  createPiece,
-  genShadow,
-  getMalusRow,
-  getShadow,
-  updatePrintBoard,
-} from "./Utils";
-import {
-  checkCollisions,
   moveBottom,
   moveLeft,
   moveRight,
   moveSecond,
   moveUp,
 } from "./PieceMoves";
-import { PrintMatrix } from "../components/PrintMatrix";
+import {
+  addPieceToBoard,
+  checkGameBoard,
+  createPiece,
+  genShadow,
+  genFullShadow,
+  updatePrintBoard,
+  checkCollisions,
+} from "./Utils";
+import { PrintBoard } from "../components/PrintBoard";
 import { PrintQueue } from "../components/PrintQueue";
 import { PrintScore } from "../components/PrintScore";
 import { PrintCommand } from "../components/PrintCommand";
 import { Piece } from "../Types";
 import { piecesList } from "../Consts";
-import React, { useRef, useState } from "react";
-import seedrandom from "seedrandom";
 
 export default function GameOn() {
   const dispatch = useDispatch();
+  const gameOn = useSelector((state: RootReducerState) => state.game.gameOn);
   const gameBoard = useSelector(
     (state: RootReducerState) => state.game.gameBoard
   );
   const printBoard = useSelector(
     (state: RootReducerState) => state.game.printBoard
   );
-  const piece = useSelector(
+  const currentPiece = useSelector(
     (state: RootReducerState) => state.game.currentPiece
   );
-  const delay = useSelector(
+  const queue = useSelector((state: RootReducerState) => state.game.queue);
+  const shadow = useSelector((state: RootReducerState) => state.game.shadow);
+  const level = useSelector((state: RootReducerState) => state.game.level);
+  const score = useSelector((state: RootReducerState) => state.game.score);
+  const currentDelay = useSelector(
     (state: RootReducerState) => state.game.currentDelay
   );
   const defaultDelay = useSelector(
     (state: RootReducerState) => state.game.defaultDelay
   );
-  const score = useSelector((state: RootReducerState) => state.game.score);
-  const level = useSelector((state: RootReducerState) => state.game.level);
-  const queue = useSelector((state: RootReducerState) => state.game.queue);
-  const shadow = useSelector((state: RootReducerState) => state.game.shadow);
   const opponents: number[][] = [shadow, shadow];
-  const gameOn = useSelector((state: RootReducerState) => state.game.gameOn);
   const randomGen = useRef<seedrandom.PRNG>(seedrandom("dildo"));
 
   function updateGameBoard(gameBoard: number[][], piece: Piece): void {
@@ -73,32 +73,19 @@ export default function GameOn() {
     }
   }
 
-  useInterval(() => {
-    if (gameOn) {
-      let tmpPiece = moveSecond(gameBoard, piece, defaultDelay, (e) =>
-        dispatch(gameSlice.actions.setDelay(e))
-      );
-      tmpPiece
-        ? dispatch(gameSlice.actions.setCurrentPieceCoords(tmpPiece))
-        : updateGameBoard(gameBoard, piece);
-    } else {
-      console.log("T'as deja perdu ?!", gameOn);
-    }
-  }, delay);
-
   function handleKeyDown(event: React.KeyboardEvent) {
     switch (event.code) {
       case "ArrowLeft":
         dispatch(
           gameSlice.actions.setCurrentPieceCoords(
-            moveLeft(gameBoard, piece) ?? piece.pos
+            moveLeft(gameBoard, currentPiece) ?? currentPiece.pos
           )
         );
         break;
       case "ArrowRight":
         dispatch(
           gameSlice.actions.setCurrentPieceCoords(
-            moveRight(gameBoard, piece) ?? piece.pos
+            moveRight(gameBoard, currentPiece) ?? currentPiece.pos
           )
         );
         break;
@@ -108,13 +95,15 @@ export default function GameOn() {
       case "ArrowUp":
         dispatch(
           gameSlice.actions.setCurrentPieceRotation(
-            moveUp(gameBoard, piece) ?? piece.rotation
+            moveUp(gameBoard, currentPiece) ?? currentPiece.rotation
           )
         );
         break;
       case "Space":
         dispatch(
-          gameSlice.actions.setCurrentPieceCoords(moveBottom(gameBoard, piece))
+          gameSlice.actions.setCurrentPieceCoords(
+            moveBottom(gameBoard, currentPiece)
+          )
         );
         dispatch(gameSlice.actions.setDelay(1));
         break;
@@ -122,28 +111,41 @@ export default function GameOn() {
         dispatch(gameSlice.actions.swapPiece());
         break;
       case "NumpadAdd":
-        dispatch(
-          gameSlice.actions.setGameBoardMatrix(
-            getMalusRow([...gameBoard], piece)
-          )
-        );
+        dispatch(gameSlice.actions.addLinesToBlock(1));
         break;
     }
   }
 
+  useBlockLines(updateGameBoard);
+
+  useInterval(() => {
+    if (gameOn) {
+      let tmpPiece = moveSecond(gameBoard, currentPiece, defaultDelay, (e) =>
+        dispatch(gameSlice.actions.setDelay(e))
+      );
+      tmpPiece
+        ? dispatch(gameSlice.actions.setCurrentPieceCoords(tmpPiece))
+        : updateGameBoard(gameBoard, currentPiece);
+    } else {
+      console.log("T'as deja perdu ?!", gameOn);
+    }
+  }, currentDelay);
+
+  useEffect(() => {}, []);
+
   return (
     <div className="game" tabIndex={0} onKeyDown={handleKeyDown}>
       <PrintCommand />
-      <PrintMatrix matrix={printBoard} class="gameBoard" />
+      <PrintBoard board={printBoard} class="gameBoard" />
       <div className="gameInfo">
         <PrintQueue queue={queue} />
         <PrintScore score={score} level={level} defaultDelay={defaultDelay} />
       </div>
       <div className="shadows">
         {opponents.map((shadow, index) => (
-          <PrintMatrix
+          <PrintBoard
             key={index}
-            matrix={getShadow(shadow)}
+            board={genFullShadow(shadow)}
             class="shadowBoard"
           />
         ))}
