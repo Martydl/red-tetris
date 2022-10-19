@@ -6,6 +6,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   test: {
+    environment: "jsdom",
     coverage: {
       all: true,
       reporter: ["text", "html"],

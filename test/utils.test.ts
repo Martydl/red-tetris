@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import * as utils from "../client/src/game/Utils";
+import { Piece } from "../client/src/Types";
+import seedrandom from "seedrandom";
 
 describe("Function in Utils.ts", () => {
   let matrix = [
@@ -25,6 +27,29 @@ describe("Function in Utils.ts", () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ];
   let piece = utils.initPiece(0);
+  let matrixShadow = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 15, 15, 0, 0, 0, 0],
+    [0, 0, 0, 0, 15, 15, 0, 0, 0, 0],
+    [0, 0, 0, 0, 15, 15, 0, 0, 0, 0],
+    [0, 0, 0, 0, 15, 15, 0, 0, 0, 0],
+    [0, 0, 0, 0, 15, 15, 0, 0, 0, 0],
+    [0, 0, 0, 15, 15, 15, 15, 0, 0, 0],
+    [0, 0, 0, 15, 15, 15, 15, 0, 0, 0],
+    [0, 0, 0, 15, 15, 15, 15, 0, 0, 0],
+    [0, 0, 0, 15, 15, 15, 15, 0, 0, 0],
+    [0, 0, 0, 15, 15, 15, 15, 0, 0, 0],
+    [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
+    [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
+    [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
+    [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
+    [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
+  ];
+  let shadow = [0, 5, 5, 10, 15, 15, 10, 5, 5, 0];
 
   it("initMatrix", () => {
     expect(utils.initMatrix()).toEqual(matrix);
@@ -39,13 +64,29 @@ describe("Function in Utils.ts", () => {
     expect(utils.initPiece(0)).toEqual(pieceTest);
   });
 
-  // test("initQueue", () => {
-  //   let queue: Piece[] = [];
-  //   queue.push(initPiece(Math.round(randomGen() * 100) % 7));
-  //   queue.push(initPiece(Math.round(randomGen() * 100) % 7));
-  //   queue.push(initPiece(Math.round(randomGen() * 100) % 7));
-  //   expect(utils.initQueue()).eq();
-  // });
+  it("initQueue", () => {
+    let randomGen = seedrandom("Dildosorus");
+    let randomGenTest = seedrandom("Dildosorus");
+    let queue: Piece[] = utils.initQueue(randomGen);
+    let queueTest = [
+      {
+        name: Math.round(randomGenTest() * 100) % 7,
+        rotation: 0,
+        pos: { x: 3, y: 0 },
+      },
+      {
+        name: Math.round(randomGenTest() * 100) % 7,
+        rotation: 0,
+        pos: { x: 3, y: 0 },
+      },
+      {
+        name: Math.round(randomGenTest() * 100) % 7,
+        rotation: 0,
+        pos: { x: 3, y: 0 },
+      },
+    ];
+    expect(queue).toEqual(queueTest);
+  });
 
   it("addPieceToBoard", () => {
     let matrixTest: number[][] = JSON.parse(JSON.stringify(matrix));
@@ -77,6 +118,10 @@ describe("Function in Utils.ts", () => {
     expect(utils.getPoints(7, 0)).toEqual(0);
   });
 
+  it("genShadow", () => {
+    expect(utils.genShadow(matrixShadow)).toEqual(shadow);
+  });
+
   it("getMalusRow", () => {
     let matrixTest: number[][] = JSON.parse(JSON.stringify(matrix));
     matrixTest.shift();
@@ -85,30 +130,6 @@ describe("Function in Utils.ts", () => {
   });
 
   it("getShadow", () => {
-    let matrixTest: number[][] = [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 15, 15, 0, 0, 0, 0],
-      [0, 0, 0, 0, 15, 15, 0, 0, 0, 0],
-      [0, 0, 0, 0, 15, 15, 0, 0, 0, 0],
-      [0, 0, 0, 0, 15, 15, 0, 0, 0, 0],
-      [0, 0, 0, 0, 15, 15, 0, 0, 0, 0],
-      [0, 0, 0, 15, 15, 15, 15, 0, 0, 0],
-      [0, 0, 0, 15, 15, 15, 15, 0, 0, 0],
-      [0, 0, 0, 15, 15, 15, 15, 0, 0, 0],
-      [0, 0, 0, 15, 15, 15, 15, 0, 0, 0],
-      [0, 0, 0, 15, 15, 15, 15, 0, 0, 0],
-      [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
-      [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
-      [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
-      [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
-      [0, 15, 15, 15, 15, 15, 15, 15, 15, 0],
-    ];
-    expect(utils.getShadow([0, 5, 5, 10, 15, 15, 10, 5, 5, 0])).toEqual(
-      matrixTest
-    );
+    expect(utils.getShadow(shadow)).toEqual(matrixShadow);
   });
 });
