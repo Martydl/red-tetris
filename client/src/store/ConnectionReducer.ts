@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface SocketState {
+export interface ConnectionState {
   isEstablishingConnection: boolean;
   isConnected: boolean;
 }
 
-const initialState: SocketState = {
+const initialState: ConnectionState = {
   isEstablishingConnection: false,
   isConnected: false,
 };
 
-export const socketSlice = createSlice({
+export const connectionSlice = createSlice({
   name: "socket",
   initialState,
   reducers: {
@@ -24,4 +24,4 @@ export const socketSlice = createSlice({
   },
 });
 
-export default socketSlice.reducer;
+export default connectionSlice.reducer;

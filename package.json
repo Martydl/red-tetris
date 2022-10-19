@@ -15,7 +15,8 @@
     "start": "cd dist && node app.js",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "clean": "rm -rf node_modules package-lock.json client/node_modules client/package-lock.json server/node_modules server/package-lock.json dist server/client"
   },
   "devDependencies": {
     "@vitest/coverage-c8": "^0.24.3",

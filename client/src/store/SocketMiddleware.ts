@@ -1,7 +1,8 @@
 import { Middleware } from "redux";
 import { io, Socket } from "socket.io-client";
+import { ClientMessages } from "../Consts";
 import { gameSlice } from "./GameReducer";
-import { socketSlice } from "./SocketReducer";
+import { connectionSlice } from "./ConnectionReducer";
 
 const socketMiddleware: Middleware = (store) => {
   let socket: Socket;
@@ -9,20 +10,31 @@ const socketMiddleware: Middleware = (store) => {
     const isConnectionEstablished: boolean =
       socket && store.getState().socket.isConnected;
 
-    if (socketSlice.actions.startConnecting.match(action)) {
+    if (connectionSlice.actions.startConnecting.match(action)) {
       socket = io();
 
       socket.on("connect", () => {
-        store.dispatch(socketSlice.actions.connectionEstablished());
-      });
-
-      socket.on("swap", (txt_var: string) => {
-        console.log("From server: ", txt_var);
+        store.dispatch(connectionSlice.actions.connectionEstablished());
       });
     }
 
-    if (gameSlice.actions.swapPiece.match(action) && isConnectionEstablished) {
-      socket.emit("swap", "swap pressed");
+    if (gameSlice.actions.setShadow.match(action) && isConnectionEstablished) {
+      socket.emit(ClientMessages.NEW_SHADOW, action.payload);
+    }
+
+    if (
+      gameSlice.actions.setCompletedLines.match(action) &&
+      isConnectionEstablished
+    ) {
+      const lines: number = action.payload;
+      if (lines > 1) {
+        console.log("ici:", lines);
+        socket.emit(ClientMessages.LINES_DESTROYED, lines - 1);
+      }
+    }
+
+    if (gameSlice.actions.gameOver.match(action) && isConnectionEstablished) {
+      socket.emit(ClientMessages.PLAYER_GAME_OVER);
     }
 
     next(action);

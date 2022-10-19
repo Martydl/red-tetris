@@ -60,7 +60,8 @@ export default function GameOn() {
     [newBoard, completedLines] = checkGameBoard(newBoard);
     dispatch(gameSlice.actions.setGameBoard(newBoard));
     dispatch(gameSlice.actions.setShadow(genShadow(newBoard)));
-    dispatch(gameSlice.actions.setCompletedLines(completedLines));
+    if (completedLines > 0)
+      dispatch(gameSlice.actions.setCompletedLines(completedLines));
     if (checkCollisions(newBoard, piecesList[queue[0].name][0], 3, 0)) {
       dispatch(gameSlice.actions.setCurrentPiece(queue[0]));
       dispatch(

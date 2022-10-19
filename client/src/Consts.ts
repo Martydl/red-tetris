@@ -1,5 +1,22 @@
 import { PieceGrid } from "./Types";
 
+export enum ClientMessages {
+  JOIN_ROOM = "JOIN_ROOM",
+  NEW_SHADOW = "NEW_SHADOW",
+  LINES_DESTROYED = "LINES_DESTROYED",
+  PLAYER_GAME_OVER = "PLAYER_GAME_OVER",
+  START_GAME = "START_GAME",
+}
+
+export enum ServerMessages {
+  ROOMS_INFO = "ROOMS_INFO",
+  GAME_STATUS = "GAME_STATUS",
+  LEADER_NAME = "LEADER_NAME",
+  SEED = "SEED",
+  OPPONENTS_SHADOWS = "OPPONENTS_SHADOWS",
+  LINES_TO_BLOCK = "LINES_TO_BLOCK",
+}
+
 const piece1: PieceGrid[] = [
   [
     [0, 0, 0, 0],
@@ -198,20 +215,3 @@ export const piecesList: PieceGrid[][] = [
   piece6,
   piece7,
 ];
-
-export enum ClientMessages {
-  JOIN_ROOM = "JOIN_ROOM",
-  NEW_SHADOW = "NEW_SHADOW",
-  LINES_DESTROYED = "LINES_DESTROYED",
-  PLAYER_GAME_OVER = "PLAYER_GAME_OVER",
-  START_GAME = "START_GAME",
-}
-
-export enum ServerMessages {
-  ROOMS_INFO = "ROOMS_INFO",
-  GAME_STATUS = "GAME_STATUS",
-  LEADER_NAME = "LEADER_NAME",
-  SEED = "SEED",
-  OPPONENTS_SHADOWS = "OPPONENTS_SHADOWS",
-  LINES_TO_BLOCK = "LINES_TO_BLOCK",
-}
