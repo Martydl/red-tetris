@@ -10,6 +10,9 @@
     "build-srv-watch": "vite build --watch --outDir ../server/client"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.10",
     "@reduxjs/toolkit": "^1.8.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

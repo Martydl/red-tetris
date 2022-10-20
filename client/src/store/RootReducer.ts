@@ -3,7 +3,7 @@ import gameReducer from "./GameReducer";
 import ConnectionReducer from "./ConnectionReducer";
 
 const rootReducer = combineReducers({
-  socket: ConnectionReducer,
+  connection: ConnectionReducer,
   game: gameReducer,
 });
 

@@ -3,18 +3,36 @@ import { io, Socket } from "socket.io-client";
 import { ClientMessages } from "../Consts";
 import { gameSlice } from "./GameReducer";
 import { connectionSlice } from "./ConnectionReducer";
+import { roomSlice } from "./RoomReducer";
 
 const socketMiddleware: Middleware = (store) => {
   let socket: Socket;
   return (next) => (action) => {
     const isConnectionEstablished: boolean =
-      socket && store.getState().socket.isConnected;
+      socket && store.getState().connection.isConnectedToSocket;
 
-    if (connectionSlice.actions.startConnecting.match(action)) {
+    if (connectionSlice.actions.startConnectingToSocket.match(action)) {
       socket = io();
 
       socket.on("connect", () => {
-        store.dispatch(connectionSlice.actions.connectionEstablished());
+        store.dispatch(connectionSlice.actions.socketConnectionEstablished());
+      });
+    }
+
+    // Events received from the server
+    // socket.on("event", () => {
+    //   dispatch(event);
+    // });
+
+    // Events sent to the server
+    if (
+      connectionSlice.actions.startConnectingToRoom.match(action) &&
+      isConnectionEstablished
+    ) {
+      console.log(action.payload);
+      socket.emit(ClientMessages.JOIN_ROOM, {
+        roomName: action.payload,
+        playerName: store.getState().connection.playerName,
       });
     }
 
@@ -35,6 +53,14 @@ const socketMiddleware: Middleware = (store) => {
 
     if (gameSlice.actions.gameOver.match(action) && isConnectionEstablished) {
       socket.emit(ClientMessages.PLAYER_GAME_OVER);
+    }
+
+    if (roomSlice.actions.startGame.match(action) && isConnectionEstablished) {
+      socket.emit(ClientMessages.START_GAME);
+    }
+
+    if (roomSlice.actions.endGame.match(action) && isConnectionEstablished) {
+      socket.emit(ClientMessages.END_GAME);
     }
 
     if (

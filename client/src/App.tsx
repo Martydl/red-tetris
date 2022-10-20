@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootReducerState } from "./store/RootReducer";
 import { connectionSlice } from "./store/ConnectionReducer";
 import { useEffect } from "react";
+import { JoinRoom } from "./components/JoinRoom";
 
 function App() {
   const dispatch = useDispatch();
@@ -12,10 +13,21 @@ function App() {
   const gameOn = useSelector((state: RootReducerState) => state.game.gameOn);
 
   useEffect(() => {
-    dispatch(connectionSlice.actions.startConnecting());
+    dispatch(connectionSlice.actions.startConnectingToSocket());
   }, []);
 
-  return <div>{(gameOn && <GameOn />) || (!gameOn && <GameOver />)}</div>;
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <JoinRoom />
+      {(gameOn && <GameOn />) || (!gameOn && <GameOver />)}
+    </div>
+  );
 }
 
 export default App;
