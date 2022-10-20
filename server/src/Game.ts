@@ -3,14 +3,14 @@ import Piece from "./Piece";
 import Opponent from "./Opponent";
 
 class Game {
-  name: string;
+  gameID: string;
   players: { [key: string]: Player };
   pieces: Piece[];
   leaderID: string;
   gameOn: boolean;
 
   constructor(gameId: string, creator: Player) {
-    this.name = gameId;
+    this.gameID = gameId;
     this.players = { [creator.id]: creator };
     this.pieces = [new Piece(), new Piece(), new Piece(), new Piece()];
     this.leaderID = creator.id;
@@ -33,10 +33,15 @@ class Game {
     this.leaderID = this.players[0].id;
   }
 
-  getNextPiece(): Piece {
-    let newPiece: Piece = new Piece();
-    this.pieces.push(newPiece);
-    return newPiece;
+  getPiece(nbPiece: number): number {
+    if (nbPiece >= this.pieces.length) {
+      let newPiece: Piece = new Piece();
+      this.pieces.push(newPiece);
+      return newPiece.name;
+    }
+    else {
+      return this.pieces[nbPiece].name;
+    }
   }
 
   getOpponents(playerID: string): { [id: string]: {} } {
