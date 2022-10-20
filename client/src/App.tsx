@@ -1,31 +1,25 @@
 import "./App.css";
-import GameOn from "./game/GameOn";
-import GameOver from "./game/GameOver";
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducerState } from "./store/RootReducer";
 import { connectionSlice } from "./store/ConnectionReducer";
 import { useEffect } from "react";
-import { JoinRoom } from "./components/JoinRoom";
+import { Lobby } from "./components/Lobby";
+import { Game } from "./components/Game";
 
 function App() {
   const dispatch = useDispatch();
 
-  const gameOn = useSelector((state: RootReducerState) => state.game.gameOn);
+  const isConnectedToRoom = useSelector(
+    (state: RootReducerState) => state.connection.isConnectedToRoom
+  );
 
   useEffect(() => {
     dispatch(connectionSlice.actions.startConnectingToSocket());
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <JoinRoom />
-      {(gameOn && <GameOn />) || (!gameOn && <GameOver />)}
+    <div>
+      {(!isConnectedToRoom && <Lobby />) || (isConnectedToRoom && <Game />)}
     </div>
   );
 }

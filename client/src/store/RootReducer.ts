@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
+import connectionReducer from "./ConnectionReducer";
+import roomReducer from "./RoomReducer";
 import gameReducer from "./GameReducer";
-import ConnectionReducer from "./ConnectionReducer";
 
 const rootReducer = combineReducers({
-  connection: ConnectionReducer,
+  connection: connectionReducer,
+  room: roomReducer,
   game: gameReducer,
 });
 

@@ -5,6 +5,7 @@ export enum ClientMessages {
   PLAYER_GAME_OVER = "PLAYER_GAME_OVER",
   START_GAME = "START_GAME",
   END_GAME = "END_GAME",
+  GET_PIECE = "GET_PIECE",
 }
 
 export enum ServerMessages {

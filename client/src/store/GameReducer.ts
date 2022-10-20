@@ -1,15 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  initPiece,
   getPoints,
   initBoard,
-  initQueue,
   updatePrintBoard,
   checkCollisions,
+  initPiece,
+  initQueue,
 } from "../game/Utils";
 import { piecesList } from "../Consts";
 import { Coords, Piece } from "../Types";
-import seedrandom from "seedrandom";
 
 export interface GameState {
   gameOn: boolean;
@@ -17,6 +16,7 @@ export interface GameState {
   printBoard: number[][];
   currentPiece: Piece;
   queue: Piece[];
+  pieceId: number;
   shadow: number[];
   completedLine: number;
   level: number;
@@ -25,18 +25,15 @@ export interface GameState {
   defaultDelay: number;
   acceleration: number;
   linesToBlock: number;
-  socketTest: number;
 }
-
-const randomGen: seedrandom.PRNG = seedrandom();
 
 const initialState: GameState = {
   gameOn: true,
   gameBoard: initBoard(),
   printBoard: initBoard(),
-  // currentPiece: initPiece(Math.round(randomGen() * 100) % 7),
-  currentPiece: initPiece(1),
-  queue: initQueue(randomGen),
+  currentPiece: initPiece(0),
+  queue: [],
+  pieceId: 4,
   shadow: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   completedLine: 0,
   level: 0,
@@ -45,7 +42,6 @@ const initialState: GameState = {
   defaultDelay: 1000,
   acceleration: 1.15,
   linesToBlock: 0,
-  socketTest: 0,
 };
 
 const gameOver = (state: GameState) => {
@@ -96,6 +92,12 @@ const setQueue = (state: GameState, action: PayloadAction<Piece[]>): void => {
 const updateQueue = (state: GameState, action: PayloadAction<Piece>): void => {
   state.queue.shift();
   state.queue.push(action.payload);
+};
+
+const initPieces = (state: GameState, action: PayloadAction<number[]>) => {
+  state.currentPiece = initPiece(action.payload[0]);
+  state.queue = initQueue(action.payload);
+  // updatePrintBoard ?
 };
 
 const setShadow = (state: GameState, action: PayloadAction<number[]>): void => {
@@ -152,10 +154,6 @@ const swapPiece = (state: GameState) => {
   state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
 };
 
-const setSocketTest = (state: GameState) => {
-  state.socketTest = 1;
-};
-
 export const gameSlice = createSlice({
   name: "game",
   initialState,
@@ -168,13 +166,13 @@ export const gameSlice = createSlice({
     setCurrentPieceRotation,
     setQueue,
     updateQueue,
+    initPieces,
     setShadow,
     setCompletedLines,
     addLinesToBlock,
     subLinesToBlock,
     setDelay,
     swapPiece,
-    setSocketTest,
   },
 });
 

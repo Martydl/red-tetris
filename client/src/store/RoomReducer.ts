@@ -53,12 +53,13 @@ export const roomSlice = createSlice({
     },
     editOpponent: (
       state: RoomState,
-      action: PayloadAction<{ id: string; opponent: Opponent }>
+      action: PayloadAction<[string, Opponent]>
     ) => {
-      const id = action.payload.id;
-      const opponent = action.payload.opponent;
+      const [id, opponent] = action.payload;
       state.opponents[id] = opponent;
     },
     delOpponent: (state: RoomState, action: PayloadAction<string>) => {},
   },
 });
+
+export default roomSlice.reducer;

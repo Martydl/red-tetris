@@ -30,14 +30,11 @@ export function createPiece(randomGen: seedrandom.PRNG): Piece {
   return piece;
 }
 
-export function initQueue(randomGen: seedrandom.PRNG): Piece[] {
+export function initQueue(piecesNames: number[]): Piece[] {
   let queue: Piece[] = [];
-  // queue.push(initPiece(Math.round(randomGen() * 100) % 7));
-  // queue.push(initPiece(Math.round(randomGen() * 100) % 7));
-  // queue.push(initPiece(Math.round(randomGen() * 100) % 7));
-  queue.push(initPiece(2));
-  queue.push(initPiece(3));
-  queue.push(initPiece(4));
+  queue.push(initPiece(piecesNames[1]));
+  queue.push(initPiece(piecesNames[2]));
+  queue.push(initPiece(piecesNames[3]));
   return queue;
 }
 

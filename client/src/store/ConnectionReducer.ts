@@ -7,6 +7,7 @@ export interface ConnectionState {
   isConnectingToRoom: boolean;
   roomName?: string;
   playerName: string;
+  roomList: { [id: string]: { name: string; player: number } };
 }
 
 const initialState: ConnectionState = {
@@ -16,6 +17,7 @@ const initialState: ConnectionState = {
   isConnectingToRoom: false,
   roomName: undefined,
   playerName: "Guest",
+  roomList: {},
 };
 
 export const connectionSlice = createSlice({
@@ -50,6 +52,20 @@ export const connectionSlice = createSlice({
     setPlayerName: (state: ConnectionState, action: PayloadAction<string>) => {
       state.playerName = action.payload;
     },
+    setRoomList: (
+      state: ConnectionState,
+      action: PayloadAction<{ [id: string]: { name: string; player: number } }>
+    ) => {
+      state.roomList = action.payload;
+    },
+    editRoom: (
+      state: ConnectionState,
+      action: PayloadAction<[string, { name: string; player: number }]>
+    ) => {
+      const [id, room] = action.payload;
+      state.roomList[id] = room;
+    },
+    delRoom: (state: ConnectionState, action: PayloadAction<string>) => {},
   },
 });
 

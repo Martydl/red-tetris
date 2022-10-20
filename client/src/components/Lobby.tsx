@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { connectionSlice } from "../store/ConnectionReducer";
+import { RootReducerState } from "../store/RootReducer";
 
-export function JoinRoom() {
+export function Lobby() {
   const dispatch = useDispatch();
+  const roomList = useSelector(
+    (state: RootReducerState) => state.connection.roomList
+  );
   const [roomName, setRoomName] = useState<string>("");
 
   const handleNameChange = (

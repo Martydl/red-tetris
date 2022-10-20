@@ -114,9 +114,6 @@ export default function GameOn() {
       case "NumpadAdd":
         dispatch(gameSlice.actions.addLinesToBlock(1));
         break;
-      case "NumpadSubtract":
-        dispatch(gameSlice.actions.setSocketTest());
-        break;
     }
   }
 

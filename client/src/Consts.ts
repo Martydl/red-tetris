@@ -1,5 +1,12 @@
 import { PieceGrid } from "./Types";
 
+export const emptyPiece: PieceGrid = [
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+];
+
 const piece1: PieceGrid[] = [
   [
     [0, 0, 0, 0],
