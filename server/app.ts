@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import App from "./src/App";
 import Player from "./src/Player";
 import Game from "./src/Game";
-import { ClientMessages } from "../common/Consts";
+import { ClientMessages, ServerMessages } from "../common/Consts";
 // import { ClientMessages } from "./Consts";
 
 const app: Express = express();
@@ -22,13 +22,13 @@ app.get("/", (_req: Request, res: Response) => {
   res.sendFile("client/index.html", { root: "." });
 });
 
-let serveur = new App();
+let server = new App();
 
 io.on("connection", (socket) => {
   console.log(socket.id, "is connected");
 
   let newPlayer = new Player(socket.id);
-  serveur.addPlayer(socket.id, newPlayer);
+  server.addPlayer(socket.id, newPlayer);
 
   socket.join("waitingRoom");
 
@@ -37,41 +37,50 @@ io.on("connection", (socket) => {
   });
 
   socket.on(ClientMessages.JOIN_ROOM, (arg: any) => {
-    let [roomName, playerName] = arg;
-    socket.join(roomName);
-    serveur.players[socket.id].setName(playerName);
-    if (!(arg in serveur.games))
-      serveur.addGame(arg, new Game(arg, serveur.players[socket.id]));
-    else serveur.games[arg].addPlayer(serveur.players[socket.id]);
-    serveur.players[socket.id].setRoom(arg);
+    let [gameId, playerName] = arg;
+    socket.join(gameId);
+    server.players[socket.id].opponent.setName(playerName);
+    if (gameId in server.games)
+      server.games[gameId].addPlayer(server.players[socket.id]);
+    else server.addGame(gameId, new Game(gameId, server.players[socket.id]));
+    server.players[socket.id].setRoom(gameId);
+    socket.emit(ServerMessages.ROOM_INFO, [
+      gameId,
+      server.games[gameId].leaderID,
+      server.games[gameId].getOpponents(socket.id),
+      server.games[gameId].gameOn,
+    ]);
+    socket.broadcast.to(gameId).emit(ServerMessages.SEND_OPPONENT, {
+      [socket.id]: server.players[socket.id].opponent,
+    });
   });
 
   socket.on(ClientMessages.LINES_DESTROYED, (arg: any) => {
     socket.broadcast
-      .to(serveur.players[socket.id].room)
+      .to(server.players[socket.id].room)
       .emit(ClientMessages.LINES_DESTROYED, arg);
   });
 
   socket.on(ClientMessages.NEW_SHADOW, (arg: any) => {
-    serveur.players[socket.id].newShadow(arg);
+    server.players[socket.id].opponent.newShadow(arg);
     socket.broadcast
-      .to(serveur.players[socket.id].room)
-      .emit(ClientMessages.NEW_SHADOW, arg);
+      .to(server.players[socket.id].room)
+      .emit(ClientMessages.NEW_SHADOW, [socket.id, arg]);
   });
 
   socket.on(ClientMessages.PLAYER_GAME_OVER, (arg: any) => {
-    serveur.players[socket.id].dead();
+    server.players[socket.id].opponent.dead();
     socket.broadcast
-      .to(serveur.players[socket.id].room)
+      .to(server.players[socket.id].room)
       .emit(ClientMessages.PLAYER_GAME_OVER, socket.id);
   });
 
   socket.on(ClientMessages.START_GAME, (arg: any) => {
-    io.to(serveur.players[socket.id].room).emit(ClientMessages.START_GAME, arg);
+    io.to(server.players[socket.id].room).emit(ClientMessages.START_GAME, arg);
   });
 
   socket.on("disconnect", (reason: any) => {
-    delete serveur.games[serveur.players[socket.id].room];
-    delete serveur.players[socket.id];
+    delete server.games[server.players[socket.id].room];
+    delete server.players[socket.id];
   });
 });

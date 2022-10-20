@@ -1,6 +1,6 @@
 import { Middleware } from "redux";
 import { io, Socket } from "socket.io-client";
-import { ClientMessages } from "../../../common/Consts";
+import { ClientMessages, ServerMessages } from "../../../common/Consts";
 import { gameSlice } from "./GameReducer";
 import { connectionSlice } from "./ConnectionReducer";
 // import { roomSlice } from "./RoomReducer";
@@ -17,19 +17,25 @@ const socketMiddleware: Middleware = (store) => {
       socket.on("connect", () => {
         store.dispatch(connectionSlice.actions.socketConnectionEstablished());
       });
+
+      socket.on(ServerMessages.ROOM_INFO, (arg: any) => {
+        let [roomName, leaderName, opponents] = arg;
+        console.log(roomName, leaderName, opponents);
+
+        // store.dispatch(
+        //   roomSlice.actions.initRoom({ roomName, leaderName, opponents })
+        // );
+      });
     }
 
     // Events received from the server
-    // socket.on("event", () => {
-    //   dispatch(event);
-    // });
 
     // Events sent to the server
     if (
       connectionSlice.actions.startConnectingToRoom.match(action) &&
       isConnectionEstablished
     ) {
-      console.log(action.payload);
+      // console.log(action.payload);
       socket.emit(ClientMessages.JOIN_ROOM, [
         action.payload,
         store.getState().connection.playerName,
