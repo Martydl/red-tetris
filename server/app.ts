@@ -39,6 +39,9 @@ io.on("connection", (socket) => {
   allApp.socketList[0].on("swap", (arg: any) => {
     console.log("From client: ", arg); // world
   });
+  socket.on("numpadSub", (arg: any) => {
+    console.log("From client: ", arg);
+  });
 });
 
 //if new shadow update

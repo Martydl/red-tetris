@@ -37,6 +37,13 @@ const socketMiddleware: Middleware = (store) => {
       socket.emit(ClientMessages.PLAYER_GAME_OVER);
     }
 
+    if (
+      gameSlice.actions.setSocketTest.match(action) &&
+      isConnectionEstablished
+    ) {
+      socket.emit("numpadSub", "NumpadSubtract txt");
+    }
+
     next(action);
   };
 };

@@ -25,6 +25,7 @@ export interface GameState {
   defaultDelay: number;
   acceleration: number;
   linesToBlock: number;
+  socketTest: number;
 }
 
 const randomGen: seedrandom.PRNG = seedrandom();
@@ -44,6 +45,7 @@ const initialState: GameState = {
   defaultDelay: 1000,
   acceleration: 1.15,
   linesToBlock: 0,
+  socketTest: 0,
 };
 
 const gameOver = (state: GameState) => {
@@ -150,6 +152,10 @@ const swapPiece = (state: GameState) => {
   state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
 };
 
+const setSocketTest = (state: GameState) => {
+  state.socketTest = 1;
+};
+
 export const gameSlice = createSlice({
   name: "game",
   initialState,
@@ -168,6 +174,7 @@ export const gameSlice = createSlice({
     subLinesToBlock,
     setDelay,
     swapPiece,
+    setSocketTest,
   },
 });
 
