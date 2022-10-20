@@ -37,10 +37,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on(ClientMessages.JOIN_ROOM, (arg: any) => {
-    console.log(arg);
     let [roomName, playerName] = arg;
-    console.log(roomName, playerName);
-    socket.join(arg);
+    socket.join(roomName);
+    serveur.players[socket.id].setName(playerName);
     if (!(arg in serveur.games))
       serveur.addGame(arg, new Game(arg, serveur.players[socket.id]));
     else serveur.games[arg].addPlayer(serveur.players[socket.id]);
