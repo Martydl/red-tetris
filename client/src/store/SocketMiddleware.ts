@@ -1,9 +1,9 @@
 import { Middleware } from "redux";
 import { io, Socket } from "socket.io-client";
-import { ClientMessages } from "../../../common/Consts";
+import { ClientMessages, ServerMessages } from "../../../common/Consts";
 import { gameSlice } from "./GameReducer";
 import { connectionSlice } from "./ConnectionReducer";
-// import { roomSlice } from "./RoomReducer";
+import { Opponent, roomSlice } from "./RoomReducer";
 
 const socketMiddleware: Middleware = (store) => {
   let socket: Socket;
@@ -20,9 +20,28 @@ const socketMiddleware: Middleware = (store) => {
     }
 
     // Events received from the server
-    // socket.on("event", () => {
-    //   dispatch(event);
-    // });
+    socket.on(
+      ServerMessages.ROOM_INFO,
+      (msg: [string, string, { [id: string]: Opponent }, boolean]) => {
+        let [roomName, leaderId, opponents, gameOn] = msg;
+        store.dispatch(
+          roomSlice.actions.initRoom({ roomName, leaderId, opponents, gameOn })
+        );
+      }
+    );
+
+    socket.on(ServerMessages.LEADER_ID, (id: string) => {
+      store.dispatch(roomSlice.actions.setLeaderId(id));
+    });
+
+    socket.on(ServerMessages.SEND_OPPONENT, (msg: [string, any]) => {
+      const [id, opponent] = msg;
+      store.dispatch(roomSlice.actions.editOpponent({ id, opponent }));
+    });
+
+    socket.on(ServerMessages.LINES_TO_BLOCK, (nb: number) => {
+      store.dispatch(gameSlice.actions.addLinesToBlock(nb));
+    });
 
     // Events sent to the server
     if (
@@ -55,13 +74,13 @@ const socketMiddleware: Middleware = (store) => {
       socket.emit(ClientMessages.PLAYER_GAME_OVER);
     }
 
-    // if (roomSlice.actions.startGame.match(action) && isConnectionEstablished) {
-    //   socket.emit(ClientMessages.START_GAME);
-    // }
+    if (roomSlice.actions.startGame.match(action) && isConnectionEstablished) {
+      socket.emit(ClientMessages.START_GAME);
+    }
 
-    // if (roomSlice.actions.endGame.match(action) && isConnectionEstablished) {
-    //   socket.emit(ClientMessages.END_GAME);
-    // }
+    if (roomSlice.actions.endGame.match(action) && isConnectionEstablished) {
+      socket.emit(ClientMessages.END_GAME);
+    }
 
     if (
       gameSlice.actions.setSocketTest.match(action) &&
