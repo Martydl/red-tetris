@@ -1,26 +1,21 @@
 import Game from "./Game";
-import Piece from "./Piece";
 import Player from "./Player";
 
 class App {
-  games: Game[];
-  pieces: Piece[];
-  players: Player[];
-  socketList: any[];
+  games: { [key: string]: Game };
+  players: { [key: string]: Player };
 
   constructor() {
-    this.games = [];
-    this.pieces = [];
-    this.players = [];
-    this.socketList = [];
+    this.games = {};
+    this.players = {};
   }
 
-  addSocket(socket: any) {
-    this.socketList.push(socket);
+  addGame(gameID: string, game: Game) {
+    this.games[gameID] = game;
   }
 
-  addPlayer(uuid: string) {
-    this.players.push(new Player(uuid));
+  addPlayer(playerID: string, player: Player) {
+    this.players[playerID] = player;
   }
 }
 

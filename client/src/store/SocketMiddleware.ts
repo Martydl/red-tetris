@@ -1,9 +1,9 @@
 import { Middleware } from "redux";
 import { io, Socket } from "socket.io-client";
-import { ClientMessages } from "../Consts";
+import { ClientMessages } from "../../../common/Consts";
 import { gameSlice } from "./GameReducer";
 import { connectionSlice } from "./ConnectionReducer";
-import { roomSlice } from "./RoomReducer";
+// import { roomSlice } from "./RoomReducer";
 
 const socketMiddleware: Middleware = (store) => {
   let socket: Socket;
@@ -30,10 +30,10 @@ const socketMiddleware: Middleware = (store) => {
       isConnectionEstablished
     ) {
       console.log(action.payload);
-      socket.emit(ClientMessages.JOIN_ROOM, {
-        roomName: action.payload,
-        playerName: store.getState().connection.playerName,
-      });
+      socket.emit(ClientMessages.JOIN_ROOM, [
+        action.payload,
+        store.getState().connection.playerName,
+      ]);
     }
 
     if (gameSlice.actions.setShadow.match(action) && isConnectionEstablished) {
@@ -55,13 +55,13 @@ const socketMiddleware: Middleware = (store) => {
       socket.emit(ClientMessages.PLAYER_GAME_OVER);
     }
 
-    if (roomSlice.actions.startGame.match(action) && isConnectionEstablished) {
-      socket.emit(ClientMessages.START_GAME);
-    }
+    // if (roomSlice.actions.startGame.match(action) && isConnectionEstablished) {
+    //   socket.emit(ClientMessages.START_GAME);
+    // }
 
-    if (roomSlice.actions.endGame.match(action) && isConnectionEstablished) {
-      socket.emit(ClientMessages.END_GAME);
-    }
+    // if (roomSlice.actions.endGame.match(action) && isConnectionEstablished) {
+    //   socket.emit(ClientMessages.END_GAME);
+    // }
 
     if (
       gameSlice.actions.setSocketTest.match(action) &&

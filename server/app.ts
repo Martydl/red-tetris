@@ -2,6 +2,10 @@ import express, { Express, Request, Response } from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import App from "./src/App";
+import Player from "./src/Player";
+import Game from "./src/Game";
+import { ClientMessages } from "../common/Consts";
+// import { ClientMessages } from "./Consts";
 
 const app: Express = express();
 
@@ -18,30 +22,57 @@ app.get("/", (_req: Request, res: Response) => {
   res.sendFile("client/index.html", { root: "." });
 });
 
-var allApp = new App();
+let serveur = new App();
 
 io.on("connection", (socket) => {
-  allApp.addPlayer(socket.id);
-  allApp.players.slice(-1)[0].setRoom("waitingRoom");
+  console.log(socket.id, "is connected");
+
+  let newPlayer = new Player(socket.id);
+  serveur.addPlayer(socket.id, newPlayer);
+
   socket.join("waitingRoom");
-  console.log(allApp.players.slice(-1)[0].name, "is connected");
 
-  allApp.addSocket(socket);
-
-  // console.log();
-  // for (let i = 0; i < allApp.socketList.length; i++) {
-  //   console.log(allApp.players[i].name, "as", allApp.players[i].id);
-  // }
-  // for (let i of io.sockets.adapter.rooms.keys()) {
-  //   console.log("Currently in", i, ":", io.sockets.adapter.rooms.get(i));
-  // }
-  allApp.socketList[0].emit("test", "test_txt");
-  allApp.socketList[0].on("swap", (arg: any) => {
-    console.log("From client: ", arg); // world
-  });
   socket.on("numpadSub", (arg: any) => {
-    console.log("From client: ", arg);
+    console.log("From", socket.id, arg);
+  });
+
+  socket.on(ClientMessages.JOIN_ROOM, (arg: any) => {
+    console.log(arg);
+    let [roomName, playerName] = arg;
+    console.log(roomName, playerName);
+    socket.join(arg);
+    if (!(arg in serveur.games))
+      serveur.addGame(arg, new Game(arg, serveur.players[socket.id]));
+    else serveur.games[arg].addPlayer(serveur.players[socket.id]);
+    serveur.players[socket.id].setRoom(arg);
+  });
+
+  socket.on(ClientMessages.LINES_DESTROYED, (arg: any) => {
+    socket.broadcast
+      .to(serveur.players[socket.id].room)
+      .emit(ClientMessages.LINES_DESTROYED, arg);
+  });
+
+  socket.on(ClientMessages.NEW_SHADOW, (arg: any) => {
+    serveur.players[socket.id].newShadow(arg);
+    socket.broadcast
+      .to(serveur.players[socket.id].room)
+      .emit(ClientMessages.NEW_SHADOW, arg);
+  });
+
+  socket.on(ClientMessages.PLAYER_GAME_OVER, (arg: any) => {
+    serveur.players[socket.id].dead();
+    socket.broadcast
+      .to(serveur.players[socket.id].room)
+      .emit(ClientMessages.PLAYER_GAME_OVER, socket.id);
+  });
+
+  socket.on(ClientMessages.START_GAME, (arg: any) => {
+    io.to(serveur.players[socket.id].room).emit(ClientMessages.START_GAME, arg);
+  });
+
+  socket.on("disconnect", (reason: any) => {
+    delete serveur.games[serveur.players[socket.id].room];
+    delete serveur.players[socket.id];
   });
 });
-
-//if new shadow update

@@ -1,10 +1,8 @@
-import seedrandom from "seedrandom";
-
 class Piece {
-  seed: number;
+  name: number;
 
   constructor() {
-    this.seed = Math.random();
+    this.name = Math.random();
   }
 }
 
