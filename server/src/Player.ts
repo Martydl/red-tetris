@@ -19,7 +19,7 @@ class Player {
   }
 
   genPiece(): number {
-    return new Piece(this.seed()).name;
+    return this.seed ? new Piece(this.seed()).name : -1;
   }
 }
 

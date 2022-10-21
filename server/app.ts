@@ -46,9 +46,12 @@ io.on("connection", (socket) => {
       server.games[gameID].getOpponents(socket.id),
       server.games[gameID].gameOn,
     ]);
-    socket.broadcast.to(gameID).emit(ServerMessages.SEND_OPPONENT, {
-      [socket.id]: server.players[socket.id].opponent,
-    });
+    socket.broadcast
+      .to(gameID)
+      .emit(ServerMessages.SEND_OPPONENT, [
+        socket.id,
+        server.players[socket.id].opponent,
+      ]);
   });
 
   socket.on(ClientMessages.LINES_DESTROYED, (lineNB: number) => {
