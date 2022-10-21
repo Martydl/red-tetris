@@ -26,6 +26,7 @@ let server = new App();
 
 io.on("connection", (socket) => {
   console.log(socket.id, "is connected");
+  // server.getRoomsInfos();
 
   let newPlayer = new Player(socket.id);
   server.addPlayer(socket.id, newPlayer);
@@ -68,23 +69,24 @@ io.on("connection", (socket) => {
       .emit(ClientMessages.NEW_SHADOW, [socket.id, arg]);
   });
 
-  socket.on(ClientMessages.PLAYER_GAME_OVER, (_arg: boolean) => {
+  socket.on(ClientMessages.PLAYER_GAME_OVER, () => {
     server.players[socket.id].opponent.dead();
     socket.broadcast
       .to(server.players[socket.id].room)
       .emit(ClientMessages.PLAYER_GAME_OVER, socket.id);
   });
 
-  socket.on(ClientMessages.START_GAME, (arg: [string, boolean]) => {
-    let [gameID, gameOn] = arg;
-    io.to(gameID).emit(ClientMessages.START_GAME, gameOn);
-    io.to(gameID).emit("ClientMessages.START_PIECE", server.games[gameID].pieces);
+  socket.on(ClientMessages.START_GAME, (arg: string) => {
+    let [gameID] = arg;
+    io.to(gameID).emit(ClientMessages.START_GAME, server.games[gameID].pieces);
   });
 
-
-  socket.on("ClientMessages.GET_PIECE", (arg: [string, number]) => {
+  socket.on(ClientMessages.GET_PIECE, (arg: [string, number]) => {
     let [gameID, nbPiece] = arg;
-    socket.emit("ClientMessages.GET_PIECE", server.games[gameID].getPiece(nbPiece));
+    socket.emit(
+      ClientMessages.GET_PIECE,
+      server.games[gameID].getPiece(nbPiece)
+    );
   });
 
   socket.on("disconnect", (reason: any) => {
