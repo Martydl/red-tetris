@@ -7,7 +7,7 @@ class Player {
 
   constructor(id: string) {
     this.id = id;
-    this.room = "waiting";
+    this.room = "waitingRoom";
     this.opponent = new Opponent(true, new Array(10).fill(0));
   }
 

@@ -20,7 +20,7 @@ class Opponent {
   }
 
   dead() {
-    this.gameOver = false;
+    this.gameOver = true;
   }
 }
 
