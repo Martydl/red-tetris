@@ -4,7 +4,7 @@ import { RootReducerState } from "./store/RootReducer";
 import { connectionSlice } from "./store/ConnectionReducer";
 import { useEffect } from "react";
 import { Lobby } from "./components/Lobby";
-import { Game } from "./components/Game";
+import { Room } from "./components/Room";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,8 +18,8 @@ function App() {
   }, []);
 
   return (
-    <div>
-      {(!isConnectedToRoom && <Lobby />) || (isConnectedToRoom && <Game />)}
+    <div className="App">
+      {(!isConnectedToRoom && <Lobby />) || (isConnectedToRoom && <Room />)}
     </div>
   );
 }

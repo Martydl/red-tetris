@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useInterval } from "usehooks-ts";
 import { useBlockLines } from "../hooks/useBlockLines";
@@ -15,14 +15,12 @@ import {
   addPieceToBoard,
   checkGameBoard,
   genShadow,
-  genFullShadow,
   updatePrintBoard,
   checkCollisions,
 } from "./Utils";
 import { PrintBoard } from "../components/PrintBoard";
 import { PrintQueue } from "../components/PrintQueue";
 import { PrintScore } from "../components/PrintScore";
-import { PrintCommand } from "../components/PrintCommand";
 import { Piece } from "../Types";
 import { piecesList } from "../Consts";
 
@@ -39,7 +37,6 @@ export default function GameOn() {
     (state: RootReducerState) => state.game.currentPiece
   );
   const queue = useSelector((state: RootReducerState) => state.game.queue);
-  const shadow = useSelector((state: RootReducerState) => state.game.shadow);
   const level = useSelector((state: RootReducerState) => state.game.level);
   const score = useSelector((state: RootReducerState) => state.game.score);
   const currentDelay = useSelector(
@@ -48,7 +45,6 @@ export default function GameOn() {
   const defaultDelay = useSelector(
     (state: RootReducerState) => state.game.defaultDelay
   );
-  const opponents: number[][] = [shadow, shadow];
 
   function updateGameBoard(gameBoard: number[][], piece: Piece): void {
     let completedLines = 0;
@@ -131,20 +127,10 @@ export default function GameOn() {
 
   return (
     <div className="game" tabIndex={0} onKeyDown={handleKeyDown}>
-      <PrintCommand />
-      <PrintBoard board={printBoard} class="gameBoard" />
+      <PrintBoard board={printBoard} class="board" />
       <div className="gameInfo">
         <PrintQueue queue={queue} />
         <PrintScore score={score} level={level} defaultDelay={defaultDelay} />
-      </div>
-      <div className="shadows">
-        {opponents.map((shadow, index) => (
-          <PrintBoard
-            key={index}
-            board={genFullShadow(shadow)}
-            class="shadowBoard"
-          />
-        ))}
       </div>
     </div>
   );

@@ -12,12 +12,12 @@
   outline: 0px;
 }
 
-.futurePiece {
+.queueMember {
   margin-bottom: 25px;
 }
 
-.gameBoard,
-.shadowBoard {
+.board,
+.opponentBoard {
   display: flex;
   flex-direction: column;
   height: max-content;
@@ -27,7 +27,7 @@
   margin: 0 25px 5px 25px;
 }
 
-.futurePiece > .gameBoard {
+.queueMember > .board {
   margin: 0;
 }
 
@@ -35,7 +35,7 @@
   display: flex;
 }
 
-.gameBoard .block {
+.board .block {
   width: 25px;
   height: 25px;
   margin: 1px;
@@ -44,7 +44,7 @@
   border-radius: 15%;
 }
 
-.shadowBoard .block {
+.opponentBoard .block {
   width: 10px;
   height: 10px;
   margin: 1px;
@@ -69,7 +69,7 @@
   background-color: white;
   border: solid 2px;
   border-radius: 5%;
-  padding: 3px
+  padding: 3px;
 }
 
 div#\30 {
