@@ -5,14 +5,14 @@ import Opponent from "./Opponent";
 class Game {
   gameID: string;
   players: { [key: string]: Player };
-  pieces: number[];
+  pieces: Piece[];
   leaderID: string;
   gameOn: boolean;
 
   constructor(gameId: string, creator: Player) {
     this.gameID = gameId;
     this.players = { [creator.id]: creator };
-    this.pieces = [new Piece().name, new Piece().name, new Piece().name, new Piece().name];
+    this.pieces = [new Piece(), new Piece(), new Piece(), new Piece()];
     this.leaderID = creator.id;
     this.gameOn = false;
   }
@@ -35,13 +35,18 @@ class Game {
 
   getPiece(nbPiece: number): number {
     if (nbPiece >= this.pieces.length) {
-      let newPiece: number = new Piece().name;
+      let newPiece: Piece = new Piece();
       this.pieces.push(newPiece);
-      return newPiece;
+      return newPiece.name;
+    } else return this.pieces[nbPiece].name;
+  }
+
+  getStartPieceList(): number[] {
+    let startPieceList: number[] = [];
+    for (let elem in this.pieces) {
+      startPieceList.push(this.pieces[elem].name);
     }
-    else {
-      return this.pieces[nbPiece];
-    }
+    return startPieceList;
   }
 
   getOpponents(playerID: string): { [id: string]: {} } {
