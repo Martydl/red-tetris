@@ -4,7 +4,6 @@ import { useInterval } from "usehooks-ts";
 import { useBlockLines } from "../hooks/useBlockLines";
 import { RootReducerState } from "../store/RootReducer";
 import { gameSlice } from "../store/GameReducer";
-import seedrandom from "seedrandom";
 import {
   moveBottom,
   moveLeft,
@@ -15,7 +14,6 @@ import {
 import {
   addPieceToBoard,
   checkGameBoard,
-  createPiece,
   genShadow,
   genFullShadow,
   updatePrintBoard,
@@ -51,23 +49,20 @@ export default function GameOn() {
     (state: RootReducerState) => state.game.defaultDelay
   );
   const opponents: number[][] = [shadow, shadow];
-  const randomGen = useRef<seedrandom.PRNG>(seedrandom("dildo"));
 
   function updateGameBoard(gameBoard: number[][], piece: Piece): void {
     let completedLines = 0;
     let newBoard = addPieceToBoard(gameBoard, piece);
-    let newPiece = createPiece(randomGen.current);
     [newBoard, completedLines] = checkGameBoard(newBoard);
     dispatch(gameSlice.actions.setGameBoard(newBoard));
     dispatch(gameSlice.actions.setShadow(genShadow(newBoard)));
     if (completedLines > 0)
       dispatch(gameSlice.actions.setCompletedLines(completedLines));
     if (checkCollisions(newBoard, piecesList[queue[0].name][0], 3, 0)) {
-      dispatch(gameSlice.actions.setCurrentPiece(queue[0]));
       dispatch(
         gameSlice.actions.setPrintBoard(updatePrintBoard(newBoard, queue[0]))
       );
-      dispatch(gameSlice.actions.updateQueue(newPiece));
+      dispatch(gameSlice.actions.setCurrentPiece(queue[0]));
     } else {
       dispatch(gameSlice.actions.gameOver());
       console.log("Game Over");

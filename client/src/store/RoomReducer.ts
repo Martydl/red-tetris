@@ -3,13 +3,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface Opponent {
   playerName: string;
   shadow: number[];
-  gameOver: boolean;
+  gameOn: boolean;
   // board: number[][]; // Show remaining players boards when not playing / dead ?
 }
 
 export interface RoomState {
   roomName?: string;
   leaderId?: string;
+  startingGame: boolean;
   gameOn: boolean;
   opponents: { [id: string]: Opponent }; // from server, needs to send only playing players, not spectators
 }
@@ -17,6 +18,7 @@ export interface RoomState {
 const initialState: RoomState = {
   roomName: undefined,
   leaderId: undefined,
+  startingGame: false,
   gameOn: false,
   opponents: {},
 };
@@ -42,6 +44,9 @@ export const roomSlice = createSlice({
       state.opponents = action.payload.opponents;
       state.gameOn = action.payload.gameOn;
     },
+    lauchGame: (state: RoomState) => {
+      state.startingGame = true;
+    },
     startGame: (state: RoomState) => {
       state.gameOn = true;
     },
@@ -51,12 +56,26 @@ export const roomSlice = createSlice({
     setLeaderId: (state: RoomState, action: PayloadAction<string>) => {
       state.leaderId = action.payload;
     },
-    editOpponent: (
+    addOpponent: (
       state: RoomState,
       action: PayloadAction<[string, Opponent]>
     ) => {
       const [id, opponent] = action.payload;
       state.opponents[id] = opponent;
+    },
+    editOpponentShadow: (
+      state: RoomState,
+      action: PayloadAction<[string, number[]]>
+    ) => {
+      const [id, shadow] = action.payload;
+      state.opponents[id].shadow = shadow;
+    },
+    editOpponentGameOn: (
+      state: RoomState,
+      action: PayloadAction<[string, boolean]>
+    ) => {
+      const [id, gameOn] = action.payload;
+      state.opponents[id].gameOn = gameOn;
     },
     delOpponent: (state: RoomState, action: PayloadAction<string>) => {},
   },

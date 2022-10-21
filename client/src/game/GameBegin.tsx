@@ -2,6 +2,9 @@ import { PrintBoard } from "../components/PrintBoard";
 import { PrintScore } from "../components/PrintScore";
 import { initBoard } from "./Utils";
 import { emptyPiece } from "../Consts";
+import { useDispatch } from "react-redux";
+import { roomSlice } from "../store/RoomReducer";
+import { Button } from "@mui/material";
 
 function EmptyPiece(): JSX.Element {
   return (
@@ -25,8 +28,14 @@ function PrintEmptyQueue() {
 export default function gameBegin() {
   const board = initBoard();
 
+  const dispatch = useDispatch();
+  const handleClick = () => {
+    dispatch(roomSlice.actions.lauchGame());
+  };
+
   return (
     <div className="game">
+      <Button onClick={handleClick}>start</Button>
       <div>
         <PrintBoard board={board} class="gameBoard" />
       </div>

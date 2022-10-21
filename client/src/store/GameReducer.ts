@@ -85,10 +85,6 @@ const setCurrentPieceRotation = (
   state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
 };
 
-const setQueue = (state: GameState, action: PayloadAction<Piece[]>): void => {
-  state.queue = action.payload;
-};
-
 const updateQueue = (state: GameState, action: PayloadAction<Piece>): void => {
   state.queue.shift();
   state.queue.push(action.payload);
@@ -168,7 +164,6 @@ export const gameSlice = createSlice({
     setCurrentPiece,
     setCurrentPieceCoords,
     setCurrentPieceRotation,
-    setQueue,
     updateQueue,
     swapPiece,
     initPieces,
