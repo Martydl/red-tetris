@@ -76,11 +76,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on(ClientMessages.START_GAME, (gameID: string) => {
+    console.log("gameID:", gameID);
+    server.games[gameID].giveGeneratorToPlayers();
     io.to(gameID).emit(
       ClientMessages.START_GAME,
       server.games[gameID].getStartPieceList()
     );
-    server.games[gameID].giveSeedToPlayers();
   });
 
   socket.on(ClientMessages.GET_PIECE, () => {

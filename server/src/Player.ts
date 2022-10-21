@@ -6,7 +6,7 @@ class Player {
   id: string;
   room: string;
   opponent: Opponent;
-  seed?: seedrandom.PRNG;
+  generator?: seedrandom.PRNG;
 
   constructor(id: string) {
     this.id = id;
@@ -18,8 +18,23 @@ class Player {
     this.room = room;
   }
 
+  setGenerator(seed: string) {
+    this.generator = seedrandom(seed);
+  }
+
   genPiece(): number {
-    return this.seed ? new Piece(this.seed()).name : -1;
+    return this.generator ? new Piece(this.generator()).name : -1;
+  }
+
+  getStarted(): number[] {
+    if (this.generator)
+      return [
+        new Piece(this.generator()).name,
+        new Piece(this.generator()).name,
+        new Piece(this.generator()).name,
+        new Piece(this.generator()).name,
+      ];
+    else return [];
   }
 }
 

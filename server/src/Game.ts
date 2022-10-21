@@ -7,14 +7,14 @@ class Game {
   players: { [key: string]: Player };
   leaderID: string;
   gameOn: boolean;
-  seed: seedrandom.PRNG;
+  seed: string;
 
   constructor(gameId: string, creator: Player) {
     this.gameID = gameId;
     this.players = { [creator.id]: creator };
     this.leaderID = creator.id;
     this.gameOn = false;
-    this.seed = seedrandom();
+    this.seed = Math.random().toString();
   }
 
   gameStart(): void {
@@ -33,19 +33,20 @@ class Game {
     this.leaderID = this.players[Object.keys(this.players)[0]].id;
   }
 
-  giveSeedToPlayers() {
+  giveGeneratorToPlayers() {
     for (let playerID in this.players) {
-      this.players[playerID].seed = this.seed;
+      console.log("playerID:", playerID);
+      this.players[playerID].setGenerator(this.seed);
     }
   }
 
-  getStartPieceList(): number[] {
-    return [
-      new Piece(this.seed()).name,
-      new Piece(this.seed()).name,
-      new Piece(this.seed()).name,
-      new Piece(this.seed()).name,
-    ];
+  getStartPieceList() {
+    for (let i = 0; i < Object.keys(this.players).length - 1; ++i) {
+      this.players[Object.keys(this.players)[i]].getStarted();
+    }
+    return this.players[
+      Object.keys(this.players)[Object.keys(this.players).length - 1]
+    ].getStarted();
   }
 
   getOpponents(playerID: string): { [id: string]: Object } {
