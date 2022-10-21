@@ -5,7 +5,7 @@ import Opponent from "./Opponent";
 class Game {
   gameID: string;
   players: { [key: string]: Player };
-  pieces: Piece[];
+  pieces: number[];
   leaderID: string;
   gameOn: boolean;
 
