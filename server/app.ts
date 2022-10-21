@@ -26,7 +26,7 @@ let server = new App();
 
 io.on("connection", (socket) => {
   console.log(socket.id, "is connected");
-  // server.getRoomsInfos();
+  server.getRoomsInfos();
 
   let newPlayer = new Player(socket.id);
   server.addPlayer(socket.id, newPlayer);
@@ -87,6 +87,10 @@ io.on("connection", (socket) => {
       ClientMessages.GET_PIECE,
       server.games[gameID].getPiece(nbPiece)
     );
+  });
+
+  socket.on(ServerMessages.ROOMS_INFOS, () => {
+    socket.emit(ServerMessages.ROOMS_INFOS, server.getRoomsInfos());
   });
 
   socket.on("disconnect", (reason: any) => {

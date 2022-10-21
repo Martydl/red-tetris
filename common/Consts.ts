@@ -10,6 +10,7 @@ export enum ClientMessages {
 
 export enum ServerMessages {
   ROOM_INFO = "ROOM_INFO",
+  ROOMS_INFOS = "ROOMS_INFOS",
   GAME_STATUS = "GAME_STATUS",
   SEND_OPPONENT = "SEND_OPPONENT",
   LEADER_ID = "LEADER_ID",

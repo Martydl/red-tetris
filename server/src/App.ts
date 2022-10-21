@@ -17,6 +17,17 @@ class App {
   addPlayer(playerID: string, player: Player): void {
     this.players[playerID] = player;
   }
+
+  getRoomsInfos(): { [key: string]: Object } {
+    let roomsInfos: { [key: string]: Object } = {};
+    for (let elem in this.games) {
+      roomsInfos[elem] = {
+        playerNB: Object.keys(this.games[elem].players).length,
+        gameOn: this.games[elem].gameOn,
+      };
+    }
+    return roomsInfos;
+  }
 }
 
 export default App;
