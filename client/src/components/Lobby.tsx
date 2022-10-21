@@ -3,6 +3,7 @@ import { Button, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { connectionSlice } from "../store/ConnectionReducer";
 import { RootReducerState } from "../store/RootReducer";
+import { RoomList } from "./RoomList";
 
 export function Lobby() {
   const dispatch = useDispatch();
@@ -22,17 +23,23 @@ export function Lobby() {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <TextField
-        id="roomName"
-        label="Join Room"
-        variant="filled"
-        value={roomName}
-        onChange={handleNameChange}
+    <>
+      <div style={{ display: "flex" }}>
+        <TextField
+          id="roomName"
+          label="Join Room"
+          variant="filled"
+          value={roomName}
+          onChange={handleNameChange}
+        />
+        <Button variant="contained" onClick={handleSubmit}>
+          JOIN
+        </Button>
+      </div>
+      <RoomList
+        rooms={roomList}
+        joinRoomCbk={dispatch(connectionSlice.actions.startConnectingToRoom)}
       />
-      <Button variant="contained" onClick={handleSubmit}>
-        JOIN
-      </Button>
-    </div>
+    </>
   );
 }

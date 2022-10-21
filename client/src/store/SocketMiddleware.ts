@@ -55,6 +55,7 @@ const socketMiddleware: Middleware = (store) => {
 
       socket.on(ClientMessages.GET_PIECE, (pieceName: number) => {
         store.dispatch(gameSlice.actions.updateQueue(initPiece(pieceName)));
+        store.dispatch(gameSlice.actions.upPieceId());
       });
     }
 

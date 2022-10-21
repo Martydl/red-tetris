@@ -33,7 +33,7 @@ const initialState: GameState = {
   printBoard: initBoard(),
   currentPiece: initPiece(0),
   queue: [],
-  pieceId: 4,
+  pieceId: 5,
   shadow: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   completedLine: 0,
   level: 0,
@@ -94,10 +94,35 @@ const updateQueue = (state: GameState, action: PayloadAction<Piece>): void => {
   state.queue.push(action.payload);
 };
 
+const swapPiece = (state: GameState) => {
+  if (
+    checkCollisions(
+      state.gameBoard,
+      piecesList[state.queue[0].name][state.queue[0].rotation],
+      state.currentPiece.pos.x,
+      state.currentPiece.pos.y
+    )
+  ) {
+    [state.currentPiece.name, state.queue[0].name] = [
+      state.queue[0].name,
+      state.currentPiece.name,
+    ];
+    [state.currentPiece.rotation, state.queue[0].rotation] = [
+      state.queue[0].rotation,
+      state.currentPiece.rotation,
+    ];
+  }
+  state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
+};
+
 const initPieces = (state: GameState, action: PayloadAction<number[]>) => {
   state.currentPiece = initPiece(action.payload[0]);
   state.queue = initQueue(action.payload);
   // updatePrintBoard ?
+};
+
+const upPieceId = (state: GameState) => {
+  state.pieceId += 1;
 };
 
 const setShadow = (state: GameState, action: PayloadAction<number[]>): void => {
@@ -133,27 +158,6 @@ const setDelay = (state: GameState, action: PayloadAction<number>) => {
   state.currentDelay = action.payload;
 };
 
-const swapPiece = (state: GameState) => {
-  if (
-    checkCollisions(
-      state.gameBoard,
-      piecesList[state.queue[0].name][state.queue[0].rotation],
-      state.currentPiece.pos.x,
-      state.currentPiece.pos.y
-    )
-  ) {
-    [state.currentPiece.name, state.queue[0].name] = [
-      state.queue[0].name,
-      state.currentPiece.name,
-    ];
-    [state.currentPiece.rotation, state.queue[0].rotation] = [
-      state.queue[0].rotation,
-      state.currentPiece.rotation,
-    ];
-  }
-  state.printBoard = updatePrintBoard(state.gameBoard, state.currentPiece);
-};
-
 export const gameSlice = createSlice({
   name: "game",
   initialState,
@@ -166,13 +170,14 @@ export const gameSlice = createSlice({
     setCurrentPieceRotation,
     setQueue,
     updateQueue,
+    swapPiece,
     initPieces,
+    upPieceId,
     setShadow,
     setCompletedLines,
     addLinesToBlock,
     subLinesToBlock,
     setDelay,
-    swapPiece,
   },
 });
 

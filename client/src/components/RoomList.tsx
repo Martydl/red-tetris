@@ -4,14 +4,19 @@ function Room(props: {
   room: { roomName: string; playerNb: number; gameOn: boolean };
   joinRoomCbk: (id: string) => void;
 }): JSX.Element {
+  const { roomName, playerNb, gameOn } = props.room;
+
   const handleClick = () => {
-    props.joinRoomCbk(props.room.roomName);
+    props.joinRoomCbk(roomName);
   };
+
   return (
-    <>
-      {props.room.roomName}
-      <Button onClick={handleClick} />
-    </>
+    <div key={roomName}>
+      {roomName}
+      {playerNb}
+      {gameOn}
+      <Button onClick={handleClick}>Join</Button>
+    </div>
   );
 }
 
@@ -24,13 +29,14 @@ export function RoomList(props: {
   };
   joinRoomCbk: (id: string) => void;
 }) {
-  var list: JSX.Element[] = [];
+  var roomList: JSX.Element[] = [];
   for (let key in props.rooms) {
-    list.push(
+    roomList.push(
       <Room
         room={{ ...props.rooms[key], roomName: key }}
         joinRoomCbk={props.joinRoomCbk}
       />
     );
   }
+  return <div>{roomList}</div>;
 }
