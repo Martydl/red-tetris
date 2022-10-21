@@ -1,37 +1,18 @@
+import Opponent from "./Opponent";
+
 class Player {
   id: string;
-  name: string;
   room: string;
-  alive: boolean;
-  shadow: number[];
-  // gameBoard: number[][]; NEEDED FOR OPPONENT INTEGRATION
+  opponent: Opponent;
 
   constructor(id: string) {
     this.id = id;
-    this.name = "guest";
     this.room = "waiting";
-    this.alive = true;
-    this.shadow = new Array(10).fill(0);
-    // this.gameBoard = new Array(20); NEEDED FOR OPPONENT INTEGRATION
-    // for (let i = 0; i < 20; i++) {
-    //   this.gameBoard[i] = new Array(10);
-    // }
+    this.opponent = new Opponent(true, new Array(10).fill(0));
   }
 
-  setName(name: string) {
-    this.name = name;
-  }
-
-  setRoom(room: string) {
+  setRoom(room: string): void {
     this.room = room;
-  }
-
-  newShadow(shadow: number[]) {
-    this.shadow = shadow;
-  }
-
-  dead() {
-    this.alive = false;
   }
 }
 
