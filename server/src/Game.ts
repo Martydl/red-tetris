@@ -35,12 +35,12 @@ class Game {
 
   getPiece(nbPiece: number): number {
     if (nbPiece >= this.pieces.length) {
-      let newPiece: Piece = new Piece();
+      let newPiece: number = new Piece().name;
       this.pieces.push(newPiece);
-      return newPiece.name;
+      return newPiece;
     }
     else {
-      return this.pieces[nbPiece].name;
+      return this.pieces[nbPiece];
     }
   }
 
