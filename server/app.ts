@@ -5,7 +5,6 @@ import App from "./src/App";
 import Player from "./src/Player";
 import Game from "./src/Game";
 import { ClientMessages, ServerMessages } from "../common/Consts";
-// import { ClientMessages } from "./Consts";
 
 const app: Express = express();
 
@@ -58,17 +57,18 @@ io.on("connection", (socket) => {
       .emit(ClientMessages.LINES_DESTROYED, lineNB);
   });
 
-  socket.on(ClientMessages.NEW_SHADOW, (shadow: number[]) => {
+  socket.on(ClientMessages.NEW_SHADOW, (arg: [string, number[]]) => {
+    let [gameID, shadow] = arg;
     server.players[socket.id].opponent.newShadow(shadow);
     socket.broadcast
-      .to(server.players[socket.id].room)
+      .to(gameID)
       .emit(ClientMessages.NEW_SHADOW, [socket.id, shadow]);
   });
 
-  socket.on(ClientMessages.PLAYER_GAME_OVER, () => {
+  socket.on(ClientMessages.PLAYER_GAME_OVER, (gameID: string) => {
     server.players[socket.id].opponent.dead();
     socket.broadcast
-      .to(server.players[socket.id].room)
+      .to(gameID)
       .emit(ClientMessages.PLAYER_GAME_OVER, socket.id);
   });
 
@@ -87,8 +87,8 @@ io.on("connection", (socket) => {
     );
   });
 
-  socket.on(ServerMessages.ROOMS_INFOS, () => {
-    socket.emit(ServerMessages.ROOMS_INFOS, server.getRoomsInfos());
+  socket.on(ServerMessages.ROOM_LIST, () => {
+    socket.emit(ServerMessages.ROOM_LIST, server.getRoomsInfos());
   });
 
   socket.on("disconnect", (reason: any) => {

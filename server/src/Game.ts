@@ -49,8 +49,8 @@ class Game {
     return startPieceList;
   }
 
-  getOpponents(playerID: string): { [id: string]: {} } {
-    let opponents: { [id: string]: {} } = {};
+  getOpponents(playerID: string): { [id: string]: Object } {
+    let opponents: { [id: string]: Object } = {};
     for (let id in this.players) {
       if (id != playerID)
         opponents[id] = JSON.parse(JSON.stringify(this.players[id].opponent));
