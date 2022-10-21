@@ -1,6 +1,5 @@
 import Player from "./Player";
 import Piece from "./Piece";
-import Opponent from "./Opponent";
 
 class Game {
   gameID: string;
@@ -30,7 +29,7 @@ class Game {
   }
 
   setNewLeader(): void {
-    this.leaderID = this.players[0].id;
+    this.leaderID = this.players[Object.keys(this.players)[0]].id;
   }
 
   getPiece(nbPiece: number): number {
