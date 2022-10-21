@@ -60,7 +60,7 @@ export const connectionSlice = createSlice({
     ) => {
       state.roomList = action.payload;
     },
-    editRoom: (
+    addRoom: (
       state: ConnectionState,
       action: PayloadAction<[string, { playerNb: number; gameOn: boolean }]>
     ) => {

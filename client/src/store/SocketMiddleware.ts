@@ -15,6 +15,13 @@ const socketMiddleware: Middleware = (store) => {
     if (connectionSlice.actions.startConnectingToSocket.match(action)) {
       socket = io();
 
+      socket.on(
+        ServerMessages.ROOM_LIST,
+        (arg: { [key: string]: { playerNb: number; gameOn: boolean } }) => {
+          store.dispatch(connectionSlice.actions.setRoomList(arg));
+        }
+      );
+
       socket.on("connect", () => {
         store.dispatch(connectionSlice.actions.socketConnectionEstablished());
       });

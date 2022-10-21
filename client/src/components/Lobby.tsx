@@ -22,6 +22,10 @@ export function Lobby() {
     dispatch(connectionSlice.actions.startConnectingToRoom(roomName));
   };
 
+  const handleSubmit2 = (room: string) => {
+    dispatch(connectionSlice.actions.startConnectingToRoom(room));
+  };
+
   return (
     <>
       <div style={{ display: "flex" }}>
@@ -36,10 +40,7 @@ export function Lobby() {
           JOIN
         </Button>
       </div>
-      <RoomList
-        rooms={roomList}
-        joinRoomCbk={dispatch(connectionSlice.actions.startConnectingToRoom)}
-      />
+      <RoomList rooms={roomList} joinRoomCbk={handleSubmit2} />
     </>
   );
 }
