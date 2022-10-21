@@ -35,18 +35,17 @@ class Game {
 
   giveGeneratorToPlayers() {
     for (let playerID in this.players) {
-      console.log("playerID:", playerID);
       this.players[playerID].setGenerator(this.seed);
     }
   }
 
   getStartPieceList() {
-    for (let i = 0; i < Object.keys(this.players).length - 1; ++i) {
-      this.players[Object.keys(this.players)[i]].getStarted();
-    }
-    return this.players[
-      Object.keys(this.players)[Object.keys(this.players).length - 1]
-    ].getStarted();
+    return [
+      new Piece(Math.random()).name,
+      new Piece(Math.random()).name,
+      new Piece(Math.random()).name,
+      new Piece(Math.random()).name,
+    ];
   }
 
   getOpponents(playerID: string): { [id: string]: Object } {

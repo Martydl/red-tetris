@@ -30,10 +30,13 @@ io.on("connection", (socket) => {
   let newPlayer = new Player(socket.id);
   server.addPlayer(socket.id, newPlayer);
 
-  socket.join("waitingRoom");
+  socket.join(ClientMessages.WAITING_ROOM);
+  socket.emit(ServerMessages.ROOM_LIST, server.getRoomsInfos());
 
   socket.on(ClientMessages.JOIN_ROOM, (arg: [string, string]) => {
     let [gameID, playerName] = arg;
+    if (gameID === ClientMessages.WAITING_ROOM)
+      socket.emit(ServerMessages.ROOM_LIST, server.getRoomsInfos());
     socket.join(gameID);
     server.players[socket.id].opponent.setName(playerName);
     if (gameID in server.games)
@@ -76,20 +79,15 @@ io.on("connection", (socket) => {
   });
 
   socket.on(ClientMessages.START_GAME, (gameID: string) => {
-    console.log("gameID:", gameID);
-    server.games[gameID].giveGeneratorToPlayers();
     io.to(gameID).emit(
       ClientMessages.START_GAME,
       server.games[gameID].getStartPieceList()
     );
+    server.games[gameID].giveGeneratorToPlayers();
   });
 
   socket.on(ClientMessages.GET_PIECE, () => {
     socket.emit(ClientMessages.GET_PIECE, server.players[socket.id].genPiece());
-  });
-
-  socket.on(ServerMessages.ROOM_LIST, () => {
-    socket.emit(ServerMessages.ROOM_LIST, server.getRoomsInfos());
   });
 
   socket.on("disconnect", (reason: any) => {

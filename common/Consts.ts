@@ -6,6 +6,7 @@ export enum ClientMessages {
   START_GAME = "START_GAME",
   END_GAME = "END_GAME",
   GET_PIECE = "GET_PIECE",
+  WAITING_ROOM = "WAITING_ROOM",
 }
 
 export enum ServerMessages {
