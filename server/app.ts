@@ -77,14 +77,11 @@ io.on("connection", (socket) => {
       ClientMessages.START_GAME,
       server.games[gameID].getStartPieceList()
     );
+    server.games[gameID].giveSeedToPlayers();
   });
 
-  socket.on(ClientMessages.GET_PIECE, (arg: [string, number]) => {
-    let [gameID, nbPiece] = arg;
-    socket.emit(
-      ClientMessages.GET_PIECE,
-      server.games[gameID].getPiece(nbPiece)
-    );
+  socket.on(ClientMessages.GET_PIECE, () => {
+    socket.emit(ClientMessages.GET_PIECE, server.players[socket.id].genPiece());
   });
 
   socket.on(ServerMessages.ROOM_LIST, () => {

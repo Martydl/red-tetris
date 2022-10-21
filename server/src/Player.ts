@@ -1,9 +1,12 @@
+import Piece from "./Piece";
 import Opponent from "./Opponent";
+import seedrandom from "seedrandom";
 
 class Player {
   id: string;
   room: string;
   opponent: Opponent;
+  seed?: seedrandom.PRNG;
 
   constructor(id: string) {
     this.id = id;
@@ -13,6 +16,10 @@ class Player {
 
   setRoom(room: string): void {
     this.room = room;
+  }
+
+  genPiece(): number {
+    return new Piece(this.seed()).name;
   }
 }
 

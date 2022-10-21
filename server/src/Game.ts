@@ -1,19 +1,20 @@
 import Player from "./Player";
 import Piece from "./Piece";
+import seedrandom from "seedrandom";
 
 class Game {
   gameID: string;
   players: { [key: string]: Player };
-  pieces: Piece[];
   leaderID: string;
   gameOn: boolean;
+  seed: seedrandom.PRNG;
 
   constructor(gameId: string, creator: Player) {
     this.gameID = gameId;
     this.players = { [creator.id]: creator };
-    this.pieces = [new Piece(), new Piece(), new Piece(), new Piece()];
     this.leaderID = creator.id;
     this.gameOn = false;
+    this.seed = seedrandom();
   }
 
   gameStart(): void {
@@ -32,20 +33,19 @@ class Game {
     this.leaderID = this.players[Object.keys(this.players)[0]].id;
   }
 
-  getPiece(nbPiece: number): number {
-    if (nbPiece >= this.pieces.length) {
-      let newPiece: Piece = new Piece();
-      this.pieces.push(newPiece);
-      return newPiece.name;
-    } else return this.pieces[nbPiece].name;
+  giveSeedToPlayers() {
+    for (let playerID in this.players) {
+      this.players[playerID].seed = this.seed;
+    }
   }
 
   getStartPieceList(): number[] {
-    let startPieceList: number[] = [];
-    for (let elem in this.pieces) {
-      startPieceList.push(this.pieces[elem].name);
-    }
-    return startPieceList;
+    return [
+      new Piece(this.seed()).name,
+      new Piece(this.seed()).name,
+      new Piece(this.seed()).name,
+      new Piece(this.seed()).name,
+    ];
   }
 
   getOpponents(playerID: string): { [id: string]: Object } {

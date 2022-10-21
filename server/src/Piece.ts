@@ -1,8 +1,8 @@
 class Piece {
   name: number;
 
-  constructor() {
-    this.name = Math.round(Math.random() * 100) % 7;
+  constructor(number: number) {
+    this.name = Math.round(number * 100) % 7;
   }
 }
 
