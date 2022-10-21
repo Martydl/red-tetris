@@ -12,7 +12,7 @@ class Game {
   constructor(gameId: string, creator: Player) {
     this.gameID = gameId;
     this.players = { [creator.id]: creator };
-    this.pieces = [new Piece(), new Piece(), new Piece(), new Piece()];
+    this.pieces = [new Piece().name, new Piece().name, new Piece().name, new Piece().name];
     this.leaderID = creator.id;
     this.gameOn = false;
   }
