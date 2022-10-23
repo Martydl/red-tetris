@@ -18,8 +18,10 @@ export function Room() {
 
   return (
     <div className="Room">
-      <RoomInfo />
-      <PrintCommand />
+      <div className="Infos">
+        <RoomInfo />
+        <PrintCommand />
+      </div>
       {(!roomGameOn && <GameBegin />) || (ownGameOn && <GameOn />) || (
         <GameOver />
       )}

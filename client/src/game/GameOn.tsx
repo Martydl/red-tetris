@@ -127,7 +127,9 @@ export default function GameOn() {
 
   return (
     <div className="game" tabIndex={0} onKeyDown={handleKeyDown}>
-      <PrintBoard board={printBoard} class="board" />
+      <div className="gameBoard">
+        <PrintBoard board={printBoard} class="board" />
+      </div>
       <div className="gameInfo">
         <PrintQueue queue={queue} />
         <PrintScore score={score} level={level} defaultDelay={defaultDelay} />

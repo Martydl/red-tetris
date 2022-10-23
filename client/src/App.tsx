@@ -19,6 +19,7 @@ function App() {
 
   return (
     <div className="App">
+      <div className="Header">Header</div>
       {(!isConnectedToRoom && <Lobby />) || (isConnectedToRoom && <Room />)}
     </div>
   );

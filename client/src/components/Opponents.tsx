@@ -13,7 +13,7 @@ function PrintOpponent(props: {
         board={genFullShadow(props.opponent.shadow)}
         class="opponentBoard"
       />
-      {props.opponent.playerName}
+      <div className="opponentName">{props.opponent.playerName}</div>
     </div>
   );
 }
@@ -31,9 +31,12 @@ export function Opponents(props: {
 
   return (
     <div className="opponents">
-      {ops.map((op, id) => (
-        <PrintOpponent opponent={op} index={id} />
-      ))}
+      <p className="opponentsText">Opponents:</p>
+      <div className="opponentsGrid">
+        {ops.map((op, id) => (
+          <PrintOpponent opponent={op} index={id} />
+        ))}
+      </div>
     </div>
   );
 }

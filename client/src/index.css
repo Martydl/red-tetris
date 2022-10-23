@@ -1,12 +1,25 @@
+body {
+  margin: 0;
+  width: 100vw;
+  min-width: 1440px;
+  height: 100vh;
+  min-height: 810px;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
-
+/* 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #242424; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,6 +28,7 @@
   -webkit-text-size-adjust: 100%;
 }
 
+/*
 a {
   font-weight: 500;
   color: #646cff;
@@ -67,4 +81,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */

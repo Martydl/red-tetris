@@ -23,7 +23,7 @@ export function Lobby() {
   };
 
   return (
-    <>
+    <div className="LobbyBody">
       <div style={{ display: "flex" }}>
         <TextField
           id="roomName"
@@ -31,6 +31,7 @@ export function Lobby() {
           variant="filled"
           value={roomName}
           onChange={handleNameChange}
+          autoFocus
         />
         <Button variant="contained" onClick={handleSubmit}>
           JOIN
@@ -40,6 +41,6 @@ export function Lobby() {
         rooms={roomList}
         joinRoomCbk={dispatch(connectionSlice.actions.startConnectingToRoom)}
       />
-    </>
+    </div>
   );
 }

@@ -22,7 +22,7 @@ export function RoomInfo() {
   console.log(myId, leaderId);
 
   return (
-    <div>
+    <div className="RoomInfos">
       {roomName}
       {myId === leaderId && (
         <Button variant="contained" onClick={handleStart}>

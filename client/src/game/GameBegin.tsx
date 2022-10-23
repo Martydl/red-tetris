@@ -9,7 +9,7 @@ export default function gameBegin() {
 
   return (
     <div className="game">
-      <div>
+      <div className="gameBoard">
         <PrintBoard board={board} class="board" />
       </div>
       <div className="gameInfo">

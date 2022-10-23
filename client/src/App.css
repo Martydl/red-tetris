@@ -1,63 +1,62 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.App {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.Header {
+  width: 100%;
+  height: 5%;
+  background-color: pink;
+}
+
+.LobbyBody {
+  width: 98%;
+  height: 95%;
+  margin: 1%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.Room {
+  width: 98%;
+  height: 95%;
+  display: flex;
+  justify-content: center;
+  margin: 1%;
+}
+
+.Infos {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.RoomInfos, .Instructions {
+  width: 100%;
+  height: 20%;
 }
 
 .game {
+  width: max-content;
+  height: 100%;
   display: flex;
+  justify-content: space-between;
+  margin: 0 15px;
 }
 
 .game:focus-visible {
   outline: 0px;
 }
 
-.queueMember {
-  margin-bottom: 25px;
-}
-
-.board,
-.opponentBoard {
-  display: flex;
-  flex-direction: column;
-  height: max-content;
-  border: solid 2px;
-  border-radius: 4px;
-  background-color: white;
-  margin: 0 25px 5px 25px;
-}
-
-.queueMember > .board {
-  margin: 0;
-}
-
-.row {
-  display: flex;
-}
-
-.board .block {
-  width: 25px;
-  height: 25px;
-  margin: 1px;
-  border: solid 1px;
-  border-color: white;
-  border-radius: 15%;
-}
-
-.opponentBoard .block {
-  width: 10px;
-  height: 10px;
-  margin: 1px;
-  border: solid 1px;
-  border-color: white;
-  border-radius: 15%;
-}
-
 .gameOver {
   position: absolute;
-  width: 294px;
-  height: 584px;
-  margin: 0 25px 5px 25px;
+  width: 394px;
+  height: 784px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,7 +69,65 @@
   border: solid 2px;
   border-radius: 5%;
   padding: 3px;
+} 
+
+.gameBoard {
+  width: max-content;
+  height: max-content;
+  background-color: blue;
+  display: flex;
+  flex-direction: row-reverse;
+  margin-right: 15px;
 }
+
+.board {
+  width: max-content;
+  height: max-content;
+  border: solid 2px;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.row {
+  height: max-content;
+  width: max-content;
+  display: flex;
+}
+
+.gameInfo>.queue>.queueMember>.board {
+  margin-bottom: 35px;
+}
+
+.block {
+  width: 35px;
+  height: 35px;
+  margin: 1px;
+  border: solid 1px;
+  border-color: white;
+  border-radius: 4px;
+}
+
+.gameInfo {
+  width: max-content;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.queue {
+  width: 100%;
+  height: 74%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.scorePanel {
+  width: 100%;
+  height: 24%;
+}
+
+/* Start Colors */
 
 div#\30 {
   background-color: white;
@@ -140,6 +197,48 @@ div#\31 5 {
 }
 
 .game:focus div#\30,
-.game:focus .block {
+.game:focus .block,
+.opponentBoard>.row>div#\30 {
   background-color: whitesmoke;
+}
+
+/* End Colors */
+
+.opponents {
+  width: 30%;
+  height: 828px;
+}
+
+.opponentsText {
+  height: max-content;
+  width: 100%;
+}
+
+.opponentsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: overlay;
+  text-align: center;
+}
+
+.opponent {
+  margin-right: 15px;
+}
+
+.opponentBoard>.row>.block {
+  width: 15px;
+  height: 15px;
+}
+
+.opponentBoard {
+  width: max-content;
+  height: max-content;
+  border: solid 2px;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.opponentName {
+  width: 100%;
+  height: max-content;
 }

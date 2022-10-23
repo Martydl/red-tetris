@@ -23,11 +23,13 @@ export default function GameOver() {
   return (
     <div className="game">
       <div>
-        <PrintEndScreen score={score} />
-        <PrintBoard
-          board={addPieceToBoard(gameBoard, currentPiece)}
-          class="board"
-        />
+        <div className="gameBoard">
+          <PrintEndScreen score={score} />
+          <PrintBoard
+            board={addPieceToBoard(gameBoard, currentPiece)}
+            class="board"
+          />
+        </div>
       </div>
       <div className="gameInfo">
         <PrintQueue queue={queue} />
