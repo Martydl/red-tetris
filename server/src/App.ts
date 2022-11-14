@@ -22,7 +22,7 @@ class App {
     let roomsInfos: { [key: string]: Object } = {};
     for (let elem in this.games) {
       roomsInfos[elem] = {
-        playerNB: Object.keys(this.games[elem].players).length,
+        playerNb: Object.keys(this.games[elem].players).length,
         gameOn: this.games[elem].gameOn,
       };
     }
