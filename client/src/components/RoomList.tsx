@@ -6,35 +6,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
 
-function Room(props: {
-  room: { roomName: string; playerNB: number; gameOn: boolean };
-  joinRoomCbk: (id: string) => void;
-}): JSX.Element {
-  const { roomName, playerNB, gameOn } = props.room;
-
-  console.log("TEST:", roomName, playerNB, gameOn);
-
-  const handleClick = () => {
-    props.joinRoomCbk(roomName);
-  };
-
-  return (
-    <TableRow>
-      <TableCell>{roomName}</TableCell>
-      <TableCell>{playerNB}</TableCell>
-      <TableCell>
-        {(gameOn && <Checkbox disabled checked />) || (
-          <Checkbox disabled checked />
-        )}
-      </TableCell>
-      <TableCell>
-        <Button onClick={handleClick}>Join</Button>
-      </TableCell>
-    </TableRow>
-  );
-}
+type Room = {
+  name: string;
+  nbPlayers: number;
+  started: boolean;
+};
 
 export function RoomList(props: {
   rooms: {
@@ -45,28 +24,50 @@ export function RoomList(props: {
   };
   joinRoomCbk: (id: string) => void;
 }) {
-  var roomList: JSX.Element[] = [];
+  const handleClick = (name: string) => {
+    props.joinRoomCbk(name);
+  };
+
+  var roomList: Room[] = [];
   for (let key in props.rooms) {
-    roomList.push(
-      <Room
-        room={{ ...props.rooms[key], roomName: key }}
-        joinRoomCbk={props.joinRoomCbk}
-      />
-    );
+    roomList.push({
+      name: key,
+      nbPlayers: props.rooms[key].playerNB,
+      started: props.rooms[key].gameOn,
+    });
+    console.log("gameOn: ", props.rooms[key].gameOn);
   }
 
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table sx={{ minWidth: "fit-content" }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Room Name</TableCell>
-            <TableCell>Number Players</TableCell>
-            <TableCell>Started</TableCell>
-            <TableCell>Button</TableCell>
+            <TableCell>Room&nbsp;Name</TableCell>
+            <TableCell align="center">Number&nbsp;Players</TableCell>
+            <TableCell align="center">Started</TableCell>
+            <TableCell align="center">Join</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>{roomList}</TableBody>
+        <TableBody>
+          {roomList.map((room: any) => (
+            <TableRow
+              key={room.name}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {room.name}
+              </TableCell>
+              <TableCell align="center">{room.nbPlayers}</TableCell>
+              <TableCell align="center">
+                {(room.started && <CheckIcon />) || <CloseIcon />}
+              </TableCell>
+              <TableCell align="center">
+                <Button onClick={() => handleClick(room.name)}>Join</Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
       </Table>
     </TableContainer>
   );
