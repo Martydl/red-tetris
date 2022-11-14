@@ -11,18 +11,30 @@ export function Lobby() {
     (state: RootReducerState) => state.connection.roomList
   );
   const [roomName, setRoomName] = useState<string>("");
+  const [playerName, setPlayerName] = useState<string>("");
 
-  const handleNameChange = (
+  const handlePlayerNameChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setPlayerName(event.target.value);
+  };
+
+  const submitNewPlayerName = () => {
+    dispatch(connectionSlice.actions.setPlayerName(playerName));
+    setPlayerName("");
+  };
+
+  const handleRoomNameChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setRoomName(event.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleDirectConnection = () => {
     dispatch(connectionSlice.actions.startConnectingToRoom(roomName));
   };
 
-  const handleSubmit2 = (room: string) => {
+  const handleExistingConnection = (room: string) => {
     dispatch(connectionSlice.actions.startConnectingToRoom(room));
   };
 
@@ -30,18 +42,29 @@ export function Lobby() {
     <div className="LobbyBody">
       <div style={{ display: "flex" }}>
         <TextField
+          id="changePlayerName"
+          label="Edit your name"
+          variant="filled"
+          value={playerName}
+          onChange={handlePlayerNameChange}
+          autoFocus
+        />
+        <Button variant="contained" onClick={submitNewPlayerName}>
+          EDIT
+        </Button>
+        <TextField
           id="roomName"
           label="Join Room"
           variant="filled"
           value={roomName}
-          onChange={handleNameChange}
+          onChange={handleRoomNameChange}
           autoFocus
         />
-        <Button variant="contained" onClick={handleSubmit}>
+        <Button variant="contained" onClick={handleDirectConnection}>
           JOIN
         </Button>
       </div>
-      <RoomList rooms={roomList} joinRoomCbk={handleSubmit2} />
+      <RoomList rooms={roomList} joinRoomCbk={handleExistingConnection} />
     </div>
   );
 }
