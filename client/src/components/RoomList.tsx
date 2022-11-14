@@ -18,7 +18,7 @@ type Room = {
 export function RoomList(props: {
   rooms: {
     [key: string]: {
-      playerNB: number;
+      playerNb: number;
       gameOn: boolean;
     };
   };
@@ -32,7 +32,7 @@ export function RoomList(props: {
   for (let key in props.rooms) {
     roomList.push({
       name: key,
-      nbPlayers: props.rooms[key].playerNB,
+      nbPlayers: props.rooms[key].playerNb,
       started: props.rooms[key].gameOn,
     });
     console.log("gameOn: ", props.rooms[key].gameOn);
