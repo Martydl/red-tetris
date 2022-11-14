@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import App from "./src/App";
 import Player from "./src/Player";
 import Game from "./src/Game";
-import { ClientMessages, ServerMessages } from "../common/Consts";
+import Messages from "./src/Consts";
 
 const app: Express = express();
 
@@ -30,20 +30,20 @@ io.on("connection", (socket) => {
   let newPlayer = new Player(socket.id);
   server.addPlayer(socket.id, newPlayer);
 
-  socket.join(ClientMessages.WAITING_ROOM);
-  socket.emit(ServerMessages.ROOM_LIST, server.getRoomsInfos());
+  socket.join(Messages.WAITING_ROOM);
+  socket.emit(Messages.ROOM_LIST, server.getRoomsInfos());
 
-  socket.on(ClientMessages.JOIN_ROOM, (arg: [string, string]) => {
+  socket.on(Messages.JOIN_ROOM, (arg: [string, string]) => {
     let [gameID, playerName] = arg;
-    if (gameID === ClientMessages.WAITING_ROOM)
-      socket.emit(ServerMessages.ROOM_LIST, server.getRoomsInfos());
+    if (gameID === Messages.WAITING_ROOM)
+      socket.emit(Messages.ROOM_LIST, server.getRoomsInfos());
     socket.join(gameID);
     server.players[socket.id].opponent.setName(playerName);
     if (gameID in server.games)
       server.games[gameID].addPlayer(server.players[socket.id]);
     else server.addGame(gameID, new Game(gameID, server.players[socket.id]));
     server.players[socket.id].setRoom(gameID);
-    socket.emit(ServerMessages.ROOM_INFO, [
+    socket.emit(Messages.ROOM_INFO, [
       gameID,
       server.games[gameID].leaderID,
       server.games[gameID].getOpponents(socket.id),
@@ -51,43 +51,54 @@ io.on("connection", (socket) => {
     ]);
     socket.broadcast
       .to(gameID)
-      .emit(ServerMessages.SEND_OPPONENT, [
+      .emit(Messages.SEND_OPPONENT, [
         socket.id,
         server.players[socket.id].opponent,
       ]);
   });
 
-  socket.on(ClientMessages.LINES_DESTROYED, (lineNB: number) => {
+  socket.on(Messages.LINES_DESTROYED, (lineNB: number) => {
     socket.broadcast
       .to(server.players[socket.id].room)
-      .emit(ClientMessages.LINES_DESTROYED, lineNB);
+      .emit(Messages.LINES_DESTROYED, lineNB);
   });
 
-  socket.on(ClientMessages.NEW_SHADOW, (arg: [string, number[]]) => {
+  socket.on(Messages.TOGGLE_ACCELERATION, (arg: [string, boolean]) => {
+    let [gameID, acceleration] = arg;
+    socket.broadcast
+      .to(gameID)
+      .emit(Messages.TOGGLE_ACCELERATION, acceleration);
+  });
+
+  socket.on(Messages.NEW_SHADOW, (arg: [string, number[]]) => {
     let [gameID, shadow] = arg;
     server.players[socket.id].opponent.newShadow(shadow);
-    socket.broadcast
-      .to(gameID)
-      .emit(ClientMessages.NEW_SHADOW, [socket.id, shadow]);
+    socket.broadcast.to(gameID).emit(Messages.NEW_SHADOW, [socket.id, shadow]);
   });
 
-  socket.on(ClientMessages.PLAYER_GAME_OVER, (gameID: string) => {
+  socket.on(Messages.PLAYER_GAME_OVER, (gameID: string) => {
     server.players[socket.id].opponent.dead();
+    socket.broadcast.to(gameID).emit(Messages.PLAYER_GAME_OVER, socket.id);
+  });
+
+  // emit to all client in the room [list of 4 starting piece, seed of the game]
+  socket.on(Messages.START_GAME, (gameID: string) => {
+    server.games[gameID].giveGeneratorToPlayers();
+    io.to(gameID).emit(Messages.START_GAME, [
+      server.games[gameID].getStartPieceList(),
+      server.games[gameID].seed,
+    ]);
+  });
+
+  socket.on(Messages.GET_PIECE, () => {
+    socket.emit(Messages.GET_PIECE, server.players[socket.id].genPiece());
+  });
+
+  socket.on(Messages.NEW_NAME_PLAYER, (arg: [string, string]) => {
+    let [gameID, newName] = arg;
     socket.broadcast
       .to(gameID)
-      .emit(ClientMessages.PLAYER_GAME_OVER, socket.id);
-  });
-
-  socket.on(ClientMessages.START_GAME, (gameID: string) => {
-    io.to(gameID).emit(
-      ClientMessages.START_GAME,
-      server.games[gameID].getStartPieceList()
-    );
-    server.games[gameID].giveGeneratorToPlayers();
-  });
-
-  socket.on(ClientMessages.GET_PIECE, () => {
-    socket.emit(ClientMessages.GET_PIECE, server.players[socket.id].genPiece());
+      .emit(Messages.NEW_NAME_PLAYER, [socket.id, newName]);
   });
 
   socket.on("disconnect", (reason: any) => {

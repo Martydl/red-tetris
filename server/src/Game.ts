@@ -6,14 +6,13 @@ class Game {
   players: { [key: string]: Player };
   leaderID: string;
   gameOn: boolean;
-  seed: string;
+  seed?: string;
 
   constructor(gameId: string, creator: Player) {
     this.gameID = gameId;
     this.players = { [creator.id]: creator };
     this.leaderID = creator.id;
     this.gameOn = false;
-    this.seed = "";
   }
 
   gameStart(): void {
