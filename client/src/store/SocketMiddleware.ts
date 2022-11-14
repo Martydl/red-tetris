@@ -23,7 +23,9 @@ const socketMiddleware: Middleware = (store) => {
       );
 
       socket.on("connect", () => {
-        store.dispatch(connectionSlice.actions.socketConnectionEstablished());
+        store.dispatch(
+          connectionSlice.actions.socketConnectionEstablished(socket.id)
+        );
       });
 
       // Events received from the server
@@ -55,7 +57,7 @@ const socketMiddleware: Middleware = (store) => {
       });
 
       socket.on(ClientMessages.START_GAME, (piecesNames: number[]) => {
-        // console.log(piecesNames);
+        console.log(piecesNames);
         store.dispatch(roomSlice.actions.startGame());
         store.dispatch(gameSlice.actions.initPieces(piecesNames));
       });

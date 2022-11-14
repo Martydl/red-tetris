@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface ConnectionState {
   isConnectedToSocket: boolean;
   isConnectingToSocket: boolean;
+  socketId: string;
   isConnectedToRoom: boolean;
   isConnectingToRoom: boolean;
   roomName?: string;
@@ -13,6 +14,7 @@ export interface ConnectionState {
 const initialState: ConnectionState = {
   isConnectedToSocket: false,
   isConnectingToSocket: false,
+  socketId: "undef",
   isConnectedToRoom: false,
   isConnectingToRoom: false,
   roomName: undefined,
@@ -27,9 +29,14 @@ export const connectionSlice = createSlice({
     startConnectingToSocket: (state: ConnectionState) => {
       state.isConnectingToSocket = true;
     },
-    socketConnectionEstablished: (state: ConnectionState) => {
+    socketConnectionEstablished: (
+      state: ConnectionState,
+      action: PayloadAction<string>
+    ) => {
+      console.log(action.payload);
       state.isConnectedToSocket = true;
       state.isConnectingToSocket = true;
+      state.socketId = action.payload;
     },
     startConnectingToRoom: (
       state: ConnectionState,

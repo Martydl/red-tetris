@@ -1,6 +1,6 @@
 export function PrintCommand() {
   return (
-    <div>
+    <div className="Instructions">
       <p>
         command:
         <br />

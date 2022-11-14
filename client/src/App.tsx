@@ -4,7 +4,8 @@ import { RootReducerState } from "./store/RootReducer";
 import { connectionSlice } from "./store/ConnectionReducer";
 import { useEffect } from "react";
 import { Lobby } from "./components/Lobby";
-import { Game } from "./components/Game";
+import { Room } from "./components/Room";
+import AppBar from "./components/TetrisAppBar";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,8 +19,10 @@ function App() {
   }, []);
 
   return (
-    <div>
-      {(!isConnectedToRoom && <Lobby />) || (isConnectedToRoom && <Game />)}
+    <div className="App">
+      {/* <div className="Header">Header</div> */}
+      <AppBar></AppBar>
+      {(!isConnectedToRoom && <Lobby />) || (isConnectedToRoom && <Room />)}
     </div>
   );
 }
