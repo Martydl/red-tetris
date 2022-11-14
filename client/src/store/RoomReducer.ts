@@ -12,6 +12,7 @@ export interface RoomState {
   leaderId: string;
   startingGame: boolean;
   gameOn: boolean;
+  acceleration: boolean;
   opponents: { [id: string]: Opponent }; // from server, needs to send only playing players, not spectators
 }
 
@@ -20,6 +21,7 @@ const initialState: RoomState = {
   leaderId: "undef",
   startingGame: false,
   gameOn: false,
+  acceleration: true,
   opponents: {},
 };
 
