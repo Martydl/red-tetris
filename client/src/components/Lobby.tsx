@@ -42,6 +42,6 @@ export function Lobby() {
         </Button>
       </div>
       <RoomList rooms={roomList} joinRoomCbk={handleSubmit2} />
-    </>
+    </div>
   );
 }
