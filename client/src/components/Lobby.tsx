@@ -40,31 +40,37 @@ export function Lobby() {
 
   return (
     <div className="LobbyBody">
-      <div style={{ display: "flex" }}>
-        <TextField
-          id="changePlayerName"
-          label="Edit your name"
-          variant="filled"
-          value={playerName}
-          onChange={handlePlayerNameChange}
-          autoFocus
-        />
-        <Button variant="contained" onClick={submitNewPlayerName}>
-          EDIT
-        </Button>
-        <TextField
-          id="roomName"
-          label="Join Room"
-          variant="filled"
-          value={roomName}
-          onChange={handleRoomNameChange}
-          autoFocus
-        />
-        <Button variant="contained" onClick={handleDirectConnection}>
-          JOIN
-        </Button>
+      <div className="Fields">
+        <div className="NameField">
+          <TextField
+            id="changePlayerName"
+            label="Edit your name"
+            variant="filled"
+            value={playerName}
+            onChange={handlePlayerNameChange}
+            autoFocus
+          />
+          <Button variant="contained" onClick={submitNewPlayerName}>
+            EDIT
+          </Button>
+        </div>
+        <div className="RoomField">
+          <TextField
+            id="roomName"
+            label="Join Room"
+            variant="filled"
+            value={roomName}
+            onChange={handleRoomNameChange}
+            autoFocus
+          />
+          <Button variant="contained" onClick={handleDirectConnection}>
+            JOIN
+          </Button>
+        </div>
       </div>
-      <RoomList rooms={roomList} joinRoomCbk={handleExistingConnection} />
+      <div className="RoomList">
+        <RoomList rooms={roomList} joinRoomCbk={handleExistingConnection} />
+      </div>
     </div>
   );
 }

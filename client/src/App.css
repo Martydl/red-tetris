@@ -1,3 +1,29 @@
+body {
+  margin: 0;
+  width: 100vw;
+  min-width: 1440px;
+  height: 100vh;
+  min-height: 810px;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
 .App {
   width: 100%;
   height: 100%;
@@ -8,17 +34,38 @@
 .Header {
   width: 100%;
   height: 5%;
-  background-color: pink;
+}
+
+.Icon {
+  width: 3%;
 }
 
 .LobbyBody {
   width: 98%;
-  height: 95%;
-  margin: 1%;
+  height: 93%;
   display: flex;
-  align-items: center;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  margin: 1%;
+}
+
+.Fields {
+  width: 40%;
+  height: 10%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.NameField,
+.RoomField {
+  display: flex;
+  height: fit-content;
+}
+
+.RoomList {
+  width: 40%;
+  max-height: 90%;
 }
 
 .Room {

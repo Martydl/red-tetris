@@ -1,6 +1,5 @@
 import Player from "./Player";
 import Piece from "./Piece";
-import seedrandom from "seedrandom";
 
 class Game {
   gameID: string;
@@ -14,7 +13,7 @@ class Game {
     this.players = { [creator.id]: creator };
     this.leaderID = creator.id;
     this.gameOn = false;
-    this.seed = Math.random().toString();
+    this.seed = "";
   }
 
   gameStart(): void {
@@ -34,6 +33,7 @@ class Game {
   }
 
   giveGeneratorToPlayers() {
+    this.seed = Math.random().toString();
     for (let playerID in this.players) {
       this.players[playerID].setGenerator(this.seed);
     }

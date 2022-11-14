@@ -39,7 +39,7 @@ export function RoomList(props: {
   }
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer className="RoomList" component={Paper}>
       <Table sx={{ minWidth: "fit-content" }} aria-label="simple table">
         <TableHead>
           <TableRow>
