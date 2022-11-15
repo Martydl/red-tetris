@@ -27,7 +27,12 @@ export default function TetrisAppBar() {
               alt="tetris_logo"
               onClick={handleLogoClick}
             />
-            <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+            <Typography
+              style={{ paddingLeft: "1%" }}
+              variant="h4"
+              component="div"
+              sx={{ flexGrow: 1 }}
+            >
               Red-Tetris
             </Typography>
             {playerName}
