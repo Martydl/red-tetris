@@ -154,14 +154,8 @@ const setDelay = (state: GameState, action: PayloadAction<number>) => {
   state.currentDelay = action.payload;
 };
 
-const disableAcceleration = (state: GameState) => {
-  state.acceleration = 0;
-  console.log("disabled");
-};
-
-const enableAcceleration = (state: GameState) => {
-  state.acceleration = 1.15;
-  console.log("enabled");
+const setAcceleration = (state: GameState, action: PayloadAction<boolean>) => {
+  state.acceleration = action.payload ? 1.15 : 0;
 };
 
 export const gameSlice = createSlice({
@@ -183,8 +177,7 @@ export const gameSlice = createSlice({
     addLinesToBlock,
     subLinesToBlock,
     setDelay,
-    disableAcceleration,
-    enableAcceleration,
+    setAcceleration,
   },
 });
 

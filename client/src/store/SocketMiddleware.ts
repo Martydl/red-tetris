@@ -60,6 +60,9 @@ const socketMiddleware: Middleware = (store) => {
         console.log(piecesNames);
         store.dispatch(roomSlice.actions.startGame());
         store.dispatch(gameSlice.actions.initPieces(piecesNames));
+        store.dispatch(
+          gameSlice.actions.setAcceleration(store.getState().room.acceleration)
+        );
       });
 
       socket.on(ClientMessages.GET_PIECE, (pieceName: number) => {
@@ -71,6 +74,10 @@ const socketMiddleware: Middleware = (store) => {
       socket.on(ClientMessages.NEW_SHADOW, (arg: [string, number[]]) => {
         const [id, shadow] = arg;
         store.dispatch(roomSlice.actions.editOpponentShadow([id, shadow]));
+      });
+
+      socket.on("TOGGLE_ACCELERATION", (acceleration: boolean) => {
+        store.dispatch(roomSlice.actions.setAcceleration(acceleration));
       });
 
       socket.on(ClientMessages.PLAYER_GAME_OVER, (id: string) => {
@@ -115,6 +122,13 @@ const socketMiddleware: Middleware = (store) => {
         ClientMessages.PLAYER_GAME_OVER,
         store.getState().connection.roomName
       );
+    }
+
+    if (
+      roomSlice.actions.toggleAcceleration.match(action) &&
+      isConnectionEstablished
+    ) {
+      socket.emit("TOGGLE_ACCELERATION", store.getState().connection.roomName);
     }
 
     if (roomSlice.actions.lauchGame.match(action) && isConnectionEstablished) {

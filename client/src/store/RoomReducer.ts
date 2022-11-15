@@ -80,6 +80,12 @@ export const roomSlice = createSlice({
       state.opponents[id].gameOn = gameOn;
     },
     delOpponent: (state: RoomState, action: PayloadAction<string>) => {},
+    toggleAcceleration: (state: RoomState) => {
+      state.acceleration = !state.acceleration;
+    },
+    setAcceleration: (state: RoomState, action: PayloadAction<boolean>) => {
+      state.acceleration = action.payload;
+    },
   },
 });
 

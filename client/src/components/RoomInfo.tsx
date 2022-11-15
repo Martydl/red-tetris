@@ -29,6 +29,10 @@ export function RoomInfo() {
     dispatch(roomSlice.actions.lauchGame());
   };
 
+  const handleAccelerationSwitch = () => {
+    dispatch(roomSlice.actions.toggleAcceleration());
+  };
+
   return (
     <div className="RoomInfos">
       {roomName}
@@ -43,6 +47,7 @@ export function RoomInfo() {
             color="primary"
             checked={acceleration}
             disabled={!isLeader || !multiplayer}
+            onChange={handleAccelerationSwitch}
           />
         }
         label="Acceleration"
