@@ -44,13 +44,7 @@ io.on("connection", (socket) => {
       if (server.games[gameID].gameOn) {
         server.players[socket.id].opponent.set_status(PlayerStatus.WAITING);
       }
-    } else {
-      server.addGame(gameID, new Game(gameID, server.players[socket.id]));
-      io.to(Messages.WAITING_ROOM).emit(
-        Messages.ROOM_LIST,
-        server.getRoomsInfos()
-      );
-    }
+    } else server.addGame(gameID, new Game(gameID, server.players[socket.id]));
     server.players[socket.id].setRoom(gameID);
     socket.emit(Messages.ROOM_INFO, [
       gameID,
@@ -64,6 +58,10 @@ io.on("connection", (socket) => {
         socket.id,
         server.players[socket.id].opponent,
       ]);
+    io.to(Messages.WAITING_ROOM).emit(
+      Messages.ROOM_LIST,
+      server.getRoomsInfos()
+    );
   });
 
   socket.on(Messages.LINES_DESTROYED, (lineNB: number) => {
@@ -140,13 +138,11 @@ io.on("connection", (socket) => {
     ) {
       delete server.games[roomName].players[socket.id];
       socket.broadcast.to(roomName).emit(Messages.DELETE_OPPONENT, socket.id);
-    } else if (roomName != Messages.WAITING_ROOM) {
-      delete server.games[roomName];
-      io.to(Messages.WAITING_ROOM).emit(
-        Messages.ROOM_LIST,
-        server.getRoomsInfos()
-      );
-    }
+    } else if (roomName != Messages.WAITING_ROOM) delete server.games[roomName];
+    io.to(Messages.WAITING_ROOM).emit(
+      Messages.ROOM_LIST,
+      server.getRoomsInfos()
+    );
     delete server.players[socket.id];
   });
 });
