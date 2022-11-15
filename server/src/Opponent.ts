@@ -1,14 +1,14 @@
+import PlayerStatus from "./Consts";
+
 class Opponent {
   playerName: string;
-  gameOver: boolean;
+  status: PlayerStatus;
   shadow: number[];
-  // gameBoard: number[][];
 
-  constructor(alive: boolean, shadow: number[]) {
+  constructor(status: PlayerStatus, shadow: number[]) {
     this.playerName = "guest";
-    this.gameOver = !alive;
+    this.status = status;
     this.shadow = shadow;
-    // this.gameBoard = gameBoard;
   }
 
   setName(name: string): void {
@@ -19,8 +19,8 @@ class Opponent {
     this.shadow = shadow;
   }
 
-  dead() {
-    this.gameOver = true;
+  set_status(status: PlayerStatus) {
+    this.status = status;
   }
 }
 

@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import App from "./src/App";
 import Player from "./src/Player";
 import Game from "./src/Game";
-import Messages from "./src/Consts";
+import { Messages, PlayerStatus } from "./src/Consts";
 
 const app: Express = express();
 
@@ -63,11 +63,13 @@ io.on("connection", (socket) => {
       .emit(Messages.LINES_DESTROYED, lineNB);
   });
 
-  socket.on(Messages.TOGGLE_ACCELERATION, (arg: [string, boolean]) => {
-    let [gameID, acceleration] = arg;
+  socket.on(Messages.TOGGLE_ACCELERATION, (gameID: string) => {
     socket.broadcast
       .to(gameID)
-      .emit(Messages.TOGGLE_ACCELERATION, acceleration);
+      .emit(
+        Messages.TOGGLE_ACCELERATION,
+        server.games[gameID].setget_acceleration()
+      );
   });
 
   socket.on(Messages.NEW_SHADOW, (arg: [string, number[]]) => {
@@ -77,11 +79,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on(Messages.PLAYER_GAME_OVER, (gameID: string) => {
-    server.players[socket.id].opponent.dead();
+    server.players[socket.id].opponent.set_status(PlayerStatus.DEAD);
     socket.broadcast.to(gameID).emit(Messages.PLAYER_GAME_OVER, socket.id);
+    server.games[gameID].setPlayersAlive();
+    io.to(gameID).emit(Messages.SET_ALL_ALIVE);
   });
 
-  // emit to all client in the room [list of 4 starting piece, seed of the game]
   socket.on(Messages.START_GAME, (gameID: string) => {
     server.games[gameID].giveGeneratorToPlayers();
     io.to(gameID).emit(Messages.START_GAME, [
@@ -94,15 +97,30 @@ io.on("connection", (socket) => {
     socket.emit(Messages.GET_PIECE, server.players[socket.id].genPiece());
   });
 
-  socket.on(Messages.NEW_NAME_PLAYER, (arg: [string, string]) => {
+  socket.on(Messages.NEW_PLAYER_NAME, (arg: [string, string]) => {
     let [gameID, newName] = arg;
     socket.broadcast
       .to(gameID)
-      .emit(Messages.NEW_NAME_PLAYER, [socket.id, newName]);
+      .emit(Messages.NEW_PLAYER_NAME, [socket.id, newName]);
   });
 
-  socket.on("disconnect", (reason: any) => {
-    delete server.games[server.players[socket.id].room];
+  socket.on(Messages.ROOM_DISCONNECT, (gameID: string) => {
+    if (Object.keys(server.games[gameID].players).length > 1) {
+      delete server.games[gameID].players[socket.id];
+      socket.broadcast.to(gameID).emit(Messages.DELETE_OPPONENT, socket.id);
+    } else delete server.games[gameID];
+    delete server.players[socket.id];
+  });
+
+  socket.on("disconnect", (_reason: any) => {
+    let roomName = server.players[socket.id].room;
+    if (
+      roomName != Messages.WAITING_ROOM &&
+      Object.keys(server.games[roomName].players).length > 1
+    ) {
+      delete server.games[roomName].players[socket.id];
+      socket.broadcast.to(roomName).emit(Messages.DELETE_OPPONENT, socket.id);
+    } else if (roomName != Messages.WAITING_ROOM) delete server.games[roomName];
     delete server.players[socket.id];
   });
 });

@@ -1,6 +1,7 @@
 import Piece from "./Piece";
 import Opponent from "./Opponent";
 import seedrandom from "seedrandom";
+import { Messages, PlayerStatus } from "./Consts";
 
 class Player {
   id: string;
@@ -10,8 +11,8 @@ class Player {
 
   constructor(id: string) {
     this.id = id;
-    this.room = "waitingRoom";
-    this.opponent = new Opponent(true, new Array(10).fill(0));
+    this.room = Messages.WAITING_ROOM;
+    this.opponent = new Opponent(PlayerStatus.ALIVE, new Array(10).fill(0));
   }
 
   setRoom(room: string): void {
