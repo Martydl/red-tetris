@@ -12,7 +12,11 @@ function PrintOpponent(props: {
       <PrintBoard
         key={props.index}
         board={genFullShadow(props.opponent.shadow)}
-        class="opponentBoard"
+        class={
+          props.opponent.status != PlayerStatus.DEAD
+            ? "opponentBoard"
+            : "opponentDead"
+        }
       />
       <div className="opponentName">{props.opponent.playerName}</div>
     </div>

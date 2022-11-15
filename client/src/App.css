@@ -248,7 +248,8 @@ div#\31 5 {
 
 .game:focus div#\30,
 .game:focus .block,
-.opponentBoard > .row > div#\30 {
+.opponentBoard > .row > div#\30,
+.opponentDead > .row > div#\30 {
   background-color: whitesmoke;
 }
 
@@ -279,17 +280,23 @@ div#\31 5 {
   margin-right: 15px;
 }
 
-.opponentBoard > .row > .block {
+.opponentBoard > .row > .block,
+.opponentDead > .row > .block {
   width: 13px;
   height: 13px;
 }
 
-.opponentBoard {
+.opponentBoard,
+.opponentDead {
   width: max-content;
   height: max-content;
   border: solid 2px;
   border-radius: 4px;
   background-color: #fff;
+}
+
+.opponentDead > .row > div#\31 5 {
+  background-color: pink;
 }
 
 .opponentName {
