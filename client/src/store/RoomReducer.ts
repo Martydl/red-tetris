@@ -80,6 +80,11 @@ export const roomSlice = createSlice({
       const [id, gameOn] = action.payload;
       state.opponents[id].gameOn = gameOn;
     },
+    reviveAllOpponents: (state: RoomState) => {
+      for (let id in state.opponents) {
+        state.opponents[id].gameOn = PlayerStatus.ALIVE;
+      }
+    },
     delOpponent: (state: RoomState, action: PayloadAction<string>) => {},
     toggleAcceleration: (state: RoomState) => {
       state.acceleration = !state.acceleration;
