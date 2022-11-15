@@ -91,7 +91,7 @@ io.on("connection", (socket) => {
     let playerAlive: number = server.games[gameID].getPlayerAlive();
     if (
       (server.games[gameID].acceleration && playerAlive < 1) ||
-      playerAlive < 2
+      (!server.games[gameID].acceleration && playerAlive < 2)
     ) {
       io.to(gameID).emit(Messages.END_GAME);
       io.to(Messages.WAITING_ROOM).emit(
