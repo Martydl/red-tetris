@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Lobby } from "./components/Lobby";
 import { Room } from "./components/Room";
 import AppBar from "./components/TetrisAppBar";
+import setRouting from "./routing";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,11 +17,12 @@ function App() {
 
   useEffect(() => {
     dispatch(connectionSlice.actions.startConnectingToSocket());
+    setRouting();
   }, []);
 
   return (
     <div className="App">
-      <AppBar></AppBar>
+      <AppBar />
       {(!isConnectedToRoom && <Lobby />) || (isConnectedToRoom && <Room />)}
     </div>
   );
