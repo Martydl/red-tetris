@@ -94,6 +94,7 @@ io.on("connection", (socket) => {
       (!server.games[gameID].acceleration && playerAlive < 2)
     ) {
       io.to(gameID).emit(Messages.END_GAME);
+      server.games[gameID].gameOn = false;
       io.to(Messages.WAITING_ROOM).emit(
         Messages.ROOM_LIST,
         server.getRoomsInfos()
