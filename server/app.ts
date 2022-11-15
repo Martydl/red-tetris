@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import App from "./src/App";
 import Player from "./src/Player";
 import Game from "./src/Game";
-import { ClientMessages, ServerMessages } from "../common/Consts";
+import { ClientMessages, ServerMessages } from "./Consts";
 
 const app: Express = express();
 

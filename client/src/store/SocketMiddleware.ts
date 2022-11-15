@@ -1,6 +1,6 @@
 import { Middleware } from "redux";
 import { io, Socket } from "socket.io-client";
-import { ClientMessages, ServerMessages } from "../../../common/Consts";
+import { ClientMessages, ServerMessages } from "../Consts";
 import { gameSlice } from "./GameReducer";
 import { connectionSlice } from "./ConnectionReducer";
 import { Opponent, roomSlice } from "./RoomReducer";
