@@ -69,7 +69,7 @@ body {
 
 .Room {
   width: 98%;
-  height: 95%;
+  height: 784px;
   display: flex;
   justify-content: center;
   margin: 1%;
@@ -85,7 +85,7 @@ body {
 .RoomInfos,
 .Instructions {
   width: 94%;
-  height: 20%;
+  height: 25%;
   border: solid 2px;
   border-radius: 4px;
   margin-bottom: 15px;
@@ -255,20 +255,24 @@ div#\31 5 {
 /* End Colors */
 
 .opponents {
-  width: 30%;
-  height: 828px;
+  width: fit-content;
+  max-width: 30%;
+  height: 100%;
 }
 
 .opponentsText {
-  height: max-content;
+  height: 3%;
   width: 100%;
+  margin: 0;
 }
 
 .opponentsGrid {
   display: flex;
   flex-wrap: wrap;
-  overflow: overlay;
   text-align: center;
+  width: 100%;
+  height: 97%;
+  overflow: overlay;
 }
 
 .opponent {
@@ -276,8 +280,8 @@ div#\31 5 {
 }
 
 .opponentBoard > .row > .block {
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
 }
 
 .opponentBoard {
