@@ -1,5 +1,7 @@
 import Game from "./Game";
 import Player from "./Player";
+import { Server, Socket } from "socket.io";
+import { Messages } from "./Consts";
 
 class App {
   games: { [id: string]: Game };
@@ -27,6 +29,87 @@ class App {
       };
     }
     return roomsInfos;
+  }
+
+  sendAllRoomsInfos(io: Server) {
+    io.to(Messages.WAITING_ROOM).emit(Messages.ROOM_LIST, this.getRoomsInfos());
+  }
+
+  sendAllStartGame(io: Server, gameID: string) {
+    io.to(gameID).emit(
+      Messages.START_GAME,
+      this.games[gameID].getStartPieceList()
+    );
+  }
+
+  sendAllEndGame(io: Server, gameID: string) {
+    io.to(gameID).emit(Messages.END_GAME);
+  }
+
+  sendBroadcastOpponent(socket: Socket, gameID: string) {
+    socket.broadcast
+      .to(gameID)
+      .emit(Messages.SEND_OPPONENT, [
+        socket.id,
+        this.players[socket.id].opponent,
+      ]);
+  }
+
+  sendBroadcastDelOpponent(socket: Socket, gameID: string) {
+    socket.broadcast.to(gameID).emit(Messages.DELETE_OPPONENT, socket.id);
+  }
+
+  sendBroadcastNewPlayerName(socket: Socket, gameID: string, newName: string) {
+    socket.broadcast
+      .to(gameID)
+      .emit(Messages.NEW_PLAYER_NAME, [socket.id, newName]);
+  }
+
+  sendGenPiece(socket: Socket) {
+    socket.emit(Messages.GET_PIECE, this.players[socket.id].genPiece());
+  }
+
+  sendBroadcastPlayerGameOver(socket: Socket, gameID: string) {
+    socket.broadcast.to(gameID).emit(Messages.PLAYER_GAME_OVER, socket.id);
+  }
+
+  sendBroadcastNewShadow(socket: Socket, gameID: string, shadow: number[]) {
+    socket.broadcast.to(gameID).emit(Messages.NEW_SHADOW, [socket.id, shadow]);
+  }
+
+  sendBroadcastToggleAcceleration(socket: Socket, gameID: string) {
+    socket.broadcast
+      .to(gameID)
+      .emit(
+        Messages.TOGGLE_ACCELERATION,
+        this.games[gameID].setget_acceleration()
+      );
+  }
+
+  sendBroadcastLinesDestroyed(socket: Socket, lineNB: number) {
+    socket.broadcast
+      .to(this.players[socket.id].room)
+      .emit(Messages.LINES_DESTROYED, lineNB);
+  }
+
+  sendRoomInfo(socket: Socket, gameID: string) {
+    socket.emit(Messages.ROOM_INFO, [
+      gameID,
+      this.games[gameID].leaderID,
+      this.games[gameID].getOpponents(socket.id),
+      this.games[gameID].gameOn,
+    ]);
+  }
+
+  RoomDisconnect(io: Server, socket: Socket, gameID: string) {
+    if (
+      gameID != Messages.WAITING_ROOM &&
+      Object.keys(this.games[gameID].players).length > 1
+    ) {
+      delete this.games[gameID].players[socket.id];
+      this.sendBroadcastDelOpponent(socket, gameID);
+    } else if (gameID != Messages.WAITING_ROOM) delete this.games[gameID];
+    this.sendAllRoomsInfos(io);
   }
 }
 
