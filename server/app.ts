@@ -39,9 +39,12 @@ io.on("connection", (socket) => {
       socket.emit(Messages.ROOM_LIST, server.getRoomsInfos());
     socket.join(gameID);
     server.players[socket.id].opponent.setName(playerName);
-    if (gameID in server.games)
+    if (gameID in server.games) {
       server.games[gameID].addPlayer(server.players[socket.id]);
-    else server.addGame(gameID, new Game(gameID, server.players[socket.id]));
+      if (server.games[gameID].gameOn) {
+        server.players[socket.id].opponent.set_status(PlayerStatus.WAITING);
+      }
+    } else server.addGame(gameID, new Game(gameID, server.players[socket.id]));
     server.players[socket.id].setRoom(gameID);
     socket.emit(Messages.ROOM_INFO, [
       gameID,
