@@ -30,9 +30,7 @@ export const roomSlice = createSlice({
   name: "room",
   initialState,
   reducers: {
-    resetRoom: (state: RoomState) => {
-      state = initialState;
-    },
+    resetRoomState: () => initialState,
     initRoom: (
       state: RoomState,
       action: PayloadAction<{

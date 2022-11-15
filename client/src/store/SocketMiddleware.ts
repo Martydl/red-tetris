@@ -71,7 +71,7 @@ const socketMiddleware: Middleware = (store) => {
       });
 
       socket.on(Messages.END_GAME, () => {
-        store.dispatch(gameSlice.actions.resetState());
+        store.dispatch(gameSlice.actions.resetGameState());
         store.dispatch(roomSlice.actions.endGame());
         store.dispatch(roomSlice.actions.resetOpponents());
       });
@@ -154,6 +154,15 @@ const socketMiddleware: Middleware = (store) => {
       isConnectionEstablished
     ) {
       socket.emit(Messages.GET_PIECE, [store.getState().room.roomName]);
+    }
+
+    if (
+      connectionSlice.actions.roomDisconnect.match(action) &&
+      isConnectionEstablished
+    ) {
+      socket.emit(Messages.ROOM_DISCONNECT, store.getState().room.roomName);
+      store.dispatch(roomSlice.actions.resetRoomState());
+      store.dispatch(gameSlice.actions.resetGameState());
     }
 
     next(action);

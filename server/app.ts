@@ -91,14 +91,9 @@ io.on("connection", (socket) => {
     let playerAlive: number = server.games[gameID].getPlayerAlive();
     if (
       (server.games[gameID].acceleration && playerAlive < 1) ||
-      (!server.games[gameID].acceleration && playerAlive < 2)
+      playerAlive < 2
     ) {
       io.to(gameID).emit(Messages.END_GAME);
-      server.games[gameID].gameOn = false;
-      io.to(Messages.WAITING_ROOM).emit(
-        Messages.ROOM_LIST,
-        server.getRoomsInfos()
-      );
       server.games[gameID].setPlayersAlive();
     }
   });
@@ -132,7 +127,10 @@ io.on("connection", (socket) => {
       delete server.games[gameID].players[socket.id];
       socket.broadcast.to(gameID).emit(Messages.DELETE_OPPONENT, socket.id);
     } else delete server.games[gameID];
-    delete server.players[socket.id];
+    io.to(Messages.WAITING_ROOM).emit(
+      Messages.ROOM_LIST,
+      server.getRoomsInfos()
+    );
   });
 
   socket.on("disconnect", (_reason: any) => {

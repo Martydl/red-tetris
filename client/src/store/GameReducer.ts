@@ -42,7 +42,7 @@ const initialState: GameState = {
   linesToBlock: 0,
 };
 
-const resetState = () => initialState;
+const resetGameState = () => initialState;
 
 const setGameOn = (state: GameState) => {
   state.gameOn = true;
@@ -161,7 +161,7 @@ export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    resetState,
+    resetGameState,
     setGameOn,
     gameOver,
     setGameBoard,
