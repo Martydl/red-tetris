@@ -94,6 +94,10 @@ io.on("connection", (socket) => {
       playerAlive < 2
     ) {
       io.to(gameID).emit(Messages.END_GAME);
+      io.to(Messages.WAITING_ROOM).emit(
+        Messages.ROOM_LIST,
+        server.getRoomsInfos()
+      );
       server.games[gameID].setPlayersAlive();
     }
   });
