@@ -44,12 +44,20 @@ export function RoomInfo() {
 
   return (
     <div className="RoomInfos">
-      {isLeader && !gameOn && (
-        <Button variant="contained" onClick={handleStart}>
-          Start
-        </Button>
-      )}
+      <p>
+        Room Name: {roomName}
+        {isLeader && !gameOn && (
+          <Button
+            style={{ marginLeft: "10px" }}
+            variant="contained"
+            onClick={handleStart}
+          >
+            Start
+          </Button>
+        )}
+      </p>
       <FormControlLabel
+        style={{ marginLeft: "0" }}
         control={
           <Switch
             color="primary"
@@ -61,7 +69,6 @@ export function RoomInfo() {
         label="Acceleration"
         labelPlacement="start"
       />
-      <p>Name of the Room: {roomName}</p>
       <p>Number of Player: {Object.keys(roomOpponents).length + 1}</p>
     </div>
   );
