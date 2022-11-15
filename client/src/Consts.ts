@@ -1,6 +1,6 @@
 import { PieceGrid } from "./Types";
 
-export enum ClientMessages {
+export enum Messages {
   JOIN_ROOM = "JOIN_ROOM",
   NEW_SHADOW = "NEW_SHADOW",
   LINES_DESTROYED = "LINES_DESTROYED",
@@ -9,9 +9,6 @@ export enum ClientMessages {
   END_GAME = "END_GAME",
   GET_PIECE = "GET_PIECE",
   WAITING_ROOM = "WAITING_ROOM",
-}
-
-export enum ServerMessages {
   ROOM_INFO = "ROOM_INFO",
   ROOM_LIST = "ROOM_LIST",
   GAME_STATUS = "GAME_STATUS",
@@ -19,6 +16,8 @@ export enum ServerMessages {
   LEADER_ID = "LEADER_ID",
   OPPONENTS_SHADOWS = "OPPONENTS_SHADOWS",
   LINES_TO_BLOCK = "LINES_TO_BLOCK",
+  DELETE_OPPONENT = "DELETE_OPPONENT",
+  TOGGLE_ACCELERATION = "TOGGLE_ACCELERATION",
 }
 
 export enum PlayerStatus {

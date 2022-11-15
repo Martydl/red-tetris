@@ -22,9 +22,8 @@ export function Room() {
         <RoomInfo />
         <PrintCommand />
       </div>
-      {(!roomGameOn && <GameBegin />) || (ownGameOn && <GameOn />) || (
-        <GameOver />
-      )}
+      {((!roomGameOn || (roomGameOn && !ownGameOn)) && <GameBegin />) ||
+        (ownGameOn && <GameOn />) || <GameOver />}
       <Opponents opponents={opponents} />
     </div>
   );

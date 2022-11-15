@@ -35,7 +35,6 @@ export function RoomList(props: {
       nbPlayers: props.rooms[key].playerNb,
       started: props.rooms[key].gameOn,
     });
-    console.log("gameOn: ", props.rooms[key].gameOn);
   }
 
   return (

@@ -1,6 +1,6 @@
 import { Middleware } from "redux";
 import { io, Socket } from "socket.io-client";
-import { ClientMessages, ServerMessages } from "../Consts";
+import { Messages } from "../Consts";
 import { gameSlice } from "./GameReducer";
 import { connectionSlice } from "./ConnectionReducer";
 import { Opponent, roomSlice } from "./RoomReducer";
@@ -17,7 +17,7 @@ const socketMiddleware: Middleware = (store) => {
       socket = io();
 
       socket.on(
-        ServerMessages.ROOM_LIST,
+        Messages.ROOM_LIST,
         (arg: { [key: string]: { playerNb: number; gameOn: boolean } }) => {
           store.dispatch(connectionSlice.actions.setRoomList(arg));
         }
@@ -31,7 +31,7 @@ const socketMiddleware: Middleware = (store) => {
 
       // Events received from the server
       socket.on(
-        ServerMessages.ROOM_INFO,
+        Messages.ROOM_INFO,
         (msg: [string, string, { [id: string]: Opponent }, boolean]) => {
           let [roomName, leaderId, opponents, gameOn] = msg;
           store.dispatch(
@@ -48,50 +48,54 @@ const socketMiddleware: Middleware = (store) => {
         }
       );
 
-      socket.on(ServerMessages.LEADER_ID, (id: string) => {
+      socket.on(Messages.LEADER_ID, (id: string) => {
         store.dispatch(roomSlice.actions.setLeaderId(id));
       });
 
-      socket.on(ServerMessages.SEND_OPPONENT, (msg: [string, Opponent]) => {
+      socket.on(Messages.SEND_OPPONENT, (msg: [string, Opponent]) => {
         const [id, opponent] = msg;
         store.dispatch(roomSlice.actions.addOpponent([id, opponent]));
       });
 
-      socket.on("DEL_OPPONENT", (id: string) => {
+      socket.on(Messages.DELETE_OPPONENT, (id: string) => {
         store.dispatch(roomSlice.actions.delOpponent(id));
       });
 
-      socket.on(ClientMessages.START_GAME, (piecesNames: number[]) => {
-        console.log(piecesNames);
+      socket.on(Messages.START_GAME, (piecesNames: number[]) => {
         store.dispatch(roomSlice.actions.startGame());
+        store.dispatch(gameSlice.actions.setGameOn());
         store.dispatch(gameSlice.actions.initPieces(piecesNames));
         store.dispatch(
           gameSlice.actions.setAcceleration(store.getState().room.acceleration)
         );
       });
 
-      socket.on(ClientMessages.GET_PIECE, (pieceName: number) => {
-        console.log("ici");
-        store.dispatch(gameSlice.actions.updateQueue(initPiece(pieceName)));
-        store.dispatch(gameSlice.actions.upPieceId());
+      socket.on(Messages.END_GAME, () => {
+        store.dispatch(gameSlice.actions.resetState());
+        store.dispatch(roomSlice.actions.endGame());
+        store.dispatch(roomSlice.actions.resetOpponents());
       });
 
-      socket.on(ClientMessages.NEW_SHADOW, (arg: [string, number[]]) => {
+      socket.on(Messages.GET_PIECE, (pieceName: number) => {
+        store.dispatch(gameSlice.actions.updateQueue(initPiece(pieceName)));
+      });
+
+      socket.on(Messages.NEW_SHADOW, (arg: [string, number[]]) => {
         const [id, shadow] = arg;
         store.dispatch(roomSlice.actions.editOpponentShadow([id, shadow]));
       });
 
-      socket.on("TOGGLE_ACCELERATION", (acceleration: boolean) => {
+      socket.on(Messages.TOGGLE_ACCELERATION, (acceleration: boolean) => {
         store.dispatch(roomSlice.actions.setAcceleration(acceleration));
       });
 
-      socket.on(ClientMessages.PLAYER_GAME_OVER, (id: string) => {
+      socket.on(Messages.PLAYER_GAME_OVER, (id: string) => {
         store.dispatch(
-          roomSlice.actions.editOpponentGameOn([id, PlayerStatus.DEAD])
+          roomSlice.actions.editOpponentGameStatus([id, PlayerStatus.DEAD])
         );
       });
 
-      socket.on(ClientMessages.LINES_DESTROYED, (nb: number) => {
+      socket.on(Messages.LINES_DESTROYED, (nb: number) => {
         store.dispatch(gameSlice.actions.addLinesToBlock(nb));
       });
     }
@@ -101,14 +105,14 @@ const socketMiddleware: Middleware = (store) => {
       connectionSlice.actions.startConnectingToRoom.match(action) &&
       isConnectionEstablished
     ) {
-      socket.emit(ClientMessages.JOIN_ROOM, [
+      socket.emit(Messages.JOIN_ROOM, [
         action.payload,
         store.getState().connection.playerName,
       ]);
     }
 
     if (gameSlice.actions.setShadow.match(action) && isConnectionEstablished) {
-      socket.emit(ClientMessages.NEW_SHADOW, [
+      socket.emit(Messages.NEW_SHADOW, [
         store.getState().connection.roomName,
         action.payload,
       ]);
@@ -120,13 +124,13 @@ const socketMiddleware: Middleware = (store) => {
     ) {
       const lines: number = action.payload;
       if (lines > 1) {
-        socket.emit(ClientMessages.LINES_DESTROYED, lines - 1);
+        socket.emit(Messages.LINES_DESTROYED, lines - 1);
       }
     }
 
     if (gameSlice.actions.gameOver.match(action) && isConnectionEstablished) {
       socket.emit(
-        ClientMessages.PLAYER_GAME_OVER,
+        Messages.PLAYER_GAME_OVER,
         store.getState().connection.roomName
       );
     }
@@ -135,33 +139,21 @@ const socketMiddleware: Middleware = (store) => {
       roomSlice.actions.toggleAcceleration.match(action) &&
       isConnectionEstablished
     ) {
-      socket.emit("TOGGLE_ACCELERATION", store.getState().connection.roomName);
+      socket.emit(
+        Messages.TOGGLE_ACCELERATION,
+        store.getState().connection.roomName
+      );
     }
 
     if (roomSlice.actions.lauchGame.match(action) && isConnectionEstablished) {
-      console.log("ici");
-      socket.emit(
-        ClientMessages.START_GAME,
-        store.getState().connection.roomName
-      );
-    }
-
-    if (roomSlice.actions.endGame.match(action) && isConnectionEstablished) {
-      socket.emit(
-        ClientMessages.END_GAME,
-        store.getState().connection.roomName
-      );
+      socket.emit(Messages.START_GAME, store.getState().connection.roomName);
     }
 
     if (
       gameSlice.actions.setCurrentPiece.match(action) &&
       isConnectionEstablished
     ) {
-      console.log(store.getState().game.pieceId);
-      socket.emit(ClientMessages.GET_PIECE, [
-        store.getState().room.roomName,
-        store.getState().game.pieceId,
-      ]);
+      socket.emit(Messages.GET_PIECE, [store.getState().room.roomName]);
     }
 
     next(action);

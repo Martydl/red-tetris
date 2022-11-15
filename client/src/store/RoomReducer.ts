@@ -4,7 +4,7 @@ import { PlayerStatus } from "../Consts";
 export interface Opponent {
   playerName: string;
   shadow: number[];
-  gameOn: PlayerStatus;
+  status: PlayerStatus;
   // board: number[][]; // Show remaining players boards when not playing / dead ?
 }
 
@@ -73,16 +73,17 @@ export const roomSlice = createSlice({
       const [id, shadow] = action.payload;
       state.opponents[id].shadow = shadow;
     },
-    editOpponentGameOn: (
+    editOpponentGameStatus: (
       state: RoomState,
       action: PayloadAction<[string, PlayerStatus]>
     ) => {
-      const [id, gameOn] = action.payload;
-      state.opponents[id].gameOn = gameOn;
+      const [id, status] = action.payload;
+      state.opponents[id].status = status;
     },
-    reviveAllOpponents: (state: RoomState) => {
+    resetOpponents: (state: RoomState) => {
       for (let id in state.opponents) {
-        state.opponents[id].gameOn = PlayerStatus.ALIVE;
+        state.opponents[id].status = PlayerStatus.ALIVE;
+        state.opponents[id].shadow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       }
     },
     delOpponent: (state: RoomState, action: PayloadAction<string>) => {

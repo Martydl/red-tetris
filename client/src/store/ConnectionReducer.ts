@@ -33,7 +33,6 @@ export const connectionSlice = createSlice({
       state: ConnectionState,
       action: PayloadAction<string>
     ) => {
-      console.log(action.payload);
       state.isConnectedToSocket = true;
       state.isConnectingToSocket = true;
       state.socketId = action.payload;

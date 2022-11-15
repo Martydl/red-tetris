@@ -27,7 +27,7 @@ export function Opponents(props: {
   let ops: Opponent[] = [];
 
   for (let key in props.opponents) {
-    if (props.opponents[key].gameOn != PlayerStatus.WAITING)
+    if (props.opponents[key].status != PlayerStatus.WAITING)
       ops.push(props.opponents[key]);
   }
 

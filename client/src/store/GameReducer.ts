@@ -16,7 +16,6 @@ export interface GameState {
   printBoard: number[][];
   currentPiece: Piece;
   queue: Piece[];
-  pieceId: number;
   shadow: number[];
   completedLine: number;
   level: number;
@@ -28,12 +27,11 @@ export interface GameState {
 }
 
 const initialState: GameState = {
-  gameOn: true,
+  gameOn: false,
   gameBoard: initBoard(),
   printBoard: initBoard(),
   currentPiece: initPiece(0),
   queue: [],
-  pieceId: 5,
   shadow: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   completedLine: 0,
   level: 0,
@@ -42,6 +40,12 @@ const initialState: GameState = {
   defaultDelay: 1000,
   acceleration: 1.15,
   linesToBlock: 0,
+};
+
+const resetState = () => initialState;
+
+const setGameOn = (state: GameState) => {
+  state.gameOn = true;
 };
 
 const gameOver = (state: GameState) => {
@@ -114,11 +118,6 @@ const swapPiece = (state: GameState) => {
 const initPieces = (state: GameState, action: PayloadAction<number[]>) => {
   state.currentPiece = initPiece(action.payload[0]);
   state.queue = initQueue(action.payload);
-  // updatePrintBoard ?
-};
-
-const upPieceId = (state: GameState) => {
-  state.pieceId += 1;
 };
 
 const setShadow = (state: GameState, action: PayloadAction<number[]>): void => {
@@ -162,6 +161,8 @@ export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
+    resetState,
+    setGameOn,
     gameOver,
     setGameBoard,
     setPrintBoard,
@@ -171,7 +172,6 @@ export const gameSlice = createSlice({
     updateQueue,
     swapPiece,
     initPieces,
-    upPieceId,
     setShadow,
     setCompletedLines,
     addLinesToBlock,
