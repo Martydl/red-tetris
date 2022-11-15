@@ -81,16 +81,23 @@ io.on("connection", (socket) => {
   socket.on(Messages.PLAYER_GAME_OVER, (gameID: string) => {
     server.players[socket.id].opponent.set_status(PlayerStatus.DEAD);
     socket.broadcast.to(gameID).emit(Messages.PLAYER_GAME_OVER, socket.id);
-    server.games[gameID].setPlayersAlive();
-    io.to(gameID).emit(Messages.SET_ALL_ALIVE);
+    let playerAlive: number = server.games[gameID].getPlayerAlive();
+    if (
+      (server.games[gameID].acceleration && playerAlive < 1) ||
+      playerAlive < 2
+    ) {
+      io.to(gameID).emit(Messages.END_GAME);
+      server.games[gameID].setPlayersAlive();
+    }
   });
 
   socket.on(Messages.START_GAME, (gameID: string) => {
+    server.games[gameID].setGameStart();
     server.games[gameID].giveGeneratorToPlayers();
-    io.to(gameID).emit(Messages.START_GAME, [
-      server.games[gameID].getStartPieceList(),
-      server.games[gameID].seed,
-    ]);
+    io.to(gameID).emit(
+      Messages.START_GAME,
+      server.games[gameID].getStartPieceList()
+    );
   });
 
   socket.on(Messages.GET_PIECE, () => {

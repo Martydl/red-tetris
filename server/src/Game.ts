@@ -18,12 +18,17 @@ class Game {
     this.acceleration = true;
   }
 
-  gameStart(): void {
+  setGameStart(): void {
     this.gameOn = true;
   }
 
-  gameEnd(): void {
-    this.gameOn = false;
+  getPlayerAlive(): number {
+    let playerAlive: number = 0;
+    for (let key in this.players) {
+      if (this.players[key].opponent.status == PlayerStatus.ALIVE)
+        playerAlive++;
+    }
+    return playerAlive;
   }
 
   addPlayer(player: Player): void {
@@ -36,9 +41,8 @@ class Game {
 
   giveGeneratorToPlayers(): void {
     this.seed = Math.random().toString();
-    for (let playerID in this.players) {
+    for (let playerID in this.players)
       this.players[playerID].setGenerator(this.seed);
-    }
   }
 
   getStartPieceList(): number[] {
@@ -57,17 +61,15 @@ class Game {
 
   getOpponents(playerID: string): { [id: string]: Object } {
     let opponents: { [id: string]: Object } = {};
-    for (let id in this.players) {
-      if (id != playerID)
-        opponents[id] = JSON.parse(JSON.stringify(this.players[id].opponent));
-    }
+    for (let key in this.players)
+      if (key != playerID)
+        opponents[key] = JSON.parse(JSON.stringify(this.players[key].opponent));
     return opponents;
   }
 
   setPlayersAlive(): void {
-    for (let [_key, value] of Object.entries(this.players)) {
-      value.opponent.set_status(PlayerStatus.ALIVE);
-    }
+    for (let key in this.players)
+      this.players[key].opponent.set_status(PlayerStatus.ALIVE);
   }
 }
 

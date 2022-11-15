@@ -1,4 +1,5 @@
 export enum Messages {
+  END_GAME = "END_GAME",
   GET_PIECE = "GET_PIECE",
   JOIN_ROOM = "JOIN_ROOM",
   ROOM_LIST = "ROOM_LIST",
