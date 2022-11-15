@@ -9,6 +9,7 @@ export interface ConnectionState {
   roomName?: string;
   playerName: string;
   roomList: { [key: string]: { playerNb: number; gameOn: boolean } };
+  routingBuffer?: string;
 }
 
 const initialState: ConnectionState = {
@@ -66,14 +67,12 @@ export const connectionSlice = createSlice({
     ) => {
       state.roomList = action.payload;
     },
-    addRoom: (
+    setRoutingBuffer: (
       state: ConnectionState,
-      action: PayloadAction<[string, { playerNb: number; gameOn: boolean }]>
+      action: PayloadAction<string | undefined>
     ) => {
-      const [id, room] = action.payload;
-      state.roomList[id] = room;
+      state.routingBuffer = action.payload;
     },
-    delRoom: (state: ConnectionState, action: PayloadAction<string>) => {},
   },
 });
 

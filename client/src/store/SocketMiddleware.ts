@@ -24,9 +24,13 @@ const socketMiddleware: Middleware = (store) => {
       );
 
       socket.on("connect", () => {
+        const buffer: string | undefined =
+          store.getState().connection.routingBuffer;
         store.dispatch(
           connectionSlice.actions.socketConnectionEstablished(socket.id)
         );
+        if (buffer)
+          store.dispatch(connectionSlice.actions.startConnectingToRoom(buffer));
       });
 
       // Events received from the server
@@ -109,6 +113,11 @@ const socketMiddleware: Middleware = (store) => {
         action.payload,
         store.getState().connection.playerName,
       ]);
+    } else if (
+      connectionSlice.actions.startConnectingToRoom.match(action) &&
+      !isConnectionEstablished
+    ) {
+      store.dispatch(connectionSlice.actions.setRoutingBuffer(action.payload));
     }
 
     if (gameSlice.actions.setShadow.match(action) && isConnectionEstablished) {
