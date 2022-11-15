@@ -37,7 +37,7 @@ body {
 }
 
 .Icon {
-  width: 3%;
+  width: 50px;
 }
 
 .LobbyBody {
@@ -64,7 +64,7 @@ body {
 
 .RoomList {
   width: 40%;
-  max-height: 90%;
+  height: 80%;
 }
 
 .Room {
@@ -84,8 +84,12 @@ body {
 
 .RoomInfos,
 .Instructions {
-  width: 100%;
+  width: 94%;
   height: 20%;
+  border: solid 2px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  padding: 3%;
 }
 
 .game {
@@ -121,7 +125,6 @@ body {
 .gameBoard {
   width: max-content;
   height: max-content;
-  background-color: blue;
   display: flex;
   flex-direction: row-reverse;
   margin-right: 15px;

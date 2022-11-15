@@ -3,10 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { roomSlice } from "../store/RoomReducer";
 import { RootReducerState } from "../store/RootReducer";
 
+function countOpponents(roomOpponents: any): number {
+  let nbOpponent: number = 0;
+
+  return nbOpponent;
+}
+
 export function RoomInfo() {
   const dispatch = useDispatch();
   const roomName = useSelector(
     (state: RootReducerState) => state.room.roomName
+  );
+  const roomOpponents = useSelector(
+    (state: RootReducerState) => state.room.opponents
   );
   const gameOn = useSelector((state: RootReducerState) => state.room.gameOn);
   const myId = useSelector(
@@ -35,7 +44,6 @@ export function RoomInfo() {
 
   return (
     <div className="RoomInfos">
-      {roomName}
       {isLeader && !gameOn && (
         <Button variant="contained" onClick={handleStart}>
           Start
@@ -53,6 +61,8 @@ export function RoomInfo() {
         label="Acceleration"
         labelPlacement="start"
       />
+      <p>Name of the Room: {roomName}</p>
+      <p>Number of Player: {Object.keys(roomOpponents).length + 1}</p>
     </div>
   );
 }
