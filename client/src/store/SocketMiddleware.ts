@@ -1,10 +1,11 @@
 import { Middleware } from "redux";
 import { io, Socket } from "socket.io-client";
-import { ClientMessages, ServerMessages } from "../../../common/Consts";
+import { ClientMessages, ServerMessages } from "../Consts";
 import { gameSlice } from "./GameReducer";
 import { connectionSlice } from "./ConnectionReducer";
 import { Opponent, roomSlice } from "./RoomReducer";
 import { initPiece } from "../game/Utils";
+import { PlayerStatus } from "../Consts";
 
 const socketMiddleware: Middleware = (store) => {
   let socket: Socket;
@@ -56,10 +57,17 @@ const socketMiddleware: Middleware = (store) => {
         store.dispatch(roomSlice.actions.addOpponent([id, opponent]));
       });
 
+      socket.on("DEL_OPPONENT", (id: string) => {
+        store.dispatch(roomSlice.actions.delOpponent(id));
+      });
+
       socket.on(ClientMessages.START_GAME, (piecesNames: number[]) => {
         console.log(piecesNames);
         store.dispatch(roomSlice.actions.startGame());
         store.dispatch(gameSlice.actions.initPieces(piecesNames));
+        store.dispatch(
+          gameSlice.actions.setAcceleration(store.getState().room.acceleration)
+        );
       });
 
       socket.on(ClientMessages.GET_PIECE, (pieceName: number) => {
@@ -73,8 +81,14 @@ const socketMiddleware: Middleware = (store) => {
         store.dispatch(roomSlice.actions.editOpponentShadow([id, shadow]));
       });
 
+      socket.on("TOGGLE_ACCELERATION", (acceleration: boolean) => {
+        store.dispatch(roomSlice.actions.setAcceleration(acceleration));
+      });
+
       socket.on(ClientMessages.PLAYER_GAME_OVER, (id: string) => {
-        store.dispatch(roomSlice.actions.editOpponentGameOn([id, false]));
+        store.dispatch(
+          roomSlice.actions.editOpponentGameOn([id, PlayerStatus.DEAD])
+        );
       });
 
       socket.on(ClientMessages.LINES_DESTROYED, (nb: number) => {
@@ -115,6 +129,13 @@ const socketMiddleware: Middleware = (store) => {
         ClientMessages.PLAYER_GAME_OVER,
         store.getState().connection.roomName
       );
+    }
+
+    if (
+      roomSlice.actions.toggleAcceleration.match(action) &&
+      isConnectionEstablished
+    ) {
+      socket.emit("TOGGLE_ACCELERATION", store.getState().connection.roomName);
     }
 
     if (roomSlice.actions.lauchGame.match(action) && isConnectionEstablished) {

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { piecesList } from "../Consts";
-import { updatePrintBoard, checkCollisions } from "../game/Utils";
+import { updatePrintBoard, checkCollisions, genShadow } from "../game/Utils";
 import { Piece } from "../Types";
 import { gameSlice } from "../store/GameReducer";
 import { RootReducerState } from "../store/RootReducer";
@@ -51,6 +51,7 @@ export function useBlockLines(
           dispatch(
             gameSlice.actions.setPrintBoard(updatePrintBoard(newBoard, piece))
           );
+          dispatch(gameSlice.actions.setShadow(genShadow(newBoard)));
         }
       }
       dispatch(gameSlice.actions.subLinesToBlock(1));

@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PlayerStatus } from "../Consts";
 
 export interface Opponent {
   playerName: string;
   shadow: number[];
-  gameOn: boolean;
+  gameOn: PlayerStatus;
   // board: number[][]; // Show remaining players boards when not playing / dead ?
 }
 
@@ -12,6 +13,7 @@ export interface RoomState {
   leaderId: string;
   startingGame: boolean;
   gameOn: boolean;
+  acceleration: boolean;
   opponents: { [id: string]: Opponent }; // from server, needs to send only playing players, not spectators
 }
 
@@ -20,6 +22,7 @@ const initialState: RoomState = {
   leaderId: "undef",
   startingGame: false,
   gameOn: false,
+  acceleration: true,
   opponents: {},
 };
 
@@ -72,12 +75,25 @@ export const roomSlice = createSlice({
     },
     editOpponentGameOn: (
       state: RoomState,
-      action: PayloadAction<[string, boolean]>
+      action: PayloadAction<[string, PlayerStatus]>
     ) => {
       const [id, gameOn] = action.payload;
       state.opponents[id].gameOn = gameOn;
     },
-    delOpponent: (state: RoomState, action: PayloadAction<string>) => {},
+    reviveAllOpponents: (state: RoomState) => {
+      for (let id in state.opponents) {
+        state.opponents[id].gameOn = PlayerStatus.ALIVE;
+      }
+    },
+    delOpponent: (state: RoomState, action: PayloadAction<string>) => {
+      delete state.opponents[action.payload];
+    },
+    toggleAcceleration: (state: RoomState) => {
+      state.acceleration = !state.acceleration;
+    },
+    setAcceleration: (state: RoomState, action: PayloadAction<boolean>) => {
+      state.acceleration = action.payload;
+    },
   },
 });
 

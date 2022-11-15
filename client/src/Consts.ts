@@ -1,5 +1,32 @@
 import { PieceGrid } from "./Types";
 
+export enum ClientMessages {
+  JOIN_ROOM = "JOIN_ROOM",
+  NEW_SHADOW = "NEW_SHADOW",
+  LINES_DESTROYED = "LINES_DESTROYED",
+  PLAYER_GAME_OVER = "PLAYER_GAME_OVER",
+  START_GAME = "START_GAME",
+  END_GAME = "END_GAME",
+  GET_PIECE = "GET_PIECE",
+  WAITING_ROOM = "WAITING_ROOM",
+}
+
+export enum ServerMessages {
+  ROOM_INFO = "ROOM_INFO",
+  ROOM_LIST = "ROOM_LIST",
+  GAME_STATUS = "GAME_STATUS",
+  SEND_OPPONENT = "SEND_OPPONENT",
+  LEADER_ID = "LEADER_ID",
+  OPPONENTS_SHADOWS = "OPPONENTS_SHADOWS",
+  LINES_TO_BLOCK = "LINES_TO_BLOCK",
+}
+
+export enum PlayerStatus {
+  WAITING = -1,
+  DEAD,
+  ALIVE,
+}
+
 export const emptyPiece: PieceGrid = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
