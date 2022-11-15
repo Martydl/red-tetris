@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PlayerStatus } from "../Consts";
 
 export interface Opponent {
   playerName: string;
   shadow: number[];
-  gameOn: boolean;
+  gameOn: PlayerStatus;
   // board: number[][]; // Show remaining players boards when not playing / dead ?
 }
 
@@ -74,7 +75,7 @@ export const roomSlice = createSlice({
     },
     editOpponentGameOn: (
       state: RoomState,
-      action: PayloadAction<[string, boolean]>
+      action: PayloadAction<[string, PlayerStatus]>
     ) => {
       const [id, gameOn] = action.payload;
       state.opponents[id].gameOn = gameOn;

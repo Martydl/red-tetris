@@ -1,3 +1,4 @@
+import { PlayerStatus } from "../Consts";
 import { genFullShadow } from "../game/Utils";
 import { Opponent } from "../store/RoomReducer";
 import { PrintBoard } from "./PrintBoard";
@@ -26,7 +27,8 @@ export function Opponents(props: {
   let ops: Opponent[] = [];
 
   for (let key in props.opponents) {
-    ops.push(props.opponents[key]);
+    if (props.opponents[key].gameOn != PlayerStatus.WAITING)
+      ops.push(props.opponents[key]);
   }
 
   return (

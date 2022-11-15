@@ -5,6 +5,7 @@ import { gameSlice } from "./GameReducer";
 import { connectionSlice } from "./ConnectionReducer";
 import { Opponent, roomSlice } from "./RoomReducer";
 import { initPiece } from "../game/Utils";
+import { PlayerStatus } from "../Consts";
 
 const socketMiddleware: Middleware = (store) => {
   let socket: Socket;
@@ -81,7 +82,9 @@ const socketMiddleware: Middleware = (store) => {
       });
 
       socket.on(ClientMessages.PLAYER_GAME_OVER, (id: string) => {
-        store.dispatch(roomSlice.actions.editOpponentGameOn([id, false]));
+        store.dispatch(
+          roomSlice.actions.editOpponentGameOn([id, PlayerStatus.DEAD])
+        );
       });
 
       socket.on(ClientMessages.LINES_DESTROYED, (nb: number) => {

@@ -1,5 +1,11 @@
 import { PieceGrid } from "./Types";
 
+export enum PlayerStatus {
+  WAITING = -1,
+  DEAD,
+  ALIVE,
+}
+
 export const emptyPiece: PieceGrid = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
