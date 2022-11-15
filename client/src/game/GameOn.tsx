@@ -102,9 +102,6 @@ export default function GameOn() {
       case "KeyS":
         dispatch(gameSlice.actions.swapPiece());
         break;
-      case "NumpadAdd":
-        dispatch(gameSlice.actions.addLinesToBlock(1));
-        break;
     }
   }
 

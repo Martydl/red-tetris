@@ -2,18 +2,18 @@ export function PrintCommand() {
   return (
     <div className="Instructions">
       <p>
-        command:
+        Commands:
         <br />
-        · ← / → move piece
+        · ← move piece left
         <br />
-        · ↓ falling piece
+        · → move piece right
+        <br />
+        · ↓ move piece down
         <br />
         · ↑ rotate clockwise
         <br />
         · "Space" place piece
-        <br />
-        · "S" swap piece with next piece
-        <br />· "+" add malus
+        <br />· "S" swap current piece with queue
       </p>
     </div>
   );
