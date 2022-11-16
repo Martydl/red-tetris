@@ -19,7 +19,7 @@ class Opponent {
     this.shadow = shadow;
   }
 
-  set_status(status: PlayerStatus) {
+  setStatus(status: PlayerStatus) {
     this.status = status;
   }
 }

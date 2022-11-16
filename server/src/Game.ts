@@ -57,7 +57,7 @@ class Game {
     ];
   }
 
-  setget_acceleration(): boolean {
+  setgetAcceleration(): boolean {
     this.acceleration = !this.acceleration;
     return this.acceleration;
   }
@@ -72,7 +72,7 @@ class Game {
 
   setPlayersAlive(): void {
     for (let key in this.players)
-      this.players[key].opponent.set_status(PlayerStatus.ALIVE);
+      this.players[key].opponent.setStatus(PlayerStatus.ALIVE);
   }
 }
 

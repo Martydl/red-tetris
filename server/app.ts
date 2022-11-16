@@ -39,7 +39,7 @@ io.on("connection", (socket: Socket) => {
     if (gameID in server.games) {
       server.games[gameID].addPlayer(server.players[socket.id]);
       if (server.games[gameID].gameOn) {
-        server.players[socket.id].opponent.set_status(PlayerStatus.WAITING);
+        server.players[socket.id].opponent.setStatus(PlayerStatus.WAITING);
       }
     } else server.addGame(gameID, new Game(gameID, server.players[socket.id]));
     server.players[socket.id].setRoom(gameID);
@@ -63,7 +63,7 @@ io.on("connection", (socket: Socket) => {
   });
 
   socket.on(Messages.PLAYER_GAME_OVER, (gameID: string) => {
-    server.players[socket.id].opponent.set_status(PlayerStatus.DEAD);
+    server.players[socket.id].opponent.setStatus(PlayerStatus.DEAD);
     server.sendBroadcastPlayerGameOver(socket, gameID);
     if (server.games[gameID].isEndGame()) {
       server.sendAllEndGame(io, gameID);

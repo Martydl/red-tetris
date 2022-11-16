@@ -84,7 +84,7 @@ class App {
       .to(gameID)
       .emit(
         Messages.TOGGLE_ACCELERATION,
-        this.games[gameID].setget_acceleration()
+        this.games[gameID].setgetAcceleration()
       );
   }
 
