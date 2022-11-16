@@ -9,6 +9,9 @@ import { PrintBegScreen } from "../components/PrintBegScreen";
 export default function gameBegin() {
   const board = initBoard();
   const gameOn = useSelector((state: RootReducerState) => state.room.gameOn);
+  const acceleration = useSelector(
+    (state: RootReducerState) => state.room.acceleration
+  );
 
   return (
     <div className="game">
@@ -18,7 +21,7 @@ export default function gameBegin() {
       </div>
       <div className="gameInfo">
         <PrintEmptyQueue />
-        <PrintScore score={0} level={0} />
+        {acceleration && <PrintScore score={0} level={0} />}
       </div>
     </div>
   );

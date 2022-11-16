@@ -13,8 +13,8 @@ export default function GameOver() {
   const currentPiece = useSelector(
     (state: RootReducerState) => state.game.currentPiece
   );
-  const defaultDelay = useSelector(
-    (state: RootReducerState) => state.game.defaultDelay
+  const acceleration = useSelector(
+    (state: RootReducerState) => state.room.acceleration
   );
   const score = useSelector((state: RootReducerState) => state.game.score);
   const level = useSelector((state: RootReducerState) => state.game.level);
@@ -24,7 +24,7 @@ export default function GameOver() {
     <div className="game">
       <div>
         <div className="gameBoard">
-          <PrintEndScreen score={score} />
+          <PrintEndScreen score={acceleration ? score : undefined} />
           <PrintBoard
             board={addPieceToBoard(gameBoard, currentPiece)}
             class="board gameOff"
@@ -33,7 +33,6 @@ export default function GameOver() {
       </div>
       <div className="gameInfo">
         <PrintQueue queue={queue} />
-        <PrintScore score={score} level={level} />
       </div>
     </div>
   );
