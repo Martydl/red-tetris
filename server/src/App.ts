@@ -107,6 +107,7 @@ class App {
     if (
       gameID != "undef" &&
       gameID != Messages.WAITING_ROOM &&
+      this.games[gameID] &&
       Object.keys(this.games[gameID].players).length > 1
     ) {
       delete this.games[gameID].players[socket.id];
