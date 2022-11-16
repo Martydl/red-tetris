@@ -68,14 +68,14 @@ io.on("connection", (socket: Socket) => {
     if (server.games[gameID].isEndGame()) {
       server.games[gameID].setGameOver();
       server.sendAllEndGame(io, gameID);
-      server.games[gameID].resetPlayers();
+      server.games[gameID].resetOpponents();
       // reset player's shadows
     }
   });
 
   socket.on(Messages.START_GAME, (gameID: string) => {
     server.games[gameID].setGameStart();
-    server.games[gameID].giveGeneratorToPlayers();
+    server.games[gameID].setgiveGeneratorToPlayers();
     server.sendAllStartGame(io, gameID);
     server.sendAllRoomsInfos(io);
   });

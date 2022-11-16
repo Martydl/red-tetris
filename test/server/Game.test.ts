@@ -1,73 +1,89 @@
 import { expect, it, describe } from "vitest";
 import Game from "../../server/src/Game";
 import Player from "../../server/src/Player";
-import Piece from "../../server/src/Piece";
+import PlayerStatus from "../../server/src/Consts";
 
 describe("Game Class", () => {
   let player1 = new Player("tester1");
   let player2 = new Player("tester2");
-  let gameTest = new Game("TEST", player1);
+  let game = new Game("test", player1);
 
   it("constructor", () => {
-    expect(gameTest.gameID).toEqual("TEST");
-    expect(gameTest.players).toEqual({ [player1.id]: player1 });
-    expect(gameTest.pieces.length).toEqual(4);
-    for (let elem in gameTest.pieces) {
-      expect(gameTest.pieces[elem]).toBeInstanceOf(Piece);
-    }
-    expect(gameTest.leaderID).toEqual(player1.id);
-    expect(gameTest.gameOn).toEqual(false);
+    expect(game.gameID).toEqual("test");
+    expect(Object.keys(game.players).length).toEqual(1);
+    expect(Object.keys(game.players)).toEqual(["tester1"]);
+    expect(game.players["tester1"]).toEqual(player1);
+    expect(game.leaderID).toEqual("tester1");
+    expect(game.gameOn).toEqual(false);
+    expect(game.acceleration).toEqual(true);
   });
 
-  it("gameStart", () => {
-    gameTest.gameStart();
-    expect(gameTest.gameOn).toEqual(true);
+  it("setGameStart", () => {
+    game.setGameStart();
+    expect(game.gameOn).toEqual(true);
   });
 
-  it("gameEnd", () => {
-    gameTest.gameEnd();
-    expect(gameTest.gameOn).toEqual(false);
+  it("isEndGame", () => {
+    expect(game.isEndGame()).toEqual(false);
+    game.acceleration = false;
+    expect(game.isEndGame()).toEqual(true);
+    game.acceleration = true;
   });
 
   it("addPlayer", () => {
-    let playerLen = Object.keys(gameTest.players).length;
-    gameTest.addPlayer(player2);
-    expect(Object.keys(gameTest.players).length).toEqual(playerLen + 1);
-    expect(gameTest.players[player2.id]).toEqual(player2);
-    // toMatchObject
+    game.addPlayer(player2);
+    expect(Object.keys(game.players).length).toEqual(2);
+    expect(Object.keys(game.players)).toEqual(["tester1", "tester2"]);
+    expect(game.players["tester2"]).toEqual(player2);
   });
 
   it("setNewLeader", () => {
-    delete gameTest.players[player1.id];
-    gameTest.setNewLeader();
-    expect(gameTest.leaderID).toEqual(player2.id);
+    game.setNewLeader();
+    expect(game.leaderID).toEqual("tester1");
   });
 
-  it("getPiece", () => {
-    let piece1 = gameTest.getPiece(2);
-    let piecesLen1 = gameTest.pieces.length;
-    let piece2 = gameTest.getPiece(4);
-    let piecesLen2 = gameTest.pieces.length;
-    expect(piece1).toEqual(gameTest.pieces[2].name);
-    expect(piecesLen1).toEqual(4);
-    expect(piece2).toEqual(gameTest.pieces[4].name);
-    expect(piecesLen2).toEqual(5);
+  it("setgiveGeneratorToPlayers", () => {
+    const old_seed = game.seed;
+    const old_gen1 = game.players["tester1"].generator;
+    const old_gen2 = game.players["tester2"].generator;
+    game.setgiveGeneratorToPlayers();
+    expect(game.seed).not.toEqual(old_seed);
+    expect(game.players["tester1"].generator).not.toEqual(old_gen1);
+    expect(game.players["tester2"].generator).not.toEqual(old_gen2);
   });
 
   it("getStartPieceList", () => {
-    gameTest.pieces[0].name;
-    expect(gameTest.getStartPieceList()).toEqual([
-      gameTest.pieces[0].name,
-      gameTest.pieces[1].name,
-      gameTest.pieces[2].name,
-      gameTest.pieces[3].name,
-      gameTest.pieces[4].name,
-    ]);
+    const return_test = game.getStartPieceList();
+    const isNumberArray =
+      return_test.length > 0 &&
+      return_test.every((value) => {
+        return typeof value === "number";
+      });
+    expect(return_test.length).toEqual(4);
+    expect(Array.isArray(return_test)).toEqual(true);
+    expect(isNumberArray).toEqual(true);
+  });
+
+  it("setgetAcceleration", () => {
+    const old_acceleration = game.acceleration;
+    const return_test = game.setgetAcceleration();
+    expect(game.acceleration).not.toEqual(old_acceleration);
+    expect(return_test).toEqual(game.acceleration);
   });
 
   it("getOpponents", () => {
-    expect(gameTest.getOpponents(player1.id)).toEqual({
-      [player2.id]: JSON.parse(JSON.stringify(player2.opponent)),
-    });
+    const test = { [player2.id]: JSON.parse(JSON.stringify(player2.opponent)) };
+    expect(game.getOpponents(player1.id)).toEqual(test);
+  });
+
+  it("setPlayersAlive", () => {
+    const emptyShadow = new Array(10).fill(0);
+    player1.opponent.setStatus(PlayerStatus.DEAD);
+    player2.opponent.setStatus(PlayerStatus.DEAD);
+    game.resetOpponents();
+    expect(player1.opponent.status).toEqual(PlayerStatus.ALIVE);
+    expect(player2.opponent.status).toEqual(PlayerStatus.ALIVE);
+    expect(player1.opponent.shadow).toEqual(emptyShadow);
+    expect(player2.opponent.shadow).toEqual(emptyShadow);
   });
 });

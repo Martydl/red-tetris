@@ -46,7 +46,7 @@ class Game {
     this.leaderID = this.players[Object.keys(this.players)[0]].id;
   }
 
-  giveGeneratorToPlayers(): void {
+  setgiveGeneratorToPlayers(): void {
     this.seed = Math.random().toString();
     for (let playerID in this.players)
       this.players[playerID].setGenerator(this.seed);
@@ -74,7 +74,7 @@ class Game {
     return opponents;
   }
 
-  resetPlayers(): void {
+  resetOpponents(): void {
     for (let key in this.players) {
       this.players[key].opponent.setStatus(PlayerStatus.ALIVE);
       this.players[key].opponent.newShadow(new Array(10).fill(0));
