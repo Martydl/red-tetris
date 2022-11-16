@@ -63,7 +63,7 @@ body {
   width: 40%;
   height: 10%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .NameField,
@@ -79,7 +79,7 @@ body {
 
 .Room {
   width: 98%;
-  height: 784px;
+  height: 880px;
   display: flex;
   justify-content: center;
   margin: 1%;
@@ -166,8 +166,8 @@ body {
 }
 
 .block {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   margin: 1px;
   border: solid 1px;
   border-color: white;
@@ -289,7 +289,7 @@ div#\31 5 {
   display: flex;
   flex-wrap: wrap;
   text-align: center;
-  width: 100%;
+  width: 460px;
   height: 97%;
   overflow: overlay;
 }
@@ -300,8 +300,8 @@ div#\31 5 {
 
 .opponentBoard > .row > .block,
 .opponentDead > .row > .block {
-  width: 13px;
-  height: 13px;
+  width: 16px;
+  height: 16px;
 }
 
 .opponentBoard,
