@@ -24,9 +24,15 @@ class Game {
   }
 
   setLastWinner(playerID: string): void {
-    this.lastWinner = this.acceleration
-      ? playerID
-      : Object.keys(this.players)[0];
+    switch (this.acceleration) {
+      case true:
+        this.lastWinner = playerID;
+      case false:
+        for (let key in this.players) {
+          if (this.players[key].opponent.status == PlayerStatus.ALIVE)
+            this.lastWinner = key;
+        }
+    }
   }
 
   isEndGame(): boolean {
