@@ -24,6 +24,9 @@ export function RoomInfo() {
   const opponents = useSelector(
     (state: RootReducerState) => state.room.opponents
   );
+  const previousWinner = useSelector(
+    (state: RootReducerState) => state.room.winner
+  );
 
   const isLeader = myId === leaderId;
   const multiplayer = Object.keys(opponents).length > 0;
@@ -45,6 +48,7 @@ export function RoomInfo() {
             style={{ marginLeft: "10px" }}
             variant="contained"
             onClick={handleStart}
+            size="small"
           >
             Start
           </Button>
@@ -63,7 +67,8 @@ export function RoomInfo() {
         label="Acceleration"
         labelPlacement="start"
       />
-      <p>Number of Player: {Object.keys(roomOpponents).length + 1}</p>
+      <p>Players in the room: {Object.keys(roomOpponents).length + 1}</p>
+      <p>Last winner: {previousWinner}</p>
     </div>
   );
 }

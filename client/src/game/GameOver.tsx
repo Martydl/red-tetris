@@ -33,7 +33,7 @@ export default function GameOver() {
       </div>
       <div className="gameInfo">
         <PrintQueue queue={queue} />
-        <PrintScore score={score} level={level} defaultDelay={defaultDelay} />
+        <PrintScore score={score} level={level} />
       </div>
     </div>
   );

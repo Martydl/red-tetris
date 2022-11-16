@@ -1,8 +1,4 @@
-export function PrintScore(props: {
-  score: number;
-  level: number;
-  defaultDelay: number;
-}) {
+export function PrintScore(props: { score: number; level: number }) {
   return (
     <div className="scorePanel">
       <div className="score">score: {props.score}</div>

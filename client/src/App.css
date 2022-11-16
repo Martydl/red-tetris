@@ -104,7 +104,8 @@ body {
   outline: 0px;
 }
 
-.gameOver {
+.gameOver,
+.gameBegin {
   position: absolute;
   width: 394px;
   height: 784px;
@@ -115,7 +116,8 @@ body {
   backdrop-filter: blur(1px);
 }
 
-.gameOver > p {
+.gameOver > p,
+.gameBegin > p {
   background-color: white;
   border: solid 2px;
   border-radius: 5%;

@@ -71,10 +71,11 @@ const socketMiddleware: Middleware = (store) => {
         );
       });
 
-      socket.on(Messages.END_GAME, () => {
+      socket.on(Messages.END_GAME, (winnerID: string) => {
         store.dispatch(gameSlice.actions.resetGameState());
         store.dispatch(roomSlice.actions.endGame());
         store.dispatch(roomSlice.actions.resetOpponents());
+        store.dispatch(roomSlice.actions.setWinner(winnerID));
       });
 
       socket.on(Messages.GET_PIECE, (pieceName: number) => {

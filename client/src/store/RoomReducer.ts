@@ -5,7 +5,6 @@ export interface Opponent {
   playerName: string;
   shadow: number[];
   status: PlayerStatus;
-  // board: number[][]; // Show remaining players boards when not playing / dead ?
 }
 
 export interface RoomState {
@@ -14,7 +13,8 @@ export interface RoomState {
   startingGame: boolean;
   gameOn: boolean;
   acceleration: boolean;
-  opponents: { [id: string]: Opponent }; // from server, needs to send only playing players, not spectators
+  opponents: { [id: string]: Opponent };
+  winner: string;
 }
 
 const initialState: RoomState = {
@@ -24,6 +24,7 @@ const initialState: RoomState = {
   gameOn: false,
   acceleration: true,
   opponents: {},
+  winner: "-",
 };
 
 export const roomSlice = createSlice({
@@ -92,6 +93,9 @@ export const roomSlice = createSlice({
     },
     setAcceleration: (state: RoomState, action: PayloadAction<boolean>) => {
       state.acceleration = action.payload;
+    },
+    setWinner: (state: RoomState, action: PayloadAction<string>) => {
+      state.winner = state.opponents[action.payload].playerName;
     },
   },
 });
