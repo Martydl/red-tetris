@@ -56,7 +56,9 @@ class App {
   }
 
   sendBroadcastDelOpponent(socket: Socket, gameID: string) {
-    socket.broadcast.to(gameID).emit(Messages.DELETE_OPPONENT, socket.id);
+    socket.broadcast
+      .to(gameID)
+      .emit(Messages.DELETE_OPPONENT, [socket.id, this.games[gameID].leaderID]);
   }
 
   sendBroadcastNewPlayerName(socket: Socket, gameID: string, newName: string) {
@@ -108,6 +110,7 @@ class App {
       Object.keys(this.games[gameID].players).length > 1
     ) {
       delete this.games[gameID].players[socket.id];
+      this.games[gameID].setNewLeader();
       this.sendBroadcastDelOpponent(socket, gameID);
     } else if (gameID != Messages.WAITING_ROOM) delete this.games[gameID];
     this.sendAllRoomsInfos(io);

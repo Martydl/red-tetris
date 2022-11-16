@@ -61,8 +61,10 @@ const socketMiddleware: Middleware = (store) => {
         store.dispatch(roomSlice.actions.addOpponent([id, opponent]));
       });
 
-      socket.on(Messages.DELETE_OPPONENT, (id: string) => {
+      socket.on(Messages.DELETE_OPPONENT, (msg: [string, string]) => {
+        const [id, leaderId] = msg;
         store.dispatch(roomSlice.actions.delOpponent(id));
+        store.dispatch(roomSlice.actions.setLeaderId(leaderId));
       });
 
       socket.on(Messages.START_GAME, (piecesNames: number[]) => {
