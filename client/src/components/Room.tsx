@@ -6,6 +6,7 @@ import GameBegin from "../game/GameBegin";
 import { Opponents } from "./Opponents";
 import { RoomInfo } from "./RoomInfo";
 import { PrintCommand } from "./PrintCommand";
+import { PlayerStatus } from "../Consts";
 
 export function Room() {
   const roomGameOn = useSelector(
@@ -22,8 +23,8 @@ export function Room() {
         <RoomInfo />
         <PrintCommand />
       </div>
-      {((!roomGameOn || (roomGameOn && !ownGameOn)) && <GameBegin />) ||
-        (ownGameOn && <GameOn />) || <GameOver />}
+      {(ownGameOn === PlayerStatus.WAITING && <GameBegin />) ||
+        (ownGameOn === PlayerStatus.ALIVE && <GameOn />) || <GameOver />}
       <Opponents opponents={opponents} />
     </div>
   );

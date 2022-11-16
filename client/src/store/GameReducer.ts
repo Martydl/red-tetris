@@ -7,11 +7,11 @@ import {
   initPiece,
   initQueue,
 } from "../game/Utils";
-import { piecesList } from "../Consts";
+import { piecesList, PlayerStatus } from "../Consts";
 import { Coords, Piece } from "../Types";
 
 export interface GameState {
-  gameOn: boolean;
+  gameOn: PlayerStatus;
   gameBoard: number[][];
   printBoard: number[][];
   currentPiece: Piece;
@@ -27,7 +27,7 @@ export interface GameState {
 }
 
 const initialState: GameState = {
-  gameOn: false,
+  gameOn: PlayerStatus.WAITING,
   gameBoard: initBoard(),
   printBoard: initBoard(),
   currentPiece: initPiece(0),
@@ -45,11 +45,11 @@ const initialState: GameState = {
 const resetGameState = () => initialState;
 
 const setGameOn = (state: GameState) => {
-  state.gameOn = true;
+  state.gameOn = PlayerStatus.ALIVE;
 };
 
 const gameOver = (state: GameState) => {
-  state.gameOn = false;
+  state.gameOn = PlayerStatus.DEAD;
 };
 
 const setGameBoard = (

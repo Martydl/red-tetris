@@ -1,5 +1,4 @@
 import { Button, FormControlLabel, Switch } from "@mui/material";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { roomSlice } from "../store/RoomReducer";
 import { RootReducerState } from "../store/RootReducer";
