@@ -9,6 +9,7 @@ export interface ConnectionState {
   roomName?: string;
   playerName: string;
   roomList: { [key: string]: { playerNb: number; gameOn: boolean } };
+  bestScore: number;
   routingBuffer?: string;
 }
 
@@ -21,6 +22,7 @@ const initialState: ConnectionState = {
   roomName: undefined,
   playerName: "Guest",
   roomList: {},
+  bestScore: 42, // a aller chercher dans les cookies au lancement de l'app et ecrire dans les cookies a la fermeture
 };
 
 export const connectionSlice = createSlice({
@@ -72,6 +74,9 @@ export const connectionSlice = createSlice({
       action: PayloadAction<string | undefined>
     ) => {
       state.routingBuffer = action.payload;
+    },
+    setBestScore: (state: ConnectionState, action: PayloadAction<number>) => {
+      state.bestScore = action.payload;
     },
   },
 });

@@ -36,8 +36,10 @@ function App() {
 
     window.addEventListener("hashchange", handleRoute);
     handleRoute();
+    // prendre cookies
     return () => {
       window.removeEventListener("hashchange", handleRoute);
+      //ecrire cookies
     };
   }, []);
 

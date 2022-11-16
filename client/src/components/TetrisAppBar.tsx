@@ -11,6 +11,9 @@ export default function TetrisAppBar() {
   const playerName = useSelector(
     (state: RootReducerState) => state.connection.playerName
   );
+  const bestScore = useSelector(
+    (state: RootReducerState) => state.connection.bestScore
+  );
 
   const handleLogoClick = () => {
     dispatch(connectionSlice.actions.roomDisconnect());
@@ -36,6 +39,7 @@ export default function TetrisAppBar() {
               Red-Tetris
             </Typography>
             {playerName}
+            {bestScore}
           </Toolbar>
         </AppBar>
       </Box>
