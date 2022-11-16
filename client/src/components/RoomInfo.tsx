@@ -41,8 +41,8 @@ export function RoomInfo() {
 
   return (
     <div className="RoomInfos">
-      <p>
-        Room Name: {roomName}
+      <div className="NameButton">
+        <h1>{roomName}</h1>
         {isLeader && !gameOn && (
           <Button
             style={{ marginLeft: "10px" }}
@@ -53,7 +53,7 @@ export function RoomInfo() {
             Start
           </Button>
         )}
-      </p>
+      </div>
       <FormControlLabel
         style={{ marginLeft: "0" }}
         control={

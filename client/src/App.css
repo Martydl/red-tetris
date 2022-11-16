@@ -92,6 +92,10 @@ body {
   padding: 3%;
 }
 
+.NameButton {
+  display: flex;
+}
+
 .game {
   width: max-content;
   height: 100%;
@@ -250,8 +254,9 @@ div#\31 5 {
 
 .game:focus div#\30,
 .game:focus .block,
-.opponentBoard > .row > div#\30,
-.opponentDead > .row > div#\30 {
+.gameOff div#\30,
+.queueMember div#\30,
+.opponent div#\30 {
   background-color: whitesmoke;
 }
 

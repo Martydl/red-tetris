@@ -42,8 +42,8 @@ class App {
     );
   }
 
-  sendAllEndGame(io: Server, gameID: string) {
-    io.to(gameID).emit(Messages.END_GAME, this.games[gameID].lastWinner);
+  sendAllEndGame(io: Server, gameID: string, lastWinner: string) {
+    io.to(gameID).emit(Messages.END_GAME, lastWinner);
   }
 
   sendBroadcastOpponent(socket: Socket, gameID: string) {

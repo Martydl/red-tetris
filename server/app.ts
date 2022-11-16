@@ -66,9 +66,12 @@ io.on("connection", (socket: Socket) => {
     server.players[socket.id].opponent.setStatus(PlayerStatus.DEAD);
     server.sendBroadcastPlayerGameOver(socket, gameID);
     if (server.games[gameID].isEndGame()) {
-      server.games[gameID].setLastWinner(socket.id);
       server.games[gameID].setGameOn(false);
-      server.sendAllEndGame(io, gameID);
+      server.sendAllEndGame(
+        io,
+        gameID,
+        server.games[gameID].getLastWinner(socket.id)
+      );
       server.games[gameID].resetOpponents();
     }
   });

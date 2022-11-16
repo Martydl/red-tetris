@@ -23,15 +23,16 @@ class Game {
     this.gameOn = value;
   }
 
-  setLastWinner(playerID: string): void {
+  getLastWinner(playerID: string): string {
     switch (this.acceleration) {
       case true:
-        this.lastWinner = playerID;
+        return playerID;
       case false:
         for (let key in this.players) {
           if (this.players[key].opponent.status == PlayerStatus.ALIVE)
-            this.lastWinner = key;
+            return key;
         }
+        return "-";
     }
   }
 

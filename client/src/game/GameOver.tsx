@@ -27,7 +27,7 @@ export default function GameOver() {
           <PrintEndScreen score={score} />
           <PrintBoard
             board={addPieceToBoard(gameBoard, currentPiece)}
-            class="board"
+            class="board gameOff"
           />
         </div>
       </div>

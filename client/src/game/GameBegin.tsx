@@ -14,7 +14,7 @@ export default function gameBegin() {
     <div className="game">
       <div className="gameBoard">
         <PrintBegScreen gameOn={gameOn} />
-        <PrintBoard board={board} class="board" />
+        <PrintBoard board={board} class="board gameOff" />
       </div>
       <div className="gameInfo">
         <PrintEmptyQueue />
