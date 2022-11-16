@@ -45,7 +45,7 @@ export function RoomInfo() {
         <h1>{roomName}</h1>
         {isLeader && !gameOn && (
           <Button
-            style={{ marginLeft: "10px" }}
+            style={{ marginLeft: "10px", height: "10%" }}
             variant="contained"
             onClick={handleStart}
             size="small"
