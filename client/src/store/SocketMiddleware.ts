@@ -109,10 +109,14 @@ const socketMiddleware: Middleware = (store) => {
       connectionSlice.actions.startConnectingToRoom.match(action) &&
       isConnectionEstablished
     ) {
-      socket.emit(Messages.JOIN_ROOM, [
-        action.payload,
-        store.getState().connection.playerName,
-      ]);
+      const roomName = action.payload;
+      const playerName = store.getState().connection.playerName;
+      socket.emit(Messages.JOIN_ROOM, [roomName, playerName]);
+      window.history.replaceState(
+        {},
+        "",
+        "/#" + roomName + "[" + playerName + "]"
+      );
     } else if (
       connectionSlice.actions.startConnectingToRoom.match(action) &&
       !isConnectionEstablished
@@ -169,6 +173,7 @@ const socketMiddleware: Middleware = (store) => {
       connectionSlice.actions.roomDisconnect.match(action) &&
       isConnectionEstablished
     ) {
+      window.history.replaceState({}, "", "/");
       socket.emit(Messages.ROOM_DISCONNECT, store.getState().room.roomName);
       store.dispatch(roomSlice.actions.resetRoomState());
       store.dispatch(gameSlice.actions.resetGameState());
