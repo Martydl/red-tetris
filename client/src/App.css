@@ -94,6 +94,7 @@ body {
 
 .NameButton {
   display: flex;
+  align-items: center;
 }
 
 .game {
