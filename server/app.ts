@@ -66,8 +66,10 @@ io.on("connection", (socket: Socket) => {
     server.players[socket.id].opponent.setStatus(PlayerStatus.DEAD);
     server.sendBroadcastPlayerGameOver(socket, gameID);
     if (server.games[gameID].isEndGame()) {
+      server.games[gameID].setGameOver();
       server.sendAllEndGame(io, gameID);
-      server.games[gameID].setPlayersAlive();
+      server.games[gameID].resetPlayers();
+      // reset player's shadows
     }
   });
 

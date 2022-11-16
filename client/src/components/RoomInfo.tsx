@@ -1,13 +1,8 @@
 import { Button, FormControlLabel, Switch } from "@mui/material";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { roomSlice } from "../store/RoomReducer";
 import { RootReducerState } from "../store/RootReducer";
-
-function countOpponents(roomOpponents: any): number {
-  let nbOpponent: number = 0;
-
-  return nbOpponent;
-}
 
 export function RoomInfo() {
   const dispatch = useDispatch();
@@ -62,7 +57,7 @@ export function RoomInfo() {
           <Switch
             color="primary"
             checked={acceleration}
-            disabled={!isLeader || !multiplayer}
+            disabled={!isLeader || !multiplayer || gameOn}
             onChange={handleAccelerationSwitch}
           />
         }

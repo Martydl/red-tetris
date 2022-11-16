@@ -22,6 +22,10 @@ class Game {
     this.gameOn = true;
   }
 
+  setGameOver(): void {
+    this.gameOn = false;
+  }
+
   isEndGame(): boolean {
     let playerAlive: number = 0;
     for (let key in this.players) {
@@ -70,9 +74,11 @@ class Game {
     return opponents;
   }
 
-  setPlayersAlive(): void {
-    for (let key in this.players)
+  resetPlayers(): void {
+    for (let key in this.players) {
       this.players[key].opponent.setStatus(PlayerStatus.ALIVE);
+      this.players[key].opponent.newShadow(new Array(10).fill(0));
+    }
   }
 }
 

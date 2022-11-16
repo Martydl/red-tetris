@@ -51,11 +51,6 @@ const socketMiddleware: Middleware = (store) => {
           );
         }
       );
-
-      socket.on(Messages.LEADER_ID, (id: string) => {
-        store.dispatch(roomSlice.actions.setLeaderId(id));
-      });
-
       socket.on(Messages.SEND_OPPONENT, (msg: [string, Opponent]) => {
         const [id, opponent] = msg;
         store.dispatch(roomSlice.actions.addOpponent([id, opponent]));

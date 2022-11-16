@@ -32,7 +32,7 @@ const initialState: GameState = {
   printBoard: initBoard(),
   currentPiece: initPiece(0),
   queue: [],
-  shadow: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  shadow: new Array(10).fill(0),
   completedLine: 0,
   level: 0,
   score: 0,

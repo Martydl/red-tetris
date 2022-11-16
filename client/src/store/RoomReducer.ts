@@ -81,7 +81,7 @@ export const roomSlice = createSlice({
     resetOpponents: (state: RoomState) => {
       for (let id in state.opponents) {
         state.opponents[id].status = PlayerStatus.ALIVE;
-        state.opponents[id].shadow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        state.opponents[id].shadow = new Array(10).fill(0);
       }
     },
     delOpponent: (state: RoomState, action: PayloadAction<string>) => {
