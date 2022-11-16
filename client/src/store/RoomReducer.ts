@@ -95,7 +95,7 @@ export const roomSlice = createSlice({
       state.acceleration = action.payload;
     },
     setWinner: (state: RoomState, action: PayloadAction<string>) => {
-      state.winner = state.opponents[action.payload].playerName;
+      state.winner = action.payload;
     },
   },
 });

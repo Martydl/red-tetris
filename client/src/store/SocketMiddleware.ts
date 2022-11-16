@@ -75,7 +75,10 @@ const socketMiddleware: Middleware = (store) => {
         store.dispatch(gameSlice.actions.resetGameState());
         store.dispatch(roomSlice.actions.endGame());
         store.dispatch(roomSlice.actions.resetOpponents());
-        store.dispatch(roomSlice.actions.setWinner(winnerID));
+        const winner = store.getState().room.opponents[winnerID]
+          ? store.getState().room.opponents[winnerID].playerName
+          : store.getState().connection.playerName;
+        store.dispatch(roomSlice.actions.setWinner(winner));
       });
 
       socket.on(Messages.GET_PIECE, (pieceName: number) => {
