@@ -21,13 +21,12 @@ function App() {
       [roomName, playerName] = hash.match(/[A-Za-z0-9]+/g) as string[];
     } else if (/^#[A-Za-z0-9]+$/.test(hash)) {
       [roomName] = hash.match(/[A-Za-z0-9]+/) as string[];
-    } else console.log("Echec");
-    console.log(roomName, playerName);
+    }
 
     if (roomName) {
+      dispatch(connectionSlice.actions.roomDisconnect());
       if (playerName)
         dispatch(connectionSlice.actions.setPlayerName(playerName));
-      if (isConnectedToRoom) dispatch(connectionSlice.actions.roomDisconnect());
       dispatch(connectionSlice.actions.startConnectingToRoom(roomName));
     }
   }
