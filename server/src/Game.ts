@@ -6,6 +6,7 @@ class Game {
   seed?: string;
   gameID: string;
   leaderID: string;
+  lastWinner?: string;
   gameOn: boolean;
   acceleration: boolean;
   players: { [key: string]: Player };
@@ -18,12 +19,14 @@ class Game {
     this.acceleration = true;
   }
 
-  setGameStart(): void {
-    this.gameOn = true;
+  setGameOn(value: boolean): void {
+    this.gameOn = value;
   }
 
-  setGameOver(): void {
-    this.gameOn = false;
+  setLastWinner(playerID: string): void {
+    this.lastWinner = this.acceleration
+      ? playerID
+      : Object.keys(this.players)[0];
   }
 
   isEndGame(): boolean {

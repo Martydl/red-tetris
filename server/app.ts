@@ -66,15 +66,15 @@ io.on("connection", (socket: Socket) => {
     server.players[socket.id].opponent.setStatus(PlayerStatus.DEAD);
     server.sendBroadcastPlayerGameOver(socket, gameID);
     if (server.games[gameID].isEndGame()) {
-      server.games[gameID].setGameOver();
+      server.games[gameID].setLastWinner(socket.id);
+      server.games[gameID].setGameOn(false);
       server.sendAllEndGame(io, gameID);
       server.games[gameID].resetOpponents();
-      // reset player's shadows
     }
   });
 
   socket.on(Messages.START_GAME, (gameID: string) => {
-    server.games[gameID].setGameStart();
+    server.games[gameID].setGameOn(true);
     server.games[gameID].setgiveGeneratorToPlayers();
     server.sendAllStartGame(io, gameID);
     server.sendAllRoomsInfos(io);

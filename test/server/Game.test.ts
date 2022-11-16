@@ -18,8 +18,8 @@ describe("Game Class", () => {
     expect(game.acceleration).toEqual(true);
   });
 
-  it("setGameStart", () => {
-    game.setGameStart();
+  it("setGameOn", () => {
+    game.setGameOn(true);
     expect(game.gameOn).toEqual(true);
   });
 
@@ -35,6 +35,16 @@ describe("Game Class", () => {
     expect(Object.keys(game.players).length).toEqual(2);
     expect(Object.keys(game.players)).toEqual(["tester1", "tester2"]);
     expect(game.players["tester2"]).toEqual(player2);
+  });
+
+  it("setLastWinner", () => {
+    expect(game.lastWinner).toEqual(undefined);
+    game.setLastWinner("tester2");
+    expect(game.lastWinner).toEqual("tester2");
+    game.acceleration = false;
+    game.setLastWinner("tester2");
+    expect(game.lastWinner).toEqual("tester1");
+    game.acceleration = true;
   });
 
   it("setNewLeader", () => {

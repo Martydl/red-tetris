@@ -1,12 +1,13 @@
 import { expect, it, describe } from "vitest";
 import Opponent from "../../server/src/Opponent";
+import PlayerStatus from "../../server/src/Consts";
 
 describe("Opponent Class", () => {
-  let opponent = new Opponent(true, new Array(10).fill(0));
+  let opponent = new Opponent(PlayerStatus.ALIVE, new Array(10).fill(0));
 
   it("constructor", () => {
     expect(opponent.playerName).toEqual("guest");
-    expect(opponent.gameOver).toEqual(false);
+    expect(opponent.status).toEqual(PlayerStatus.ALIVE);
     expect(opponent.shadow).toEqual(new Array(10).fill(0));
   });
 
@@ -21,8 +22,8 @@ describe("Opponent Class", () => {
     expect(opponent.shadow).toEqual(shadowTest);
   });
 
-  it("dead", () => {
-    opponent.dead();
-    expect(opponent.gameOver).toEqual(true);
+  it("setStatus", () => {
+    opponent.setStatus(PlayerStatus.DEAD);
+    expect(opponent.status).toEqual(PlayerStatus.DEAD);
   });
 });
