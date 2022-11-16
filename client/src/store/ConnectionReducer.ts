@@ -75,7 +75,10 @@ export const connectionSlice = createSlice({
     ) => {
       state.routingBuffer = action.payload;
     },
-    setBestScore: (
+    setBestScore: (state: ConnectionState, action: PayloadAction<number>) => {
+      state.bestScore = action.payload;
+    },
+    computeBestScore: (
       state: ConnectionState,
       action: PayloadAction<[number, boolean]>
     ) => {

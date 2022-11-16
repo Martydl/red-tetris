@@ -32,7 +32,7 @@ export function useBlockLines(
       newBoard.push(new Array(10).fill(-1));
       if (JSON.stringify(removed) !== "[0,0,0,0,0,0,0,0,0,0]") {
         dispatch(
-          connectionSlice.actions.setBestScore([score, accelerationBool])
+          connectionSlice.actions.computeBestScore([score, accelerationBool])
         );
         dispatch(gameSlice.actions.gameOver());
       } else {
@@ -46,7 +46,10 @@ export function useBlockLines(
         ) {
           if (piece.pos.y === 0) {
             dispatch(
-              connectionSlice.actions.setBestScore([score, accelerationBool])
+              connectionSlice.actions.computeBestScore([
+                score,
+                accelerationBool,
+              ])
             );
             dispatch(gameSlice.actions.gameOver());
           } else {

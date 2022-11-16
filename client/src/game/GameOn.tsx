@@ -64,7 +64,9 @@ export default function GameOn() {
       );
       dispatch(gameSlice.actions.setCurrentPiece(queue[0]));
     } else {
-      dispatch(connectionSlice.actions.setBestScore([score, accelerationBool]));
+      dispatch(
+        connectionSlice.actions.computeBestScore([score, accelerationBool])
+      );
       dispatch(gameSlice.actions.gameOver());
       console.log("Game Over");
     }
