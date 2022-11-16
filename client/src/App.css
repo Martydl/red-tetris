@@ -213,35 +213,35 @@ div#\34 {
   background-color: #fbd206;
 }
 div#\35 {
-  background-color: #4dc656;
+  background-color: #6bb944;
 }
 div#\36 {
   background-color: #cc89d6;
 }
 div#\37 {
-  background-color: #fd7a8c;
+  background-color: #ad0000;
 }
 
 div#\38 {
-  background-color: #c2f0fc;
+  background-color: #afe9f980;
 }
 div#\39 {
-  background-color: #c9e2ff;
+  background-color: #8cc0fc80;
 }
 div#\31 0 {
-  background-color: #f7cb92;
+  background-color: #ff971a80;
 }
 div#\31 1 {
-  background-color: #fff1ab;
+  background-color: #fbd20680;
 }
 div#\31 2 {
-  background-color: #b7ebbb;
+  background-color: #6bb94480;
 }
 div#\31 3 {
-  background-color: #e7c0ed;
+  background-color: #cc89d680;
 }
 div#\31 4 {
-  background-color: #fabec6;
+  background-color: #ad000080;
 }
 
 div#\31 5 {
@@ -314,7 +314,7 @@ div#\31 5 {
 }
 
 .opponentDead > .row > div#\31 5 {
-  background-color: pink;
+  background-color: #ad000040;
 }
 
 .opponentName {

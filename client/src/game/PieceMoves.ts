@@ -22,7 +22,6 @@ export function moveSecond(
     pos.y++;
     return pos;
   } else {
-    console.log("Ah ok, t'es comme ca toi, petit chenapan");
     return undefined;
   }
 }
@@ -41,7 +40,6 @@ export function moveLeft(matrix: number[][], piece: Piece): Coords | undefined {
     pos.x--;
     return pos;
   } else {
-    console.log("Ah ok, t'es comme ca toi, petit chenapan");
     return undefined;
   }
 }
@@ -63,7 +61,6 @@ export function moveRight(
     pos.x++;
     return pos;
   } else {
-    console.log("Ah ok, t'es comme ca toi, petit chenapan");
     return undefined;
   }
 }
@@ -81,7 +78,6 @@ export function moveUp(matrix: number[][], piece: Piece): number | undefined {
   ) {
     return nextRotation;
   } else {
-    console.log("Ah ok, t'es comme ca toi, petit chenapan");
     return undefined;
   }
 }

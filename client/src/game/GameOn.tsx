@@ -122,8 +122,6 @@ export default function GameOn() {
       tmpPiece
         ? dispatch(gameSlice.actions.setCurrentPieceCoords(tmpPiece))
         : updateGameBoard(gameBoard, currentPiece);
-    } else {
-      console.log("T'as deja perdu ?!", gameOn);
     }
   }, currentDelay);
 
