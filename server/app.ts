@@ -90,6 +90,7 @@ io.on("connection", (socket: Socket) => {
 
   socket.on(Messages.ROOM_DISCONNECT, (gameID: string) => {
     server.RoomDisconnect(io, socket, gameID);
+    server.players[socket.id].room = Messages.WAITING_ROOM;
   });
 
   socket.on("disconnect", (_reason: any) => {

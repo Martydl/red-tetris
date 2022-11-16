@@ -103,6 +103,7 @@ class App {
 
   RoomDisconnect(io: Server, socket: Socket, gameID: string) {
     if (
+      gameID != "undef" &&
       gameID != Messages.WAITING_ROOM &&
       Object.keys(this.games[gameID].players).length > 1
     ) {
