@@ -40,6 +40,16 @@ body {
   width: 50px;
 }
 
+.PlayerBestScore {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.PlayerBestScore p {
+  margin: 0;
+}
+
 .LobbyBody {
   width: 98%;
   height: 93%;

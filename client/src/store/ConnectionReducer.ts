@@ -83,8 +83,10 @@ export const connectionSlice = createSlice({
       action: PayloadAction<[number, boolean]>
     ) => {
       const [newScore, acceleration] = action.payload;
-      if (acceleration && newScore > state.bestScore)
+      if (acceleration && newScore > state.bestScore) {
         state.bestScore = newScore;
+        localStorage.setItem("bestScore", String(newScore));
+      }
     },
   },
 });

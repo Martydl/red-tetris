@@ -38,8 +38,10 @@ export default function TetrisAppBar() {
             >
               Red-Tetris
             </Typography>
-            {playerName}
-            {bestScore}
+            <div className="PlayerBestScore">
+              <p>Player Name: {playerName}</p>
+              <p>Local Best: {bestScore}</p>
+            </div>
           </Toolbar>
         </AppBar>
       </Box>

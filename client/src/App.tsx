@@ -9,6 +9,9 @@ import AppBar from "./components/TetrisAppBar";
 
 function App() {
   const dispatch = useDispatch();
+  const bestScore = useSelector(
+    (state: RootReducerState) => state.connection.bestScore
+  );
   const isConnectedToRoom = useSelector(
     (state: RootReducerState) => state.connection.isConnectedToRoom
   );
@@ -36,10 +39,13 @@ function App() {
 
     window.addEventListener("hashchange", handleRoute);
     handleRoute();
-    // prendre cookies
+    dispatch(
+      connectionSlice.actions.setBestScore(
+        Number(localStorage.getItem("bestScore"))
+      )
+    );
     return () => {
       window.removeEventListener("hashchange", handleRoute);
-      //ecrire cookies
     };
   }, []);
 
