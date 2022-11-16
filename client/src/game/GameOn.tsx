@@ -23,6 +23,7 @@ import { PrintQueue } from "../components/PrintQueue";
 import { PrintScore } from "../components/PrintScore";
 import { Piece } from "../Types";
 import { piecesList } from "../Consts";
+import { connectionSlice } from "../store/ConnectionReducer";
 
 export default function GameOn() {
   const dispatch = useDispatch();
@@ -45,6 +46,9 @@ export default function GameOn() {
   const defaultDelay = useSelector(
     (state: RootReducerState) => state.game.defaultDelay
   );
+  const accelerationBool = useSelector(
+    (state: RootReducerState) => state.game.acceleration != 0
+  );
 
   function updateGameBoard(gameBoard: number[][], piece: Piece): void {
     let completedLines = 0;
@@ -60,6 +64,7 @@ export default function GameOn() {
       );
       dispatch(gameSlice.actions.setCurrentPiece(queue[0]));
     } else {
+      dispatch(connectionSlice.actions.setBestScore([score, accelerationBool]));
       dispatch(gameSlice.actions.gameOver());
       console.log("Game Over");
     }

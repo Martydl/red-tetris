@@ -5,6 +5,7 @@ import { updatePrintBoard, checkCollisions, genShadow } from "../game/Utils";
 import { Piece } from "../Types";
 import { gameSlice } from "../store/GameReducer";
 import { RootReducerState } from "../store/RootReducer";
+import { connectionSlice } from "../store/ConnectionReducer";
 
 export function useBlockLines(
   updateGameBoardCbk: (gameBoard: number[][], piece: Piece) => void
@@ -13,14 +14,15 @@ export function useBlockLines(
   const gameBoard = useSelector(
     (state: RootReducerState) => state.game.gameBoard
   );
-  const printBoard = useSelector(
-    (state: RootReducerState) => state.game.printBoard
-  );
   const piece = useSelector(
     (state: RootReducerState) => state.game.currentPiece
   );
   const linesToBlock = useSelector(
     (state: RootReducerState) => state.game.linesToBlock
+  );
+  const score = useSelector((state: RootReducerState) => state.game.score);
+  const accelerationBool = useSelector(
+    (state: RootReducerState) => state.game.acceleration != 0
   );
 
   useEffect(() => {
@@ -29,6 +31,9 @@ export function useBlockLines(
       const removed = newBoard.shift();
       newBoard.push(new Array(10).fill(-1));
       if (JSON.stringify(removed) !== "[0,0,0,0,0,0,0,0,0,0]") {
+        dispatch(
+          connectionSlice.actions.setBestScore([score, accelerationBool])
+        );
         dispatch(gameSlice.actions.gameOver());
       } else {
         if (
@@ -39,8 +44,12 @@ export function useBlockLines(
             piece.pos.y
           )
         ) {
-          if (piece.pos.y === 0) dispatch(gameSlice.actions.gameOver());
-          else {
+          if (piece.pos.y === 0) {
+            dispatch(
+              connectionSlice.actions.setBestScore([score, accelerationBool])
+            );
+            dispatch(gameSlice.actions.gameOver());
+          } else {
             updateGameBoardCbk(newBoard, {
               ...piece,
               pos: { x: piece.pos.x, y: piece.pos.y - 1 },
