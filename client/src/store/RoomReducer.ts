@@ -15,6 +15,7 @@ export interface RoomState {
   acceleration: boolean;
   opponents: { [id: string]: Opponent };
   winner: string;
+  lastScore?: number;
 }
 
 const initialState: RoomState = {
@@ -98,6 +99,12 @@ export const roomSlice = createSlice({
     },
     setWinner: (state: RoomState, action: PayloadAction<string>) => {
       state.winner = action.payload;
+    },
+    setLastScore: (
+      state: RoomState,
+      action: PayloadAction<number | undefined>
+    ) => {
+      state.lastScore = action.payload;
     },
   },
 });

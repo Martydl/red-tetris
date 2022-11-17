@@ -72,6 +72,7 @@ const socketMiddleware: Middleware = (store) => {
         store.dispatch(
           gameSlice.actions.setAcceleration(store.getState().room.acceleration)
         );
+        store.dispatch(roomSlice.actions.setLastScore(undefined));
       });
 
       socket.on(Messages.END_GAME, (winnerID: string) => {
@@ -146,6 +147,10 @@ const socketMiddleware: Middleware = (store) => {
     }
 
     if (gameSlice.actions.gameOver.match(action) && isConnectionEstablished) {
+      if (store.getState().room.acceleration)
+        store.dispatch(
+          roomSlice.actions.setLastScore(store.getState().game.score)
+        );
       socket.emit(
         Messages.PLAYER_GAME_OVER,
         store.getState().connection.roomName

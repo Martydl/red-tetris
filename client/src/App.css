@@ -119,8 +119,7 @@ body {
   outline: 0rem;
 }
 
-.gameOver,
-.gameBegin {
+.waitScreen {
   position: absolute;
   width: 24.625rem;
   height: 49rem;
@@ -131,8 +130,7 @@ body {
   backdrop-filter: blur(0.063rem);
 }
 
-.gameOver > p,
-.gameBegin > p {
+.waitScreen > p {
   background-color: white;
   border: solid 0.125rem;
   border-radius: 5%;

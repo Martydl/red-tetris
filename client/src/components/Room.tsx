@@ -1,17 +1,13 @@
 import { useSelector } from "react-redux";
 import { RootReducerState } from "../store/RootReducer";
 import GameOn from "../game/GameOn";
-import GameOver from "../game/GameOver";
-import GameBegin from "../game/GameBegin";
+import GameWaiting from "../game/GameWaiting";
 import { Opponents } from "./Opponents";
 import { RoomInfo } from "./RoomInfo";
 import { PrintCommand } from "./PrintCommand";
 import { PlayerStatus } from "../Consts";
 
 export function Room() {
-  const roomGameOn = useSelector(
-    (state: RootReducerState) => state.room.gameOn
-  );
   const ownGameOn = useSelector((state: RootReducerState) => state.game.gameOn);
   const opponents = useSelector(
     (state: RootReducerState) => state.room.opponents
@@ -23,8 +19,7 @@ export function Room() {
         <RoomInfo />
         <PrintCommand />
       </div>
-      {(ownGameOn === PlayerStatus.WAITING && <GameBegin />) ||
-        (ownGameOn === PlayerStatus.ALIVE && <GameOn />) || <GameOver />}
+      {(ownGameOn !== PlayerStatus.ALIVE && <GameWaiting />) || <GameOn />}
       <Opponents opponents={opponents} />
     </div>
   );
