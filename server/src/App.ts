@@ -103,7 +103,7 @@ class App {
     ]);
   }
 
-  RoomDisconnect(io: Server, socket: Socket, gameID: string) {
+  roomDisconnect(io: Server, socket: Socket, gameID: string) {
     if (
       gameID != "undef" &&
       gameID != Messages.WAITING_ROOM &&
@@ -113,8 +113,21 @@ class App {
       delete this.games[gameID].players[socket.id];
       this.games[gameID].setNewLeader();
       this.sendBroadcastDelOpponent(socket, gameID);
+      if (!this.games[gameID].acceleration && this.games[gameID].isEndGame()) {
+        this.setEndGame(io, socket, gameID);
+      }
     } else if (gameID != Messages.WAITING_ROOM) delete this.games[gameID];
     this.sendAllRoomsInfos(io);
+  }
+
+  setEndGame(io: Server, socket: Socket, gameID: string) {
+    this.games[gameID].setGameOn(false);
+    this.sendAllEndGame(
+      io,
+      gameID,
+      this.games[gameID].getLastWinner(socket.id)
+    );
+    this.games[gameID].resetOpponents();
   }
 }
 
