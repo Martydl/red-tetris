@@ -1,4 +1,5 @@
 import { PlayerStatus } from "../../Types";
+import React from "react";
 
 export default function PrintWaitScreen(props: {
   roomGameOn: boolean;
@@ -7,7 +8,7 @@ export default function PrintWaitScreen(props: {
 }): JSX.Element {
   return (
     <div className="waitScreen">
-      <p>
+      <div>
         {(props.lastScore !== undefined && (
           <p>
             Game Over
@@ -20,7 +21,7 @@ export default function PrintWaitScreen(props: {
         {(props.roomGameOn && (
           <p>This game is in progress, please wait for it to end...</p>
         )) || <p>Waiting for next game to begin...</p>}
-      </p>
+      </div>
     </div>
   );
 }

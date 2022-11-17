@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function PrintScore(props: {
   score: number;
   level: number;

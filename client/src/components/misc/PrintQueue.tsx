@@ -1,5 +1,6 @@
 import { Piece } from "../../Types";
 import { emptyPiece, piecesList } from "../../Consts";
+import React from "react";
 
 import PrintBoard from "./PrintBoard";
 

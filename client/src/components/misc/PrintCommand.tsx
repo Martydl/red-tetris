@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function PrintCommand(): JSX.Element {
   return (
     <div className="Instructions">
