@@ -36,8 +36,10 @@ const socketMiddleware: Middleware = (store) => {
       // Events received from the server
       socket.on(
         Messages.ROOM_INFO,
-        (msg: [string, string, { [id: string]: Opponent }, boolean]) => {
-          let [roomName, leaderId, opponents, gameOn] = msg;
+        (
+          msg: [string, string, { [id: string]: Opponent }, boolean, boolean]
+        ) => {
+          let [roomName, leaderId, opponents, gameOn, acceleration] = msg;
           store.dispatch(
             connectionSlice.actions.roomConnectionEstablished(roomName)
           );
@@ -47,6 +49,7 @@ const socketMiddleware: Middleware = (store) => {
               leaderId,
               opponents,
               gameOn,
+              acceleration,
             })
           );
         }

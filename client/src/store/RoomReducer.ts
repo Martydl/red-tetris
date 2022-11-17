@@ -39,12 +39,14 @@ export const roomSlice = createSlice({
         leaderId: string;
         opponents: { [id: string]: Opponent };
         gameOn: boolean;
+        acceleration: boolean;
       }>
     ) => {
       state.roomName = action.payload.roomName;
       state.leaderId = action.payload.leaderId;
       state.opponents = action.payload.opponents;
       state.gameOn = action.payload.gameOn;
+      state.acceleration = action.payload.acceleration;
     },
     lauchGame: (state: RoomState) => {
       state.startingGame = true;

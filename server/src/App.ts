@@ -100,6 +100,7 @@ class App {
       this.games[gameID].leaderID,
       this.games[gameID].getOpponents(socket.id),
       this.games[gameID].gameOn,
+      this.games[gameID].acceleration,
     ]);
   }
 
