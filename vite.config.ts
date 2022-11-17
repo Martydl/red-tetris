@@ -9,7 +9,7 @@ export default defineConfig({
     environment: "jsdom",
     coverage: {
       all: true,
-      exclude: ["**/assets/**"],
+      exclude: ["**/assets/**", "**/test/**"],
       reporter: ["text", "html"],
     },
   },
