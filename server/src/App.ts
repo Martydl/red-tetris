@@ -109,19 +109,21 @@ class App {
   }
 
   roomDisconnect(io: Server, socket: Socket, gameID: string) {
-    const playerNumber = Object.keys(this.games[gameID].players).length;
     if (
       gameID != "undef" &&
       gameID != Messages.WAITING_ROOM &&
       this.games[gameID] &&
-      playerNumber > 1
+      Object.keys(this.games[gameID].players).length > 1
     ) {
       delete this.games[gameID].players[socket.id];
       this.games[gameID].setNewLeader();
       this.sendBroadcastDelOpponent(socket, gameID);
       if (!this.games[gameID].acceleration && this.games[gameID].isEndGame())
         this.setEndGame(io, socket, gameID);
-      else if (!this.games[gameID].acceleration && playerNumber == 1)
+      else if (
+        !this.games[gameID].acceleration &&
+        Object.keys(this.games[gameID].players).length == 1
+      )
         this.sendBroadcastToggleAcceleration(socket, gameID, true);
     } else if (gameID != Messages.WAITING_ROOM) delete this.games[gameID];
     this.sendAllRoomsInfos(io);

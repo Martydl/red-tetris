@@ -36,15 +36,17 @@ class Game {
   }
 
   isEndGame(): boolean {
-    let playerAlive: number = 0;
-    for (let key in this.players) {
-      if (this.players[key].opponent.status == PlayerStatus.ALIVE)
-        playerAlive++;
-    }
-    return (
-      (this.acceleration && playerAlive < 1) ||
-      (!this.acceleration && playerAlive < 2)
-    );
+    if (this.gameOn) {
+      let playerAlive: number = 0;
+      for (let key in this.players) {
+        if (this.players[key].opponent.status == PlayerStatus.ALIVE)
+          playerAlive++;
+      }
+      return (
+        (this.acceleration && playerAlive < 1) ||
+        (!this.acceleration && playerAlive < 2)
+      );
+    } else return false;
   }
 
   addPlayer(player: Player): void {
