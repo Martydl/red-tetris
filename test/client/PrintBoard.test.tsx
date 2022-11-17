@@ -11,19 +11,20 @@ describe("PrintBoard Components", () => {
     new Array(5).fill(0),
     new Array(5).fill(0),
   ];
-  test("should show title all the time", () => {
-    const { container } = render(
-      <PrintBoard board={testNumberArray} class="board" />
-    );
-    const rows = container.getElementsByClassName("row");
-    const blocks = container.getElementsByClassName("block");
+  const { container } = render(
+    <PrintBoard board={testNumberArray} class="board" />
+  );
 
-    expect(rows.length).toBe(5);
-    for (let key in rows) {
-      console.log("ICI key: ", key);
-      console.log("ICI row: ", rows[key]);
-      // expect(.getElementsByClassName("block").length).toBe(5);
-    }
+  test("PrintBoard Length", () => {
+    const blocks = container.getElementsByClassName("block");
     expect(blocks.length).toBe(25);
+  });
+
+  test("Rows Length", () => {
+    const rows = container.getElementsByClassName("row");
+    expect(rows.length).toBe(5);
+    for (let i = 0; i < 5; i++) {
+      expect(rows[i].getElementsByClassName("block").length).toBe(5);
+    }
   });
 });
