@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { render } from "@testing-library/react";
-import PrintBoard from "../../client/src/components/misc/PrintBoard";
+import PrintBoard from "../../../client/src/components/misc/PrintBoard";
 import React from "react";
 
 describe("PrintBoard Components", () => {
