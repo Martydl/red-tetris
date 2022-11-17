@@ -27,6 +27,9 @@ describe("Game Class", () => {
     expect(game.isEndGame()).toEqual(false);
     game.acceleration = false;
     expect(game.isEndGame()).toEqual(true);
+    game.gameOn = false;
+    expect(game.isEndGame()).toEqual(false);
+    game.gameOn = true;
     game.acceleration = true;
   });
 
@@ -37,13 +40,15 @@ describe("Game Class", () => {
     expect(game.players["tester2"]).toEqual(player2);
   });
 
-  it("setLastWinner", () => {
-    expect(game.lastWinner).toEqual(undefined);
-    game.setLastWinner("tester2");
-    expect(game.lastWinner).toEqual("tester2");
+  it("getLastWinner", () => {
+    expect(game.getLastWinner("tester1")).toEqual("tester1");
     game.acceleration = false;
-    game.setLastWinner("tester2");
-    expect(game.lastWinner).toEqual("tester1");
+    expect(game.getLastWinner("tester2")).toEqual("tester1");
+    game.players["tester1"].opponent.setStatus(PlayerStatus.DEAD);
+    game.players["tester2"].opponent.setStatus(PlayerStatus.DEAD);
+    expect(game.getLastWinner("tester2")).toEqual("-");
+    game.players["tester1"].opponent.setStatus(PlayerStatus.ALIVE);
+    game.players["tester2"].opponent.setStatus(PlayerStatus.ALIVE);
     game.acceleration = true;
   });
 
@@ -76,7 +81,7 @@ describe("Game Class", () => {
 
   it("setgetAcceleration", () => {
     const old_acceleration = game.acceleration;
-    const return_test = game.setgetAcceleration();
+    const return_test = game.setgetAcceleration(!game.acceleration);
     expect(game.acceleration).not.toEqual(old_acceleration);
     expect(return_test).toEqual(game.acceleration);
   });
@@ -86,7 +91,7 @@ describe("Game Class", () => {
     expect(game.getOpponents(player1.id)).toEqual(test);
   });
 
-  it("setPlayersAlive", () => {
+  it("setStatus", () => {
     const emptyShadow = new Array(10).fill(0);
     player1.opponent.setStatus(PlayerStatus.DEAD);
     player2.opponent.setStatus(PlayerStatus.DEAD);
