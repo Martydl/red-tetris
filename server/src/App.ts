@@ -118,8 +118,7 @@ class App {
       delete this.games[gameID].players[socket.id];
       this.games[gameID].setNewLeader();
       this.sendBroadcastDelOpponent(socket, gameID);
-      if (!this.games[gameID].acceleration && this.games[gameID].isEndGame())
-        this.setEndGame(io, socket, gameID);
+      if (this.games[gameID].isEndGame()) this.setEndGame(io, socket, gameID);
       else if (
         !this.games[gameID].acceleration &&
         Object.keys(this.games[gameID].players).length == 1
