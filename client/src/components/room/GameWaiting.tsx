@@ -1,26 +1,29 @@
-import { PrintBoard } from "../components/PrintBoard";
-import { PrintScore } from "../components/PrintScore";
-import { PrintEmptyQueue, PrintQueue } from "../components/PrintQueue";
 import { useSelector } from "react-redux";
-import { RootReducerState } from "../store/RootReducer";
-import { PrintWaitScreen } from "../components/PrintWaitScreen";
-import { PlayerStatus } from "../Consts";
 
-export default function gameWaiting() {
+import { PlayerStatus } from "../../Types";
+
+import { RootReducerState } from "../../store/RootReducer";
+
+import PrintBoard from "../misc/PrintBoard";
+import PrintQueue, { PrintEmptyQueue } from "../misc/PrintQueue";
+import PrintScore from "../misc/PrintScore";
+import PrintWaitScreen from "../misc/PrintWaitScreen";
+
+export default function gameWaiting(): JSX.Element {
   const board = useSelector((state: RootReducerState) => state.game.gameBoard);
   const roomGameOn = useSelector(
     (state: RootReducerState) => state.room.gameOn
   );
+  const playerGameOn = useSelector(
+    (state: RootReducerState) => state.game.gameOn
+  );
+  const queue = useSelector((state: RootReducerState) => state.game.queue);
   const acceleration = useSelector(
     (state: RootReducerState) => state.room.acceleration
   );
   const lastScore = useSelector(
     (state: RootReducerState) => state.room.lastScore
   );
-  const playerGameOn = useSelector(
-    (state: RootReducerState) => state.game.gameOn
-  );
-  const queue = useSelector((state: RootReducerState) => state.game.queue);
 
   return (
     <div className="game">

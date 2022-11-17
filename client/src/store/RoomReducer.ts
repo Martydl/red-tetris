@@ -1,11 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PlayerStatus } from "../Consts";
 
-export interface Opponent {
-  playerName: string;
-  shadow: number[];
-  status: PlayerStatus;
-}
+import { PlayerStatus, Opponent } from "../Types";
 
 export interface RoomState {
   roomName: string;

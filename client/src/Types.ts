@@ -1,8 +1,9 @@
 export type PieceGrid = number[][];
 
-export interface Position {
-  x: number;
-  y: number;
+export enum PlayerStatus {
+  WAITING = -1,
+  DEAD,
+  ALIVE,
 }
 
 export interface Coords {
@@ -15,3 +16,15 @@ export interface Piece {
   rotation: number;
   pos: Coords;
 }
+
+export interface Opponent {
+  playerName: string;
+  shadow: number[];
+  status: PlayerStatus;
+}
+
+export type Room = {
+  name: string;
+  nbPlayers: number;
+  started: boolean;
+};

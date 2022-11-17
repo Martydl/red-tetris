@@ -1,7 +1,7 @@
-import { PlayerStatus } from "../Consts";
-import { genFullShadow } from "../game/Utils";
-import { Opponent } from "../store/RoomReducer";
-import { PrintBoard } from "./PrintBoard";
+import { PlayerStatus, Opponent } from "../../Types";
+import { genFullShadow } from "../../utils/Shadow";
+
+import PrintBoard from "../misc/PrintBoard";
 
 function PrintOpponent(props: {
   opponent: Opponent;
@@ -23,11 +23,11 @@ function PrintOpponent(props: {
   );
 }
 
-export function Opponents(props: {
+export default function Opponents(props: {
   opponents: {
     [id: string]: Opponent;
   };
-}) {
+}): JSX.Element {
   let ops: Opponent[] = [];
 
   for (let key in props.opponents) {

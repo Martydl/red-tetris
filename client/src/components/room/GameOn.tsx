@@ -1,33 +1,40 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { useInterval } from "usehooks-ts";
-import { useBlockLines } from "../hooks/useBlockLines";
-import { RootReducerState } from "../store/RootReducer";
-import { gameSlice } from "../store/GameReducer";
+import useBlockLines from "../../hooks/useBlockLines";
+
+import { Piece } from "../../Types";
+import { piecesList } from "../../Consts";
+
+import { RootReducerState } from "../../store/RootReducer";
+import { gameSlice } from "../../store/GameReducer";
+import { connectionSlice } from "../../store/ConnectionReducer";
+
+import PrintBoard from "../misc/PrintBoard";
+import PrintQueue from "../misc/PrintQueue";
+import PrintScore from "../misc/PrintScore";
+
+import {
+  addPieceToBoard,
+  checkCollisions,
+  checkGameBoard,
+  updatePrintBoard,
+} from "../../utils/Board";
 import {
   moveBottom,
   moveLeft,
   moveRight,
   moveSecond,
   moveUp,
-} from "./PieceMoves";
-import {
-  addPieceToBoard,
-  checkGameBoard,
-  genShadow,
-  updatePrintBoard,
-  checkCollisions,
-} from "./Utils";
-import { PrintBoard } from "../components/PrintBoard";
-import { PrintQueue } from "../components/PrintQueue";
-import { PrintScore } from "../components/PrintScore";
-import { Piece } from "../Types";
-import { piecesList } from "../Consts";
-import { connectionSlice } from "../store/ConnectionReducer";
+} from "../../utils/PieceMoves";
+import { genShadow } from "../../utils/Shadow";
 
-export default function GameOn() {
+export default function GameOn(): JSX.Element {
   const dispatch = useDispatch();
-  const gameOn = useSelector((state: RootReducerState) => state.game.gameOn);
+  const playerGameOn = useSelector(
+    (state: RootReducerState) => state.game.gameOn
+  );
   const gameBoard = useSelector(
     (state: RootReducerState) => state.game.gameBoard
   );
@@ -72,7 +79,7 @@ export default function GameOn() {
     }
   }
 
-  function handleKeyDown(event: React.KeyboardEvent) {
+  function handleKeyDown(event: React.KeyboardEvent): void {
     switch (event.code) {
       case "ArrowLeft":
         dispatch(
@@ -115,7 +122,7 @@ export default function GameOn() {
   useBlockLines(updateGameBoard);
 
   useInterval(() => {
-    if (gameOn) {
+    if (playerGameOn) {
       let tmpPiece = moveSecond(gameBoard, currentPiece, defaultDelay, (e) =>
         dispatch(gameSlice.actions.setDelay(e))
       );
@@ -124,8 +131,6 @@ export default function GameOn() {
         : updateGameBoard(gameBoard, currentPiece);
     }
   }, currentDelay);
-
-  useEffect(() => {}, []);
 
   return (
     <div className="game" tabIndex={0} onKeyDown={handleKeyDown}>

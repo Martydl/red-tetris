@@ -1,12 +1,13 @@
+import { useDispatch, useSelector } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { useDispatch, useSelector } from "react-redux";
-import { connectionSlice } from "../store/ConnectionReducer";
-import { RootReducerState } from "../store/RootReducer";
 
-export default function TetrisAppBar() {
+import { RootReducerState } from "../store/RootReducer";
+import { connectionSlice } from "../store/ConnectionReducer";
+
+export default function TetrisAppBar(): JSX.Element {
   const dispatch = useDispatch();
   const playerName = useSelector(
     (state: RootReducerState) => state.connection.playerName
@@ -15,7 +16,7 @@ export default function TetrisAppBar() {
     (state: RootReducerState) => state.connection.bestScore
   );
 
-  const handleLogoClick = () => {
+  const handleLogoClick = (): void => {
     dispatch(connectionSlice.actions.roomDisconnect());
   };
 

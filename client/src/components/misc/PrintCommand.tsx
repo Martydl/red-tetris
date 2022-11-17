@@ -1,4 +1,4 @@
-export function PrintCommand() {
+export default function PrintCommand(): JSX.Element {
   return (
     <div className="Instructions">
       <p>

@@ -1,6 +1,7 @@
-import { PrintBoard } from "./PrintBoard";
-import { Piece } from "../Types";
-import { emptyPiece, piecesList } from "../Consts";
+import { Piece } from "../../Types";
+import { emptyPiece, piecesList } from "../../Consts";
+
+import PrintBoard from "./PrintBoard";
 
 function EmptyPiece(): JSX.Element {
   return (
@@ -10,7 +11,7 @@ function EmptyPiece(): JSX.Element {
   );
 }
 
-export function PrintEmptyQueue() {
+export function PrintEmptyQueue(): JSX.Element {
   return (
     <div className="queue">
       <EmptyPiece />
@@ -31,7 +32,7 @@ function PrintPiece(props: { name: number; rotation: number }): JSX.Element {
   );
 }
 
-export function PrintQueue(props: { queue: Piece[] }) {
+export default function PrintQueue(props: { queue: Piece[] }): JSX.Element {
   return (
     <div className="queue">
       {props.queue.map((piece, index) => (

@@ -22,7 +22,7 @@ const initialState: ConnectionState = {
   roomName: undefined,
   playerName: "Guest",
   roomList: {},
-  bestScore: 42, // a aller chercher dans les cookies au lancement de l'app et ecrire dans les cookies a la fermeture
+  bestScore: 0,
 };
 
 export const connectionSlice = createSlice({

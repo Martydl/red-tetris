@@ -1,10 +1,10 @@
-import { PlayerStatus } from "../Consts";
+import { PlayerStatus } from "../../Types";
 
-export function PrintWaitScreen(props: {
+export default function PrintWaitScreen(props: {
   roomGameOn: boolean;
   playerGameOn: PlayerStatus;
   lastScore: number | undefined;
-}) {
+}): JSX.Element {
   return (
     <div className="waitScreen">
       <p>

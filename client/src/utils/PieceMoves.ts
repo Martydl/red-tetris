@@ -1,6 +1,7 @@
-import { piecesList } from "../Consts";
 import { Coords, Piece } from "../Types";
-import { checkCollisions } from "./Utils";
+import { piecesList } from "../Consts";
+
+import { checkCollisions } from "./Board";
 
 // called every seconds
 export function moveSecond(

@@ -1,11 +1,14 @@
 import { Middleware } from "redux";
 import { io, Socket } from "socket.io-client";
+
+import { PlayerStatus, Opponent } from "../Types";
 import { Messages } from "../Consts";
-import { gameSlice } from "./GameReducer";
+
 import { connectionSlice } from "./ConnectionReducer";
-import { Opponent, roomSlice } from "./RoomReducer";
-import { initPiece } from "../game/Utils";
-import { PlayerStatus } from "../Consts";
+import { gameSlice } from "./GameReducer";
+import { roomSlice } from "./RoomReducer";
+
+import { initPiece } from "../utils/Init";
 
 const socketMiddleware: Middleware = (store) => {
   let socket: Socket;

@@ -9,11 +9,7 @@ import Paper from "@mui/material/Paper";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 
-type Room = {
-  name: string;
-  nbPlayers: number;
-  started: boolean;
-};
+import { Room } from "../../Types";
 
 export function RoomList(props: {
   rooms: {
@@ -23,11 +19,7 @@ export function RoomList(props: {
     };
   };
   joinRoomCbk: (id: string) => void;
-}) {
-  const handleClick = (name: string) => {
-    props.joinRoomCbk(name);
-  };
-
+}): JSX.Element {
   var roomList: Room[] = [];
   for (let key in props.rooms) {
     roomList.push({
@@ -36,6 +28,10 @@ export function RoomList(props: {
       started: props.rooms[key].gameOn,
     });
   }
+
+  const handleClick = (name: string) => {
+    props.joinRoomCbk(name);
+  };
 
   return (
     <TableContainer className="RoomList" component={Paper}>

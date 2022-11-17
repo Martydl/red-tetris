@@ -1,4 +1,7 @@
-export function PrintScore(props: { score: number; level: number }) {
+export default function PrintScore(props: {
+  score: number;
+  level: number;
+}): JSX.Element {
   return (
     <div className="scorePanel">
       <div className="score">score: {props.score}</div>

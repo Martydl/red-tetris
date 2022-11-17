@@ -1,22 +1,22 @@
 import "./App.css";
+
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { RootReducerState } from "./store/RootReducer";
 import { connectionSlice } from "./store/ConnectionReducer";
-import { useEffect } from "react";
-import { Lobby } from "./components/Lobby";
-import { Room } from "./components/Room";
+
 import AppBar from "./components/TetrisAppBar";
+import Lobby from "./components/lobby/Lobby";
+import Room from "./components/room/Room";
 
 function App() {
   const dispatch = useDispatch();
-  const bestScore = useSelector(
-    (state: RootReducerState) => state.connection.bestScore
-  );
   const isConnectedToRoom = useSelector(
     (state: RootReducerState) => state.connection.isConnectedToRoom
   );
 
-  function handleRoute() {
+  function handleRoute(): void {
     let roomName: string | undefined = undefined;
     let playerName: string | undefined = undefined;
     const hash = window.location.hash;
@@ -52,7 +52,7 @@ function App() {
   return (
     <div className="App">
       <AppBar />
-      {(!isConnectedToRoom && <Lobby />) || (isConnectedToRoom && <Room />)}
+      {(!isConnectedToRoom && <Lobby />) || <Room />}
     </div>
   );
 }

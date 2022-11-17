@@ -12,7 +12,10 @@ function ListRow(props: { row: number[] }): JSX.Element {
   );
 }
 
-export function PrintBoard(props: { board: number[][]; class: string }) {
+export default function PrintBoard(props: {
+  board: number[][];
+  class: string;
+}): JSX.Element {
   return (
     <div className={props.class}>
       {props.board.map((row, index) => (

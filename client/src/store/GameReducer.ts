@@ -1,14 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  getPoints,
-  initBoard,
-  updatePrintBoard,
-  checkCollisions,
-  initPiece,
-  initQueue,
-} from "../game/Utils";
-import { piecesList, PlayerStatus } from "../Consts";
-import { Coords, Piece } from "../Types";
+
+import { PlayerStatus, Coords, Piece } from "../Types";
+import { piecesList } from "../Consts";
+
+import { checkCollisions, updatePrintBoard } from "../utils/Board";
+import { initBoard, initPiece, initQueue } from "../utils/Init";
+import { getPoints } from "../utils/Score";
 
 export interface GameState {
   gameOn: PlayerStatus;

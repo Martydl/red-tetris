@@ -1,13 +1,17 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { piecesList } from "../Consts";
-import { updatePrintBoard, checkCollisions, genShadow } from "../game/Utils";
+
 import { Piece } from "../Types";
-import { gameSlice } from "../store/GameReducer";
+import { piecesList } from "../Consts";
+
 import { RootReducerState } from "../store/RootReducer";
 import { connectionSlice } from "../store/ConnectionReducer";
+import { gameSlice } from "../store/GameReducer";
 
-export function useBlockLines(
+import { checkCollisions, updatePrintBoard } from "../utils/Board";
+import { genShadow } from "../utils/Shadow";
+
+export default function useBlockLines(
   updateGameBoardCbk: (gameBoard: number[][], piece: Piece) => void
 ) {
   const dispatch = useDispatch();

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Button, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { connectionSlice } from "../store/ConnectionReducer";
-import { RootReducerState } from "../store/RootReducer";
+
+import { Button, TextField } from "@mui/material";
+
+import { connectionSlice } from "../../store/ConnectionReducer";
+import { RootReducerState } from "../../store/RootReducer";
 import { RoomList } from "./RoomList";
 
-export function Lobby() {
+export default function Lobby(): JSX.Element {
   const dispatch = useDispatch();
   const roomList = useSelector(
     (state: RootReducerState) => state.connection.roomList
@@ -15,26 +17,26 @@ export function Lobby() {
 
   const handlePlayerNameChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  ): void => {
     setPlayerName(event.target.value);
   };
 
-  const submitNewPlayerName = () => {
+  const submitNewPlayerName = (): void => {
     dispatch(connectionSlice.actions.setPlayerName(playerName));
     setPlayerName("");
   };
 
   const handleRoomNameChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  ): void => {
     setRoomName(event.target.value);
   };
 
-  const handleDirectConnection = () => {
+  const handleDirectConnection = (): void => {
     dispatch(connectionSlice.actions.startConnectingToRoom(roomName));
   };
 
-  const handleExistingConnection = (room: string) => {
+  const handleExistingConnection = (room: string): void => {
     dispatch(connectionSlice.actions.startConnectingToRoom(room));
   };
 
