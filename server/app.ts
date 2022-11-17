@@ -53,7 +53,11 @@ io.on("connection", (socket: Socket) => {
   });
 
   socket.on(Messages.TOGGLE_ACCELERATION, (gameID: string) => {
-    server.sendBroadcastToggleAcceleration(socket, gameID);
+    server.sendBroadcastToggleAcceleration(
+      socket,
+      gameID,
+      !server.games[gameID].acceleration
+    );
   });
 
   socket.on(Messages.NEW_SHADOW, (arg: [string, number[]]) => {

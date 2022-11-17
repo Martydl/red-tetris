@@ -70,8 +70,8 @@ class Game {
     ];
   }
 
-  setgetAcceleration(): boolean {
-    this.acceleration = !this.acceleration;
+  setgetAcceleration(value: boolean) {
+    this.acceleration = value;
     return this.acceleration;
   }
 
