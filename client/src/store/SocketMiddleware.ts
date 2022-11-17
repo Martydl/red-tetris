@@ -81,7 +81,9 @@ const socketMiddleware: Middleware = (store) => {
         store.dispatch(roomSlice.actions.resetOpponents());
         const winner = store.getState().room.opponents[winnerID]
           ? store.getState().room.opponents[winnerID].playerName
-          : store.getState().connection.playerName;
+          : store.getState().connection.socketId === winnerID
+          ? store.getState().connection.playerName
+          : "-";
         store.dispatch(roomSlice.actions.setWinner(winner));
       });
 
