@@ -19,7 +19,6 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.4",
     "redux": "^4.2.0",
-    "seedrandom": "^3.0.5",
     "socket.io-client": "^4.5.2",
     "usehooks-ts": "^2.7.2"
   },

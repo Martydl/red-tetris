@@ -52,43 +52,6 @@ describe("Function in Utils.ts", () => {
   ];
   let shadow = [0, 5, 5, 10, 15, 15, 10, 5, 5, 0];
 
-  it("initBoard", () => {
-    expect(utils.initBoard()).toEqual(matrix);
-  });
-
-  it("initPiece", () => {
-    let pieceTest = {
-      name: 0,
-      rotation: 0,
-      pos: { x: 3, y: 0 },
-    };
-    expect(utils.initPiece(0)).toEqual(pieceTest);
-  });
-
-  it("initQueue", () => {
-    let randomGen = seedrandom("Dildosorus");
-    let randomGenTest = seedrandom("Dildosorus");
-    let queue: Piece[] = utils.initQueue(randomGen);
-    let queueTest = [
-      {
-        name: Math.round(randomGenTest() * 100) % 7,
-        rotation: 0,
-        pos: { x: 3, y: 0 },
-      },
-      {
-        name: Math.round(randomGenTest() * 100) % 7,
-        rotation: 0,
-        pos: { x: 3, y: 0 },
-      },
-      {
-        name: Math.round(randomGenTest() * 100) % 7,
-        rotation: 0,
-        pos: { x: 3, y: 0 },
-      },
-    ];
-    expect(queue).toEqual(queueTest);
-  });
-
   it("addPieceToBoard", () => {
     let matrixTest: number[][] = JSON.parse(JSON.stringify(matrix));
     matrixTest[1][3] = 1;
