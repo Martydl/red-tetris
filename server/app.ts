@@ -66,13 +66,7 @@ io.on("connection", (socket: Socket) => {
     server.players[socket.id].opponent.setStatus(PlayerStatus.DEAD);
     server.sendBroadcastPlayerGameOver(socket, gameID);
     if (server.games[gameID].isEndGame()) {
-      server.games[gameID].setGameOn(false);
-      server.sendAllEndGame(
-        io,
-        gameID,
-        server.games[gameID].getLastWinner(socket.id)
-      );
-      server.games[gameID].resetOpponents();
+      server.setEndGame(io, socket, gameID);
     }
   });
 
@@ -94,12 +88,12 @@ io.on("connection", (socket: Socket) => {
   });
 
   socket.on(Messages.ROOM_DISCONNECT, (gameID: string) => {
-    server.RoomDisconnect(io, socket, gameID);
+    server.roomDisconnect(io, socket, gameID);
     server.players[socket.id].room = Messages.WAITING_ROOM;
   });
 
   socket.on("disconnect", (_reason: any) => {
-    server.RoomDisconnect(io, socket, server.players[socket.id].room);
+    server.roomDisconnect(io, socket, server.players[socket.id].room);
     delete server.players[socket.id];
   });
 });
