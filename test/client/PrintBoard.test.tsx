@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, test } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { describe, expect, test } from "vitest";
+import { render } from "@testing-library/react";
 import PrintBoard from "../../client/src/components/misc/PrintBoard";
 import React from "react";
 
