@@ -1,3 +1,5 @@
+import React from "react";
+
 function ListBlock(props: { block: number }): JSX.Element {
   return <div className="block" id={props.block.toString()} />;
 }
