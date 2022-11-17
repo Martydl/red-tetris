@@ -6,7 +6,6 @@ class Game {
   seed?: string;
   gameID: string;
   leaderID: string;
-  lastWinner?: string;
   gameOn: boolean;
   acceleration: boolean;
   players: { [key: string]: Player };
