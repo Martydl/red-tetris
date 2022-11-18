@@ -1,5 +1,3 @@
-import seedrandom from "seedrandom";
-
 import { Piece } from "../Types";
 
 export function initBoard(): number[][] {
@@ -25,14 +23,4 @@ export function initQueue(piecesNames: number[]): Piece[] {
   queue.push(initPiece(piecesNames[2]));
   queue.push(initPiece(piecesNames[3]));
   return queue;
-}
-
-export function createPiece(randomGen: seedrandom.PRNG): Piece {
-  const nb = Math.round(randomGen() * 100) % 7;
-  const piece: Piece = {
-    name: nb,
-    rotation: 0,
-    pos: { x: 3, y: 0 },
-  };
-  return piece;
 }

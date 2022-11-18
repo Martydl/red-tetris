@@ -6,11 +6,8 @@ import { checkCollisions } from "./Board";
 // called every seconds
 export function moveSecond(
   matrix: number[][],
-  piece: Piece,
-  defaultDelay: number,
-  setDelayCbk: (delay: number) => void
+  piece: Piece
 ): Coords | undefined {
-  setDelayCbk(defaultDelay);
   let pos: Coords = { ...piece.pos };
   if (
     checkCollisions(
