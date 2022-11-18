@@ -9,7 +9,7 @@ export default defineConfig({
     environment: "jsdom",
     coverage: {
       all: true,
-      exclude: ["**/assets/**", "**/test/**"],
+      exclude: ["**/{assets,test}/**", "**/vite.config.*", "**/vite-env.d.*"],
       reporter: ["text", "html"],
     },
   },
