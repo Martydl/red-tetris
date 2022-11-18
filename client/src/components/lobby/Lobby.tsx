@@ -33,7 +33,8 @@ export default function Lobby(): JSX.Element {
   };
 
   const handleDirectConnection = (): void => {
-    dispatch(connectionSlice.actions.startConnectingToRoom(roomName));
+    if (roomName !== "")
+      dispatch(connectionSlice.actions.startConnectingToRoom(roomName));
   };
 
   const handleExistingConnection = (room: string): void => {
