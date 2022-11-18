@@ -123,9 +123,8 @@ export default function GameOn(): JSX.Element {
 
   useInterval(() => {
     if (playerGameOn) {
-      let tmpPiece = moveSecond(gameBoard, currentPiece, defaultDelay, (e) =>
-        dispatch(gameSlice.actions.setDelay(e))
-      );
+      dispatch(gameSlice.actions.setDelay(defaultDelay));
+      let tmpPiece = moveSecond(gameBoard, currentPiece);
       tmpPiece
         ? dispatch(gameSlice.actions.setCurrentPieceCoords(tmpPiece))
         : updateGameBoard(gameBoard, currentPiece);
