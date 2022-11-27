@@ -2,7 +2,7 @@ export const genShadow = (gameBoard: number[][]): number[] => {
   var shadow: number[] = new Array(10).fill(20);
   for (let x = 0; x < 10; x++) {
     for (let y = 0; y < 20; y++) {
-      if (gameBoard[y][x] == 0) {
+      if (gameBoard[y][x] === 0) {
         shadow[x]--;
       } else {
         break;

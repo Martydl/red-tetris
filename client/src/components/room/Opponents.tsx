@@ -13,7 +13,7 @@ function PrintOpponent(props: {
         key={props.index}
         board={genFullShadow(props.opponent.shadow)}
         class={
-          props.opponent.status != PlayerStatus.DEAD
+          props.opponent.status !== PlayerStatus.DEAD
             ? "opponentBoard"
             : "opponentDead"
         }
@@ -31,7 +31,7 @@ export default function Opponents(props: {
   let ops: Opponent[] = [];
 
   for (let key in props.opponents) {
-    if (props.opponents[key].status != PlayerStatus.WAITING)
+    if (props.opponents[key].status !== PlayerStatus.WAITING)
       ops.push(props.opponents[key]);
   }
 

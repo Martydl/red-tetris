@@ -11,7 +11,7 @@ import CheckIcon from "@mui/icons-material/Check";
 
 import { Room } from "../../Types";
 
-export function RoomList(props: {
+export default function RoomList(props: {
   rooms: {
     [key: string]: {
       playerNb: number;

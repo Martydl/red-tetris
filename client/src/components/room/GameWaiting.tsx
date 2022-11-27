@@ -9,7 +9,7 @@ import PrintQueue, { PrintEmptyQueue } from "../misc/PrintQueue";
 import PrintScore from "../misc/PrintScore";
 import PrintWaitScreen from "../misc/PrintWaitScreen";
 
-export default function gameWaiting(): JSX.Element {
+export default function GameWaiting(): JSX.Element {
   const board = useSelector((state: RootReducerState) => state.game.gameBoard);
   const roomGameOn = useSelector(
     (state: RootReducerState) => state.room.gameOn

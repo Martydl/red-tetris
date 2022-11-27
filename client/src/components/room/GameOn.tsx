@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useInterval } from "usehooks-ts";
@@ -54,7 +54,7 @@ export default function GameOn(): JSX.Element {
     (state: RootReducerState) => state.game.defaultDelay
   );
   const accelerationBool = useSelector(
-    (state: RootReducerState) => state.game.acceleration != 0
+    (state: RootReducerState) => state.game.acceleration !== 0
   );
 
   function updateGameBoard(gameBoard: number[][], piece: Piece): void {

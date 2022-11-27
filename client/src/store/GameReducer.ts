@@ -130,7 +130,7 @@ const setCompletedLines = (
   state.completedLine += newLines;
   state.score += getPoints(state.level, newLines);
   state.level = Math.floor(state.completedLine / 10);
-  if (state.level <= 9 && state.level != oldLevel && state.currentDelay > 1) {
+  if (state.level <= 9 && state.level !== oldLevel && state.currentDelay > 1) {
     state.defaultDelay -= 50 * state.acceleration ** state.level;
     if (state.defaultDelay < 100) {
       state.defaultDelay = 100;

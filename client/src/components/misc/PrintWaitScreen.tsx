@@ -1,5 +1,4 @@
 import { PlayerStatus } from "../../Types";
-import React from "react";
 
 export default function PrintWaitScreen(props: {
   roomGameOn: boolean;

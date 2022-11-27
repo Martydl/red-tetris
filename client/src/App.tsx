@@ -47,6 +47,7 @@ function App() {
     return () => {
       window.removeEventListener("hashchange", handleRoute);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

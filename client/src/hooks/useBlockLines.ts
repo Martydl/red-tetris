@@ -26,7 +26,7 @@ export default function useBlockLines(
   );
   const score = useSelector((state: RootReducerState) => state.game.score);
   const accelerationBool = useSelector(
-    (state: RootReducerState) => state.game.acceleration != 0
+    (state: RootReducerState) => state.game.acceleration !== 0
   );
 
   useEffect(() => {
@@ -72,5 +72,6 @@ export default function useBlockLines(
       }
       dispatch(gameSlice.actions.subLinesToBlock(1));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [linesToBlock]);
 }

@@ -1,14 +1,8 @@
 {
   "name": "red-tetris-client",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build-srv": "vite build --outDir ../server/client",
-    "build-srv-watch": "vite build --watch --outDir ../server/client"
-  },
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -18,16 +12,47 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.4",
-    "redux": "^4.2.0",
+    "react-scripts": "5.0.1",
     "socket.io-client": "^4.5.2",
     "usehooks-ts": "^2.7.2"
   },
   "devDependencies": {
+    "@testing-library/react": "^13.4.0",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
-    "@types/seedrandom": "^3.0.2",
-    "@vitejs/plugin-react": "^2.1.0",
-    "typescript": "^4.6.4",
-    "vite": "^3.1.0"
+    "npm-watch": "^0.11.0",
+    "typescript": "^4.9.3"
+  },
+  "watch": {
+    "build-dev": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "ts,tsx"
+    }
+  },
+  "scripts": {
+    "dev": "react-scripts start",
+    "build": "BUILD_PATH='../dist/client' react-scripts build",
+    "build-dev": "BUILD_PATH='../server/client' react-scripts build",
+    "watch": "npm-watch"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

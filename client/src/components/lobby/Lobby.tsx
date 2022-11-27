@@ -5,7 +5,7 @@ import { Button, TextField } from "@mui/material";
 
 import { connectionSlice } from "../../store/ConnectionReducer";
 import { RootReducerState } from "../../store/RootReducer";
-import { RoomList } from "./RoomList";
+import RoomList from "./RoomList";
 
 export default function Lobby(): JSX.Element {
   const dispatch = useDispatch();
