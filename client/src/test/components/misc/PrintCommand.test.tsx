@@ -3,8 +3,13 @@ import { render } from "@testing-library/react";
 import PrintCommand from "../../../components/misc/PrintCommand";
 
 describe("PrintCommand Components", () => {
-  const { container } = render(<PrintCommand />);
-  const instructions = container.getElementsByClassName("Instructions");
+  let container: HTMLElement;
+  let instructions: HTMLCollectionOf<Element>;
+
+  beforeEach(() => {
+    ({ container } = render(<PrintCommand />));
+    instructions = container.getElementsByClassName("Instructions");
+  });
 
   test("PrintCommand Exist", () => {
     expect(instructions).toBeDefined;

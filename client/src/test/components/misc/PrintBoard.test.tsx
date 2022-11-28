@@ -10,9 +10,13 @@ describe("PrintBoard Components", () => {
     new Array(5).fill(0),
     new Array(5).fill(0),
   ];
-  const { container } = render(
-    <PrintBoard board={testNumberArray} class="board" />
-  );
+  let container: HTMLElement;
+
+  beforeEach(() => {
+    ({ container } = render(
+      <PrintBoard board={testNumberArray} class="board" />
+    ));
+  });
 
   test("PrintBoard Length", () => {
     const blocks = container.getElementsByClassName("block");
@@ -21,6 +25,7 @@ describe("PrintBoard Components", () => {
 
   test("Rows Length", () => {
     const rows = container.getElementsByClassName("row");
+    console.log("rows.length: ", rows.length);
     expect(rows.length).toBe(5);
     for (let i = 0; i < 5; i++) {
       expect(rows[i].getElementsByClassName("block").length).toBe(5);

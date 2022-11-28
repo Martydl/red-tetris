@@ -4,9 +4,13 @@ import PrintScore from "../../../components/misc/PrintScore";
 describe("PrintScore Components", () => {
   const score_value = 12549;
   const level_value = 4;
-  const { container } = render(
-    <PrintScore score={score_value} level={level_value} />
-  );
+  let container: HTMLElement;
+
+  beforeEach(() => {
+    ({ container } = render(
+      <PrintScore score={score_value} level={level_value} />
+    ));
+  });
 
   test("PrintScore Length", () => {
     const scorePanel = container.getElementsByClassName("scorePanel");
