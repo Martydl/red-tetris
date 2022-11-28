@@ -3,14 +3,10 @@ import { genFullShadow } from "../../utils/Shadow";
 
 import PrintBoard from "../misc/PrintBoard";
 
-function PrintOpponent(props: {
-  opponent: Opponent;
-  index: number;
-}): JSX.Element {
+function PrintOpponent(props: { opponent: Opponent }): JSX.Element {
   return (
     <div className="opponent">
       <PrintBoard
-        key={props.index}
         board={genFullShadow(props.opponent.shadow)}
         class={
           props.opponent.status !== PlayerStatus.DEAD
@@ -40,7 +36,7 @@ export default function Opponents(props: {
       <p className="opponentsText">Opponents:</p>
       <div className="opponentsGrid">
         {ops.map((op, id) => (
-          <PrintOpponent opponent={op} index={id} />
+          <PrintOpponent opponent={op} key={id} />
         ))}
       </div>
     </div>

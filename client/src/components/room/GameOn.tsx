@@ -75,7 +75,6 @@ export default function GameOn(): JSX.Element {
         connectionSlice.actions.computeBestScore([score, accelerationBool])
       );
       dispatch(gameSlice.actions.gameOver());
-      console.log("Game Over");
     }
   }
 

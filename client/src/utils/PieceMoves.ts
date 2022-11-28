@@ -3,7 +3,6 @@ import { piecesList } from "../Consts";
 
 import { checkCollisions } from "./Board";
 
-// called every seconds
 export function moveSecond(
   matrix: number[][],
   piece: Piece
@@ -24,7 +23,6 @@ export function moveSecond(
   }
 }
 
-// called everytime KeyLeft is pressed
 export function moveLeft(matrix: number[][], piece: Piece): Coords | undefined {
   let pos = { ...piece.pos };
   if (
@@ -42,7 +40,6 @@ export function moveLeft(matrix: number[][], piece: Piece): Coords | undefined {
   }
 }
 
-// called everytime KeyRight is pressed
 export function moveRight(
   matrix: number[][],
   piece: Piece
@@ -63,7 +60,6 @@ export function moveRight(
   }
 }
 
-// called everytime KeyUp is pressed
 export function moveUp(matrix: number[][], piece: Piece): number | undefined {
   let nextRotation = (piece.rotation + 1) % 4;
   if (
@@ -80,7 +76,6 @@ export function moveUp(matrix: number[][], piece: Piece): number | undefined {
   }
 }
 
-// called everytime KeyEsp is pressed
 export function moveBottom(matrix: number[][], piece: Piece): Coords {
   let pos: Coords = { ...piece.pos };
   while (

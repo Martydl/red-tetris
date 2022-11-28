@@ -25,7 +25,6 @@ describe("PrintBoard Components", () => {
 
   test("Rows Length", () => {
     const rows = container.getElementsByClassName("row");
-    console.log("rows.length: ", rows.length);
     expect(rows.length).toBe(5);
     for (let i = 0; i < 5; i++) {
       expect(rows[i].getElementsByClassName("block").length).toBe(5);
