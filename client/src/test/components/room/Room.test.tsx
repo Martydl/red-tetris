@@ -1,4 +1,3 @@
-import "@testing-library/jest-dom";
 import { act, screen } from "@testing-library/react";
 import renderWithContext from "../../RenderWithContext";
 

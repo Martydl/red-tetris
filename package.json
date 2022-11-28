@@ -14,7 +14,7 @@
     "start": "cd dist && node app.js",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "clean-coverage": "rm -rf client/coverage server/coverage",
+    "clean-coverage": "rm -rf coverage",
     "clean-build": "rm -rf dist server/client",
     "clean-install": "rm -rf node_modules package-lock.json client/node_modules client/package-lock.json server/node_modules server/package-lock.json",
     "clean": "npm run clean-coverage && npm run clean-build && npm run clean-install"
