@@ -14,7 +14,7 @@ You can visualize your opponents grids with their associated spectrum, which is 
 
 Last player alive is the winner.
 
-_Alt mode:_
+## _Alt mode:_
 
 In solo mode, acceleration is enabled by default which means that the more lines you destroy, the faster pieces will drop.
 
